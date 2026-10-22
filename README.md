@@ -1,6 +1,6 @@
 # claude-marketplace
 
-Matt's private [Claude Code plugin marketplace](https://code.claude.com/docs/en/plugin-marketplaces):
+Matt's [Claude Code plugin marketplace](https://code.claude.com/docs/en/plugin-marketplaces):
 the skills he wants in every repo, on his machine, in Claude's cloud sessions
 and in the Claude GitHub Action. The marketplace is called **`mtblck`**, so
 plugins are installed as `<plugin>@mtblck`.
@@ -44,11 +44,7 @@ Once, for every project:
 /plugin install superpowers@mtblck
 ```
 
-The repo is private, so git on that machine must be able to read it: an SSH key
-in ssh-agent, or `gh auth login` followed by `gh auth setup-git`. Setting
-`GITHUB_TOKEN` alone is not enough; it only works through a credential helper
-such as gh's. Background auto-update uses the same credentials and fails quietly
-(keeping the old copy) if they're missing.
+The repo is public, so no credentials are needed to install or auto-update it.
 
 ## Enable it in a project repo
 
@@ -78,31 +74,21 @@ when the folder is trusted. `claude plugin marketplace add mtblck/claude-marketp
 writes the marketplace half for you.
 
 **Claude's cloud sessions** (claude.ai/code) read the same `.claude/settings.json`
-from the cloned repo. Because the marketplace is private, the session also needs
-GitHub access to `mtblck/claude-marketplace`; if a session can't install it, add
-the marketplace repo to the environment or session.
+from the cloned repo and install the marketplace from GitHub. It's public, so
+the session needs no extra repository access.
 
 ## Use it in the GitHub Action
 
 [`anthropics/claude-code-action`](https://github.com/anthropics/claude-code-action)
 takes `plugin_marketplaces` (git URLs or local paths, newline-separated) and
-`plugins` (`name@marketplace`, newline-separated). Because this marketplace is
-private, the workflows check it out first with a read-only token and pass the
-action a local path, so the token never lands in git config where Claude could
-read it:
+`plugins` (`name@marketplace`, newline-separated). This marketplace is public,
+so the workflows pass its git URL and need no token for it:
 
 ```yaml
-      - uses: actions/checkout@v7
-        with:
-          repository: mtblck/claude-marketplace
-          token: ${{ secrets.MARKETPLACE_TOKEN }}
-          path: .marketplace
-          persist-credentials: false
-      - run: mv .marketplace "$RUNNER_TEMP/claude-marketplace"
       - uses: anthropics/claude-code-action@v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
-          plugin_marketplaces: ${{ runner.temp }}/claude-marketplace
+          plugin_marketplaces: https://github.com/mtblck/claude-marketplace.git
           plugins: pr-review@mtblck
           prompt: "/pr-review:review --comment ${{ github.repository }}/pull/${{ github.event.pull_request.number }}"
 ```
@@ -113,7 +99,7 @@ Full workflows to copy into a repo's `.github/workflows/`:
   reviews a PR when it's opened as non-draft or marked ready (or by hand with a
   PR number). Skips fork PRs, keeps the repo's `.claude/` from the default
   branch so a PR can't change its own review settings, and skips with a notice
-  until both secrets exist.
+  until the secret exists.
 - [`claude.yml`](plugins/repo-setup/skills/repo-setup/templates/claude.yml):
   `@claude` on demand, only from the owner, members and collaborators.
 
@@ -123,13 +109,10 @@ Full workflows to copy into a repo's `.github/workflows/`:
 2. `CLAUDE_CODE_OAUTH_TOKEN`: run `claude setup-token` locally and save it as a
    repo secret (Settings → Secrets and variables → Actions). For API billing
    instead, save `ANTHROPIC_API_KEY` and swap the input to `anthropic_api_key`.
-3. `MARKETPLACE_TOKEN`: a [fine-grained personal access token](https://github.com/settings/personal-access-tokens/new)
-   with access to **only** `mtblck/claude-marketplace` and **Contents: Read-only**.
-   The workflow's own `GITHUB_TOKEN` can't read another repo. GitHub has no
-   account-wide Actions secrets for personal accounts, so this is one secret per
-   repo. To drop it entirely, make this marketplace public (it holds no secrets,
-   only account names and IDs) and pass
-   `https://github.com/mtblck/claude-marketplace.git` as `plugin_marketplaces`.
+
+The marketplace needs no secret: it's public (it holds no credentials, only skills,
+account names and IDs), which is what lets every repo load it without a per-repo token.
+Keep it that way: nothing secret goes in this repo.
 
 ## Repo layout
 
