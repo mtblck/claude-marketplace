@@ -12,22 +12,21 @@ plugins are installed as `<plugin>@mtblck`.
 | `pr-review` | `review`: four-angle PR review, every finding verified, graded 🔴/🟡/🔵, optional inline comments | Matt (from `mtblck/boards`) |
 | `repo-setup` | `repo-setup`: the baseline every repo gets, with workflow and settings templates | Matt |
 | `side-projects` | `new-project`, `portfolio-tool`, `project-tickets` | Matt's claude.ai skills |
-| `dev-practices` | `systematic-debugging`, `test-driven-development`, `verification-before-completion`, `receiving-code-review` | vendored from [obra/superpowers](https://github.com/obra/superpowers), MIT |
 | `web-design-guidelines` | `web-design-guidelines`: UI and accessibility review | vendored from [vercel-labs](https://github.com/vercel-labs/web-interface-guidelines), MIT |
 | `frontend-design` | `frontend-design`: distinctive frontend design direction | upstream [anthropics/claude-plugins-official](https://github.com/anthropics/claude-plugins-official), Apache-2.0 |
 | `commit-commands` | `/commit`, `/commit-push-pr`, `/clean_gone` | upstream anthropics/claude-plugins-official, Apache-2.0 |
 | `ui-ux-pro-max` | searchable styles, palettes, fonts, UX rules per stack | upstream [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill), MIT |
 | `interface-design` | design engineering and design review, decisions kept across sessions | upstream [Dammyjay93/interface-design](https://github.com/Dammyjay93/interface-design), MIT |
-| `superpowers` | the whole superpowers workflow: brainstorm, plan, execute, worktrees | upstream obra/superpowers, MIT |
+| `superpowers` | brainstorm, plan, execute; TDD, systematic debugging, verification before completion, code review, worktrees | upstream [obra/superpowers](https://github.com/obra/superpowers), MIT |
 
 **Vendored** plugins are copied into `plugins/` with their license and a README
 saying what changed. **Upstream** plugins are only an entry in
 `.claude-plugin/marketplace.json`, pinned to a commit `sha`; nothing is copied,
 and bumping the `sha` is the update. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
-`dev-practices` and `superpowers` overlap (the same four skills). Enable
-`dev-practices` by default; switch to `superpowers` in a repo where you want its
-full brainstorm → plan → execute workflow and its SessionStart hook.
+`superpowers` adds a SessionStart hook that tells Claude to look for a
+matching skill before acting. That's what makes its workflow kick in by itself,
+so enable it per repo where you want it rather than everywhere.
 
 Plugin skills are namespaced: `/pr-review:review`, `/repo-setup:repo-setup`,
 `/side-projects:new-project`, and so on. Claude also picks them up from their
@@ -70,7 +69,7 @@ template is [`plugins/repo-setup/skills/repo-setup/templates/settings.json`](plu
 }
 ```
 
-Add `"dev-practices@mtblck": true`, `"frontend-design@mtblck": true` and so on
+Add `"superpowers@mtblck": true`, `"frontend-design@mtblck": true` and so on
 per repo as they fit. Claude Code offers to install the marketplace and plugins
 when the folder is trusted. `claude plugin marketplace add mtblck/claude-marketplace --scope project`
 writes the marketplace half for you.
