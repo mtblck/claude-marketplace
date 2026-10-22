@@ -1,3 +1,153 @@
 # claude-marketplace
 
-Matt's private Claude Code plugin marketplace. Contents arrive in the first PR.
+Matt's private [Claude Code plugin marketplace](https://code.claude.com/docs/en/plugin-marketplaces):
+the skills he wants in every repo, on his machine, in Claude's cloud sessions
+and in the Claude GitHub Action. The marketplace is called **`mtblck`**, so
+plugins are installed as `<plugin>@mtblck`.
+
+## Plugins
+
+| Plugin | Skills | Source |
+| --- | --- | --- |
+| `pr-review` | `review`: four-angle PR review, every finding verified, graded 🔴/🟡/🔵, optional inline comments | Matt (from `mtblck/boards`) |
+| `repo-setup` | `repo-setup`: the baseline every repo gets, with workflow and settings templates | Matt |
+| `side-projects` | `new-project`, `portfolio-tool`, `project-tickets` | Matt's claude.ai skills |
+| `dev-practices` | `systematic-debugging`, `test-driven-development`, `verification-before-completion`, `receiving-code-review` | vendored from [obra/superpowers](https://github.com/obra/superpowers), MIT |
+| `web-design-guidelines` | `web-design-guidelines`: UI and accessibility review | vendored from [vercel-labs](https://github.com/vercel-labs/web-interface-guidelines), MIT |
+| `frontend-design` | `frontend-design`: distinctive frontend design direction | upstream [anthropics/claude-plugins-official](https://github.com/anthropics/claude-plugins-official), Apache-2.0 |
+| `commit-commands` | `/commit`, `/commit-push-pr`, `/clean_gone` | upstream anthropics/claude-plugins-official, Apache-2.0 |
+| `ui-ux-pro-max` | searchable styles, palettes, fonts, UX rules per stack | upstream [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill), MIT |
+| `interface-design` | design engineering and design review, decisions kept across sessions | upstream [Dammyjay93/interface-design](https://github.com/Dammyjay93/interface-design), MIT |
+| `superpowers` | the whole superpowers workflow: brainstorm, plan, execute, worktrees | upstream obra/superpowers, MIT |
+
+**Vendored** plugins are copied into `plugins/` with their license and a README
+saying what changed. **Upstream** plugins are only an entry in
+`.claude-plugin/marketplace.json`, pinned to a commit `sha`; nothing is copied,
+and bumping the `sha` is the update. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+
+`dev-practices` and `superpowers` overlap (the same four skills). Enable
+`dev-practices` by default; switch to `superpowers` in a repo where you want its
+full brainstorm → plan → execute workflow and its SessionStart hook.
+
+Plugin skills are namespaced: `/pr-review:review`, `/repo-setup:repo-setup`,
+`/side-projects:new-project`, and so on. Claude also picks them up from their
+descriptions without the slash command.
+
+## Use it on your machine
+
+Once, for every project:
+
+```
+/plugin marketplace add mtblck/claude-marketplace
+/plugin install pr-review@mtblck
+/plugin install side-projects@mtblck
+```
+
+The repo is private, so git on that machine must be able to read it: an SSH key
+in ssh-agent, or `gh auth login` followed by `gh auth setup-git`. Setting
+`GITHUB_TOKEN` alone is not enough; it only works through a credential helper
+such as gh's. Background auto-update uses the same credentials and fails quietly
+(keeping the old copy) if they're missing.
+
+## Enable it in a project repo
+
+Commit `.claude/settings.json` in the repo (the `repo-setup` skill does this; the
+template is [`plugins/repo-setup/skills/repo-setup/templates/settings.json`](plugins/repo-setup/skills/repo-setup/templates/settings.json)):
+
+```json
+{
+  "extraKnownMarketplaces": {
+    "mtblck": {
+      "source": { "source": "github", "repo": "mtblck/claude-marketplace" },
+      "autoUpdate": true
+    }
+  },
+  "enabledPlugins": {
+    "pr-review@mtblck": true,
+    "repo-setup@mtblck": true,
+    "side-projects@mtblck": true
+  }
+}
+```
+
+Add `"dev-practices@mtblck": true`, `"frontend-design@mtblck": true` and so on
+per repo as they fit. Claude Code offers to install the marketplace and plugins
+when the folder is trusted. `claude plugin marketplace add mtblck/claude-marketplace --scope project`
+writes the marketplace half for you.
+
+**Claude's cloud sessions** (claude.ai/code) read the same `.claude/settings.json`
+from the cloned repo. Because the marketplace is private, the session also needs
+GitHub access to `mtblck/claude-marketplace`; if a session can't install it, add
+the marketplace repo to the environment or session.
+
+## Use it in the GitHub Action
+
+[`anthropics/claude-code-action`](https://github.com/anthropics/claude-code-action)
+takes `plugin_marketplaces` (git URLs or local paths, newline-separated) and
+`plugins` (`name@marketplace`, newline-separated). Because this marketplace is
+private, the workflows check it out first with a read-only token and pass the
+action a local path, so the token never lands in git config where Claude could
+read it:
+
+```yaml
+      - uses: actions/checkout@v7
+        with:
+          repository: mtblck/claude-marketplace
+          token: ${{ secrets.MARKETPLACE_TOKEN }}
+          path: .marketplace
+          persist-credentials: false
+      - run: mv .marketplace "$RUNNER_TEMP/claude-marketplace"
+      - uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          plugin_marketplaces: ${{ runner.temp }}/claude-marketplace
+          plugins: pr-review@mtblck
+          prompt: "/pr-review:review --comment ${{ github.repository }}/pull/${{ github.event.pull_request.number }}"
+```
+
+Full workflows to copy into a repo's `.github/workflows/`:
+
+- [`claude-review.yml`](plugins/repo-setup/skills/repo-setup/templates/claude-review.yml):
+  reviews a PR when it's opened as non-draft or marked ready (or by hand with a
+  PR number). Skips fork PRs, keeps the repo's `.claude/` from the default
+  branch so a PR can't change its own review settings, and skips with a notice
+  until both secrets exist.
+- [`claude.yml`](plugins/repo-setup/skills/repo-setup/templates/claude.yml):
+  `@claude` on demand, only from the owner, members and collaborators.
+
+### Secrets, once per repo
+
+1. Install the [Claude GitHub App](https://github.com/apps/claude) on the repo.
+2. `CLAUDE_CODE_OAUTH_TOKEN`: run `claude setup-token` locally and save it as a
+   repo secret (Settings → Secrets and variables → Actions). For API billing
+   instead, save `ANTHROPIC_API_KEY` and swap the input to `anthropic_api_key`.
+3. `MARKETPLACE_TOKEN`: a [fine-grained personal access token](https://github.com/settings/personal-access-tokens/new)
+   with access to **only** `mtblck/claude-marketplace` and **Contents: Read-only**.
+   The workflow's own `GITHUB_TOKEN` can't read another repo. GitHub has no
+   account-wide Actions secrets for personal accounts, so this is one secret per
+   repo. To drop it entirely, make this marketplace public (it holds no secrets,
+   only account names and IDs) and pass
+   `https://github.com/mtblck/claude-marketplace.git` as `plugin_marketplaces`.
+
+## Repo layout
+
+```
+.claude-plugin/marketplace.json   the catalog: one entry per plugin
+plugins/<name>/                   vendored or Matt's own plugins
+  .claude-plugin/plugin.json      manifest (name, version, author, license)
+  skills/<skill>/SKILL.md         the skills, with any supporting files beside them
+  README.md                       what it is, and for vendored ones what changed
+```
+
+## Changing things
+
+- Edit a skill, bump `version` in its `plugin.json` (installed copies only
+  update when the version changes), open a PR. CI runs `claude plugin validate .`.
+- Add a plugin: a folder under `plugins/` plus an entry in `marketplace.json`,
+  or just an entry with a `github` / `git-subdir` source and a pinned `sha` for
+  something that lives upstream. Check the license first; vendor only MIT,
+  Apache-2.0 or BSD content and keep its LICENSE file.
+- Matt's claude.ai skills (`side-projects`) are copies. When one changes on
+  claude.ai, copy it here too (or the other way round).
+- Test locally: `claude --plugin-dir plugins/<name>` loads one plugin for a
+  session; `claude plugin marketplace add ./` adds the whole checkout.
