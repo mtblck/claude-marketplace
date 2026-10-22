@@ -1,8 +1,14 @@
 {
   "name": "pr-review",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Matt's pull request review: four parallel angles (correctness, security, tests and docs, repo rules and design), every finding verified, optional inline comments plus a summary. Runs locally or from the Claude GitHub Action.",
-  "author": { "name": "mtblck" },
+  "author": {
+    "name": "mtblck"
+  },
   "license": "MIT",
-  "keywords": ["review", "pull-request", "github-actions"]
+  "keywords": [
+    "review",
+    "pull-request",
+    "github-actions"
+  ]
 }

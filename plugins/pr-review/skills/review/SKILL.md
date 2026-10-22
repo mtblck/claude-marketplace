@@ -66,7 +66,10 @@ result), a suggested fix, and the severity from step 5.
 1. **Correctness.** Logic errors, wrong conditions, off-by-one, null or empty input,
    error paths that swallow or mis-handle failures, async ordering and races, state that
    leaks between calls, regressions in callers of changed code, behaviour that
-   contradicts the PR's stated intent.
+   contradicts the PR's stated intent. Where the PR and its linked issue are
+   silent on a behaviour (an input, environment or state they don't mention),
+   judge it by what a reasonable user of this code would expect: silence is not
+   permission, and the finding is graded by its effect on that user.
 2. **Security and data.** Auth and access checks (who can reach this, and does anonymous
    get less), injection and XSS (anything reaching HTML, SQL, shell or URLs unescaped),
    secrets or tokens in code, logs or responses, unsafe redirects or CORS/CSP changes,

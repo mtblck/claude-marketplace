@@ -1,6 +1,9 @@
 {
   "name": "mtblck",
-  "owner": { "name": "mtblck", "url": "https://github.com/mtblck" },
+  "owner": {
+    "name": "mtblck",
+    "url": "https://github.com/mtblck"
+  },
   "metadata": {
     "description": "Matt's shared Claude Code skills: PR review, repo setup, side-project workflow, plus curated development and design skills from upstream authors."
   },
@@ -22,12 +25,6 @@
       "source": "./plugins/side-projects",
       "description": "new-project, portfolio-tool and project-tickets: Matt's side-project workflow.",
       "category": "productivity"
-    },
-    {
-      "name": "dev-practices",
-      "source": "./plugins/dev-practices",
-      "description": "Systematic debugging, TDD, verification before completion, receiving code review. Vendored from obra/superpowers (MIT).",
-      "category": "development"
     },
     {
       "name": "web-design-guidelines",
@@ -84,7 +81,7 @@
         "repo": "obra/superpowers",
         "sha": "2ce8aa15d05bd57213e6f746f953aafb7ded7a8b"
       },
-      "description": "The full superpowers workflow: brainstorming, writing and executing plans, subagent-driven development, worktrees. Overlaps dev-practices; enable one or the other (MIT, upstream).",
+      "description": "obra/superpowers: brainstorming, writing and executing plans, TDD, systematic debugging, verification before completion, code review, subagent-driven development and worktrees (MIT, upstream).",
       "category": "development"
     }
   ]

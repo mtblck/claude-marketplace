@@ -6,7 +6,6 @@ Everything outside the plugins listed here is Matt's own and covered by `LICENSE
 
 | Plugin | Upstream | Commit | License | Copyright |
 | --- | --- | --- | --- | --- |
-| `plugins/dev-practices` | [obra/superpowers](https://github.com/obra/superpowers) `skills/{systematic-debugging,test-driven-development,verification-before-completion,receiving-code-review}` | `2ce8aa15d05bd57213e6f746f953aafb7ded7a8b` | MIT (`plugins/dev-practices/LICENSE`) | © 2025 Jesse Vincent |
 | `plugins/web-design-guidelines` | [vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills) `skills/web-design-guidelines` (MIT per its README) and [vercel-labs/web-interface-guidelines](https://github.com/vercel-labs/web-interface-guidelines) `command.md` | `063bee94c3f4df8453406c830b0a7df0f2860278`, `434b7f91364665f2f733b310ec54809bf8f37937` | MIT (`plugins/web-design-guidelines/LICENSE`) | © 2025 Vercel Labs |
 
 Each vendored plugin's README lists what was changed from upstream.
@@ -25,3 +24,10 @@ Not included on purpose: `anthropics/claude-code`'s `plugins/` (all rights
 reserved; the Apache-2.0 copies in claude-plugins-official are used instead) and
 the docx/pdf/pptx/xlsx skills in `anthropics/skills` (source-available, not
 open source).
+
+## Ideas adapted
+
+- `plugins/pr-review`: the rule that a spec's silence on a behaviour is not
+  permission, judged by a reasonable user's expectation, is adapted from
+  obra/superpowers `skills/requesting-code-review/code-reviewer.md` (MIT,
+  © 2025 Jesse Vincent).
