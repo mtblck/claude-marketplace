@@ -24,3 +24,10 @@ Not included on purpose: `anthropics/claude-code`'s `plugins/` (all rights
 reserved; the Apache-2.0 copies in claude-plugins-official are used instead) and
 the docx/pdf/pptx/xlsx skills in `anthropics/skills` (source-available, not
 open source).
+
+## Ideas adapted
+
+- `plugins/pr-review`: the rule that a spec's silence on a behaviour is not
+  permission, judged by a reasonable user's expectation, is adapted from
+  obra/superpowers `skills/requesting-code-review/code-reviewer.md` (MIT,
+  © 2025 Jesse Vincent).
