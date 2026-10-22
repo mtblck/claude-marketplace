@@ -70,6 +70,4 @@ a prompt-injection path with write access.
 A checklist of what's waiting on Matt:
 - [ ] Claude GitHub App installed on the repo (https://github.com/apps/claude)
 - [ ] `CLAUDE_CODE_OAUTH_TOKEN` repo secret (`claude setup-token` locally)
-- [ ] `MARKETPLACE_TOKEN` repo secret: a fine-grained PAT with read-only
-      Contents on `mtblck/claude-marketplace` (the marketplace is private)
 - [ ] Optional: required checks in Settings → Rules (private repos need GitHub Pro)

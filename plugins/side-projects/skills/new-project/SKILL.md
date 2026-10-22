@@ -99,8 +99,8 @@ Every repo gets the baseline in the `repo-setup` skill (same marketplace):
 `mtblck/boards`, the Claude review and `@claude` workflows that load the shared
 `pr-review` skill, `vercel.json` with security headers and a CSP of
 `script-src 'self'` plus a `hosting:check` script, and an MIT `LICENSE` unless
-Matt says otherwise. Matt then adds the `CLAUDE_CODE_OAUTH_TOKEN` and
-`MARKETPLACE_TOKEN` secrets (see `repo-setup`, "Hand back").
+Matt says otherwise. Matt then adds the `CLAUDE_CODE_OAUTH_TOKEN` secret
+(see `repo-setup`, "Hand back").
 
 **Public repos also get** (copy and adapt from inlaytrace): `SECURITY.md`
 (contact `hello@<domain>` if there is one), `CONTRIBUTING.md`,
@@ -200,7 +200,7 @@ the entry to `live` with measured outcomes when it ships.
 
 A short checklist of what's done and what's waiting on Matt, e.g.:
 - [ ] Vercel import (if `create_project` 403'd)
-- [ ] `CLAUDE_CODE_OAUTH_TOKEN` and `MARKETPLACE_TOKEN` secrets + Claude GitHub App on the repo
+- [ ] `CLAUDE_CODE_OAUTH_TOKEN` secret + Claude GitHub App on the repo
 - [ ] Spaceship DNS records / Spacemail mailbox
 - [ ] Add the repo to Boards' GitHub token
 - [ ] npm trusted publisher (packages only)

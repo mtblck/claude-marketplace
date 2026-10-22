@@ -1,6 +1,6 @@
 # claude-marketplace
 
-Matt's private Claude Code plugin marketplace, named `mtblck`
+Matt's public Claude Code plugin marketplace, named `mtblck`
 (`<plugin>@mtblck`). README covers using it locally, in project repos and in the
 GitHub Action; THIRD_PARTY_NOTICES.md covers what came from where.
 
@@ -22,4 +22,6 @@ to try one plugin · `claude plugin marketplace add ./` for the whole checkout.
 - The workflow templates in `plugins/repo-setup/skills/repo-setup/templates/`
   are what every repo copies. Keep the fork-PR skip, the author-association
   guard on `@claude`, and the default-branch `.claude/` swap.
+- The repo is public so every repo and session can load it without a token:
+  never commit credentials to it (account names and IDs are fine).
 - Commit as `mtblck <105079242+mtblck@users.noreply.github.com>`.
