@@ -50,3 +50,4 @@ jobs:
           plugins: |
             pr-review@mtblck
             repo-setup@mtblck
+            superpowers@mtblck

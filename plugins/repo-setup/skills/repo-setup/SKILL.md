@@ -36,7 +36,7 @@ first commit, if the repo is empty).
    in `mtblck/boards`.
 4. **`.claude/settings.json`** from `templates/settings.json`: registers this
    marketplace (`mtblck/claude-marketplace`) and enables `pr-review`,
-   `repo-setup` and `side-projects`, so anyone opening the repo in Claude Code
+   `repo-setup`, `side-projects` and `superpowers`, so anyone opening the repo in Claude Code
    is offered the shared skills, and the GitHub Action can load them.
 5. **CI**: `.github/workflows/ci.yml` copied from `mtblck/boards`. Contract: a
    committed lockfile, `npm test` and `npm run build`. Drop the `e2e` job if

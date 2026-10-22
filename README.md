@@ -24,9 +24,10 @@ saying what changed. **Upstream** plugins are only an entry in
 `.claude-plugin/marketplace.json`, pinned to a commit `sha`; nothing is copied,
 and bumping the `sha` is the update. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
-`superpowers` adds a SessionStart hook that tells Claude to look for a
-matching skill before acting. That's what makes its workflow kick in by itself,
-so enable it per repo where you want it rather than everywhere.
+`superpowers` is on by default: its SessionStart hook tells Claude to look for
+a matching skill before acting, which is what makes the brainstorm, plan and
+TDD workflow kick in by itself. It costs some tokens per session; that's the
+intended trade.
 
 Plugin skills are namespaced: `/pr-review:review`, `/repo-setup:repo-setup`,
 `/side-projects:new-project`, and so on. Claude also picks them up from their
@@ -40,6 +41,7 @@ Once, for every project:
 /plugin marketplace add mtblck/claude-marketplace
 /plugin install pr-review@mtblck
 /plugin install side-projects@mtblck
+/plugin install superpowers@mtblck
 ```
 
 The repo is private, so git on that machine must be able to read it: an SSH key
@@ -64,12 +66,13 @@ template is [`plugins/repo-setup/skills/repo-setup/templates/settings.json`](plu
   "enabledPlugins": {
     "pr-review@mtblck": true,
     "repo-setup@mtblck": true,
-    "side-projects@mtblck": true
+    "side-projects@mtblck": true,
+    "superpowers@mtblck": true
   }
 }
 ```
 
-Add `"superpowers@mtblck": true`, `"frontend-design@mtblck": true` and so on
+Add `"frontend-design@mtblck": true`, `"web-design-guidelines@mtblck": true` and so on
 per repo as they fit. Claude Code offers to install the marketplace and plugins
 when the folder is trusted. `claude plugin marketplace add mtblck/claude-marketplace --scope project`
 writes the marketplace half for you.
