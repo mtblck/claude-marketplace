@@ -1,0 +1,91 @@
+{
+  "name": "mtblck",
+  "owner": { "name": "mtblck", "url": "https://github.com/mtblck" },
+  "metadata": {
+    "description": "Matt's shared Claude Code skills: PR review, repo setup, side-project workflow, plus curated development and design skills from upstream authors."
+  },
+  "plugins": [
+    {
+      "name": "pr-review",
+      "source": "./plugins/pr-review",
+      "description": "Verified, graded PR review with optional inline comments. Used by the Claude review GitHub Action.",
+      "category": "development"
+    },
+    {
+      "name": "repo-setup",
+      "source": "./plugins/repo-setup",
+      "description": "Baseline files and workflows for every new or existing repo.",
+      "category": "development"
+    },
+    {
+      "name": "side-projects",
+      "source": "./plugins/side-projects",
+      "description": "new-project, portfolio-tool and project-tickets: Matt's side-project workflow.",
+      "category": "productivity"
+    },
+    {
+      "name": "dev-practices",
+      "source": "./plugins/dev-practices",
+      "description": "Systematic debugging, TDD, verification before completion, receiving code review. Vendored from obra/superpowers (MIT).",
+      "category": "development"
+    },
+    {
+      "name": "web-design-guidelines",
+      "source": "./plugins/web-design-guidelines",
+      "description": "UI and accessibility review against Vercel's Web Interface Guidelines. Vendored (MIT).",
+      "category": "design"
+    },
+    {
+      "name": "frontend-design",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/anthropics/claude-plugins-official.git",
+        "path": "plugins/frontend-design",
+        "sha": "465f09344424225c25d438f2e052732c3d688d2f"
+      },
+      "description": "Anthropic's skill for distinctive, production-grade frontend design instead of generic AI aesthetics (Apache-2.0, upstream).",
+      "category": "design"
+    },
+    {
+      "name": "commit-commands",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/anthropics/claude-plugins-official.git",
+        "path": "plugins/commit-commands",
+        "sha": "465f09344424225c25d438f2e052732c3d688d2f"
+      },
+      "description": "Anthropic's /commit, /commit-push-pr and /clean_gone git commands (Apache-2.0, upstream).",
+      "category": "development"
+    },
+    {
+      "name": "ui-ux-pro-max",
+      "source": {
+        "source": "github",
+        "repo": "nextlevelbuilder/ui-ux-pro-max-skill",
+        "sha": "04cfb449bd8494811ad63e94172a308fa25a551a"
+      },
+      "description": "Searchable local database of UI styles, palettes, font pairings, charts and per-stack UX rules (MIT, upstream).",
+      "category": "design"
+    },
+    {
+      "name": "interface-design",
+      "source": {
+        "source": "github",
+        "repo": "Dammyjay93/interface-design",
+        "sha": "2f9be3206855bcb2d1d0af262c8bae25cba6658d"
+      },
+      "description": "Design engineering: visual hierarchy, a strict design review, and design decisions kept across sessions (MIT, upstream).",
+      "category": "design"
+    },
+    {
+      "name": "superpowers",
+      "source": {
+        "source": "github",
+        "repo": "obra/superpowers",
+        "sha": "2ce8aa15d05bd57213e6f746f953aafb7ded7a8b"
+      },
+      "description": "The full superpowers workflow: brainstorming, writing and executing plans, subagent-driven development, worktrees. Overlaps dev-practices; enable one or the other (MIT, upstream).",
+      "category": "development"
+    }
+  ]
+}
