@@ -17,7 +17,7 @@ import { execSync } from 'node:child_process'
 const args = process.argv.slice(2)
 const outIdx = args.indexOf('--out')
 const outDir = outIdx >= 0 ? resolve(args[outIdx + 1]) : null
-const files = args.filter((a, i) => a.endsWith('.svg') && i !== outIdx + 1)
+const files = args.filter((a, i) => a.endsWith('.svg') && !(outIdx >= 0 && i === outIdx + 1))
 if (!files.length) {
   console.error('usage: node render.mjs cover.svg [more.svg …] [--out DIR]')
   process.exit(1)
