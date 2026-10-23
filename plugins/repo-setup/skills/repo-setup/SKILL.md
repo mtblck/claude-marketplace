@@ -47,7 +47,9 @@ first commit, if the repo is empty).
    Playwright script, ideally with axe, as in `mtblck/collated`). Multi-app repos
    get a job per app; non-JS code gets the equivalent test + build job. The
    Dependabot review reads CI's result instead of running tests itself, so a repo
-   without CI gets weaker dependency reviews.
+   without CI gets weaker dependency reviews. CI also reports test coverage: copy
+   `templates/coverage-report.mjs` to `.github/scripts/coverage-report.mjs` and add a
+   `coverage` script (see "Test coverage" below).
 6. **Dependabot**: `.github/dependabot.yml` from `templates/dependabot.yml`: one
    block per lockfile and ecosystem, minor and patch grouped weekly, majors alone,
    a 3-day cooldown (7 for majors), Actions monthly. Keep an existing file's
@@ -79,6 +81,33 @@ first commit, if the repo is empty).
    `script-src 'self'`, and a `hosting:check` script that fails the build if
    headers, rewrites or CSP regress (see `portfolio-tool` for the recipe).
 12. Labels for tickets: `project-tickets`, "Setting up a repo once".
+
+## Test coverage
+
+Report only, so every repo has a number to watch and every PR shows which new lines no
+test runs. No paid service and no secrets.
+
+- **Convention:** a `coverage` npm script that runs the same tests as `test` and also
+  writes `coverage/lcov.info`. CI runs it in place of `npm test` when it exists.
+  - Vitest: `"coverage": "vitest run --coverage --coverage.reporter=lcov --coverage.reporter=json-summary --coverage.reporter=text-summary"`,
+    plus `@vitest/coverage-v8` (same version as `vitest`) in devDependencies.
+  - Jest: `"coverage": "jest --coverage --coverageReporters=lcov --coverageReporters=json-summary --coverageReporters=text-summary"`.
+  - Rust (`cargo install cargo-llvm-cov` or `taiki-e/install-action`):
+    `cargo llvm-cov --lcov --output-path coverage/lcov.info`.
+  - Python (`pytest-cov`): `pytest --cov --cov-report=lcov:coverage/lcov.info`.
+  Non-npm jobs run their command, then the same `Coverage report` and
+  `Upload coverage` steps as the template.
+- **What CI does:** `coverage-report.mjs` puts whole-repo and changed-line coverage
+  in the job summary and writes `coverage/diff-coverage.json`; both are uploaded as
+  the `coverage` artifact (14 days). The Claude review waits for that run, downloads
+  the artifact and reports uncovered new functions and branches as 🟡 findings.
+- **Thresholds, opt in per repo:** none at first. Once the number is steady, set the
+  repository variable `COVERAGE_MIN` (whole-repo line %) and/or `DIFF_COVERAGE_MIN`
+  (changed-line %) under Settings → Secrets and variables → Actions → Variables; CI
+  then fails below them. Variables, not secrets: they are not sensitive.
+- **No tests yet:** add the `coverage` script anyway once there is a first test, and
+  use `/maintenance:test-gaps` to pick and write the first tests where they matter
+  most.
 
 ## GitHub security settings
 

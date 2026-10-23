@@ -11,6 +11,10 @@ agent verifies every finding against the code, and the rest is graded 🔴 block
 comment carrying a `<!-- claude-review head=<sha> -->` marker, so a re-run reviews
 only what changed since.
 
+When CI uploads a coverage report (the `ci.yml` template in `repo-setup`), the
+review workflow passes it with `--coverage <dir>` and the tests angle reports new
+functions and branches that no test runs, each still verified against the tests.
+
 - Locally: `/pr-review:review 42` (prints only) or `/pr-review:review --comment owner/repo/pull/42`.
 - In CI: the `claude-review.yml` template in the `repo-setup` plugin.
 

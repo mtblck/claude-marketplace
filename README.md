@@ -9,10 +9,10 @@ plugins are installed as `<plugin>@mtblck`.
 
 | Plugin | Skills | Source |
 | --- | --- | --- |
-| `pr-review` | `review`: four-angle PR review (five with accessibility when UI changes), every finding verified, graded 🔴/🟡/🔵, optional inline comments; `security` and `accessibility` (WCAG 2.2 AA) audits | Matt (from `mtblck/boards`) |
+| `pr-review` | `review`: four-angle PR review (five with accessibility when UI changes), every finding verified, graded 🔴/🟡/🔵, untested new code from CI coverage, optional inline comments; `security` and `accessibility` (WCAG 2.2 AA) audits | Matt (from `mtblck/boards`) |
 | `dependency-review` | `dependabot`: Dependabot PR review: real diff, advisory reachability, supply-chain vetting, one verdict comment | Matt |
-| `repo-setup` | `repo-setup`: the baseline every repo gets: CI, Dependabot, changelog, ADR template, Claude workflows (review, Dependabot review, docs drift check, `@claude`), security settings | Matt |
-| `maintenance` | `release`: changelog and GitHub release from merged PRs; `docs-check`: README, docs, ADRs and privacy page against the code (also as a monthly drift issue); `adr`: decision records; `health-check`: weekly summary of alerts, red CI, skipped reviews, stale PRs and baseline drift across the repos | Matt |
+| `repo-setup` | `repo-setup`: the baseline every repo gets: CI with coverage report, Dependabot, changelog, ADR template, Claude workflows (review, Dependabot review, docs drift check, `@claude`), security settings | Matt |
+| `maintenance` | `release`: changelog and GitHub release from merged PRs; `docs-check`: README, docs, ADRs and privacy page against the code (also as a monthly drift issue); `adr`: decision records; `health-check`: weekly summary of alerts, red CI, skipped reviews, stale PRs and baseline drift across the repos; `test-gaps`: riskiest untested code, then tests for it | Matt |
 | `side-projects` | `new-project`, `portfolio-tool`, `project-tickets` | Matt's claude.ai skills |
 | `web-design-guidelines` | `web-design-guidelines`: UI and accessibility review | vendored from [vercel-labs](https://github.com/vercel-labs/web-interface-guidelines), MIT |
 | `frontend-design` | `frontend-design`: distinctive frontend design direction | upstream [anthropics/claude-plugins-official](https://github.com/anthropics/claude-plugins-official), Apache-2.0 |
@@ -105,7 +105,10 @@ Full workflows to copy into a repo's `.github/workflows/`:
   reviews a PR when it's opened as non-draft or marked ready (or by hand with a
   PR number). Skips fork PRs, keeps the repo's `.claude/` from the default
   branch so a PR can't change its own review settings, and skips with a notice
-  until the secret exists.
+  until the secret exists. When the repo's CI uploads a coverage report (the
+  [`ci.yml`](plugins/repo-setup/skills/repo-setup/templates/ci.yml) template with
+  `coverage-report.mjs`), it waits for that run and hands the report to the review,
+  which flags new code no test runs.
 - [`claude-dependabot.yml`](plugins/repo-setup/skills/repo-setup/templates/claude-dependabot.yml):
   reviews every Dependabot PR with `dependency-review` and posts (then updates) one
   verdict comment. Never merges or installs anything. Needs the token as a

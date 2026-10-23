@@ -23,13 +23,13 @@
     {
       "name": "repo-setup",
       "source": "./plugins/repo-setup",
-      "description": "Baseline files, settings and workflows for every new or existing repo: CI, Dependabot, changelog, ADR template, Claude reviews, docs drift check, security settings.",
+      "description": "Baseline files, settings and workflows for every new or existing repo: CI with coverage report, Dependabot, changelog, ADR template, Claude reviews, docs drift check, security settings.",
       "category": "development"
     },
     {
       "name": "maintenance",
       "source": "./plugins/maintenance",
-      "description": "release (changelog and release notes from merged PRs, tag and GitHub release), docs-check (README, docs, ADRs and privacy page against the code, on request or as a monthly drift issue), adr (decision records) and health-check (weekly read-only summary of what needs attention across the repos).",
+      "description": "release (changelog and release notes from merged PRs, tag and GitHub release), docs-check (README, docs, ADRs and privacy page against the code, on request or as a monthly drift issue), adr (decision records), health-check (weekly read-only summary of what needs attention across the repos) and test-gaps (riskiest untested code, then tests for it).",
       "category": "productivity"
     },
     {
