@@ -45,6 +45,12 @@
       "category": "design"
     },
     {
+      "name": "interaction-design",
+      "source": "./plugins/interaction-design",
+      "description": "Microinteractions, motion, transitions and loading states with timing, easing and reduced-motion guidance. Vendored (MIT).",
+      "category": "design"
+    },
+    {
       "name": "frontend-design",
       "source": {
         "source": "git-subdir",

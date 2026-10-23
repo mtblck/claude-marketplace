@@ -15,6 +15,7 @@ plugins are installed as `<plugin>@mtblck`.
 | `maintenance` | `release`: changelog and GitHub release from merged PRs; `docs-check`: README, docs, ADRs and privacy page against the code (also as a monthly drift issue); `adr`: decision records; `health-check`: weekly summary of alerts, red CI, skipped reviews, stale PRs and baseline drift across the repos; `test-gaps`: riskiest untested code, then tests for it | Matt |
 | `side-projects` | `new-project`, `portfolio-tool`, `project-tickets` | Matt's claude.ai skills |
 | `web-design-guidelines` | `web-design-guidelines`: UI and accessibility review | vendored from [vercel-labs](https://github.com/vercel-labs/web-interface-guidelines), MIT |
+| `interaction-design` | `interaction-design`: microinteractions, motion, transitions, loading states, reduced motion | vendored from [wshobson/agents](https://github.com/wshobson/agents), MIT |
 | `frontend-design` | `frontend-design`: distinctive frontend design direction | upstream [anthropics/claude-plugins-official](https://github.com/anthropics/claude-plugins-official), Apache-2.0 |
 | `commit-commands` | `/commit`, `/commit-push-pr`, `/clean_gone` | upstream anthropics/claude-plugins-official, Apache-2.0 |
 | `ui-ux-pro-max` | searchable styles, palettes, fonts, UX rules per stack | upstream [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill), MIT |

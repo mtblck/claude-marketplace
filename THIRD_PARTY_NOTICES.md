@@ -7,6 +7,7 @@ Everything outside the plugins listed here is Matt's own and covered by `LICENSE
 | Plugin | Upstream | Commit | License | Copyright |
 | --- | --- | --- | --- | --- |
 | `plugins/web-design-guidelines` | [vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills) `skills/web-design-guidelines` (MIT per its README) and [vercel-labs/web-interface-guidelines](https://github.com/vercel-labs/web-interface-guidelines) `command.md` | `063bee94c3f4df8453406c830b0a7df0f2860278`, `434b7f91364665f2f733b310ec54809bf8f37937` | MIT (`plugins/web-design-guidelines/LICENSE`) | © 2025 Vercel Labs |
+| `plugins/interaction-design` | [wshobson/agents](https://github.com/wshobson/agents) `plugins/ui-design/skills/interaction-design` | `0874a27b17a22e2b7c2e2bcd725768e0803cad06` | MIT (`plugins/interaction-design/LICENSE`) | © 2024 Seth Hobson |
 
 Each vendored plugin's README lists what was changed from upstream.
 
