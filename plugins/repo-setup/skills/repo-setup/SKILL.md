@@ -33,7 +33,10 @@ first commit, if the repo is empty).
    numbers rather than adjectives.
 3. **`docs/overview.md`** (plus `research.md` if research came first). Boards
    reads `docs/` directly; frontmatter `order:` and `public:` per `CONVENTIONS.md`
-   in `mtblck/boards`.
+   in `mtblck/boards`. Plus `docs/adr/0000-template.md` from
+   `templates/docs/adr/` (decision records; private to Boards by default), and an
+   ADR for each load-bearing decision already made, if Matt wants them written
+   now (`/maintenance:adr`).
 4. **`.claude/settings.json`** from `templates/settings.json`: registers this
    marketplace (`mtblck/claude-marketplace`) and enables `pr-review`,
    `dependency-review`, `maintenance`, `repo-setup`, `side-projects` and `superpowers`, so anyone opening the repo in Claude Code
@@ -52,7 +55,9 @@ first commit, if the repo is empty).
 7. **Claude workflows** from `templates/`: `claude-review.yml` (runs the shared
    `pr-review` skill when a PR is opened as non-draft or marked ready),
    `claude-dependabot.yml` (runs `dependency-review` on every Dependabot PR and
-   posts one verdict comment) and `claude.yml` (`@claude` on demand). All load
+   posts one verdict comment), `claude-docs-check.yml` (monthly `docs-check` from
+   `maintenance`, keeping one open issue listing docs drift; never edits docs) and
+   `claude.yml` (`@claude` on demand). All load
    their skills from the marketplace, so a PR can't change its own review and
    there is no per-repo copy to keep in step. Skip `claude-dependabot.yml` only
    if the repo has no dependencies at all.

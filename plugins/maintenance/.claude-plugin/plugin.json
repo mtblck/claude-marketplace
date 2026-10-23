@@ -1,7 +1,7 @@
 {
   "name": "maintenance",
-  "version": "1.0.0",
-  "description": "Keeping a project healthy between features: cut a release with a changelog drafted from merged PRs, and check that README, docs and the privacy page still match the code.",
+  "version": "1.1.0",
+  "description": "Keeping a project healthy between features: cut a release with a changelog drafted from merged PRs, check that README, docs, ADRs and the privacy page still match the code (on request or as a monthly drift issue), and record decisions as ADRs.",
   "author": {
     "name": "mtblck"
   },
