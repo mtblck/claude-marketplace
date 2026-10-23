@@ -5,13 +5,13 @@
     "url": "https://github.com/mtblck"
   },
   "metadata": {
-    "description": "Matt's shared Claude Code skills: PR, security, accessibility and Dependabot review, repo setup and maintenance, side-project workflow, plus curated development and design skills from upstream authors."
+    "description": "Matt's shared Claude Code skills: PR, security, accessibility, performance and Dependabot review, repo setup and maintenance, side-project workflow, plus curated development and design skills from upstream authors."
   },
   "plugins": [
     {
       "name": "pr-review",
       "source": "./plugins/pr-review",
-      "description": "Verified, graded PR review (with an accessibility angle for UI changes) plus standalone security and accessibility audits. Used by the Claude review GitHub Action.",
+      "description": "Verified, graded PR review (with accessibility and performance angles when they apply) plus standalone security, accessibility and performance audits. Used by the Claude review GitHub Action.",
       "category": "development"
     },
     {
@@ -23,7 +23,7 @@
     {
       "name": "repo-setup",
       "source": "./plugins/repo-setup",
-      "description": "Baseline files, settings and workflows for every new or existing repo: CI with coverage report, Dependabot, changelog, ADR template, Claude reviews, docs drift check, security settings.",
+      "description": "Baseline files, settings and workflows for every new or existing repo: CI with coverage report, Dependabot, changelog, ADR template, bundle-size and Lighthouse checks, Claude reviews, docs drift check, security settings.",
       "category": "development"
     },
     {

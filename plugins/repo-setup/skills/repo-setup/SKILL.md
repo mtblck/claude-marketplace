@@ -63,7 +63,17 @@ first commit, if the repo is empty).
    their skills from the marketplace, so a PR can't change its own review and
    there is no per-repo copy to keep in step. Skip `claude-dependabot.yml` only
    if the repo has no dependencies at all.
-8. **`CHANGELOG.md`** from `templates/CHANGELOG.md` for anything with users,
+8. **Performance**, web apps only: `.github/workflows/perf.yml` from
+   `templates/perf.yml` and `.github/scripts/perf.mjs` from `templates/perf.mjs`.
+   On each PR it builds base and head, compares gzipped bundle sizes and runs
+   Lighthouse CI (3 runs, mobile) against a local production server, then uploads
+   the `perf` artifact that the Claude review's performance angle reads. Set
+   `PAGES` to the app's main public routes (no auth), `START_COMMAND` if it isn't
+   `vite preview` or `next start`, and any public build env the app needs. It
+   measures a local build, not the Vercel preview: previews sit behind Deployment
+   Protection, and a local build keeps base and head on the same machine. Skip
+   both files for repos with no web build.
+9. **`CHANGELOG.md`** from `templates/CHANGELOG.md` for anything with users,
    with two workflows that keep it moving without anyone remembering:
    `changelog.yml` (no Claude) adds a line under Unreleased for each merged PR,
    from its title and labels; `claude-release.yml` runs the `release` skill
@@ -74,13 +84,13 @@ first commit, if the repo is empty).
    repo that releases with Changesets or its own release workflow.
    If a ruleset requires PRs on `main`, `changelog.yml` can't push; the release
    draft then fills Unreleased from the merged PRs instead.
-9. **`REVIEW.md`** (optional) from `templates/REVIEW.md` when the repo has review
-   focus worth stating: what matters most here, what to stop flagging.
-10. **`LICENSE`**: MIT unless Matt says otherwise.
-11. **Web projects on Vercel**: `vercel.json` with security headers and a CSP of
+10. **`REVIEW.md`** (optional) from `templates/REVIEW.md` when the repo has review
+   focus worth stating: what matters most here, performance budgets, what to stop flagging.
+11. **`LICENSE`**: MIT unless Matt says otherwise.
+12. **Web projects on Vercel**: `vercel.json` with security headers and a CSP of
    `script-src 'self'`, and a `hosting:check` script that fails the build if
    headers, rewrites or CSP regress (see `portfolio-tool` for the recipe).
-12. Labels for tickets: `project-tickets`, "Setting up a repo once".
+13. Labels for tickets: `project-tickets`, "Setting up a repo once".
 
 ## Test coverage
 

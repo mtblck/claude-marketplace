@@ -9,9 +9,9 @@ plugins are installed as `<plugin>@mtblck`.
 
 | Plugin | Skills | Source |
 | --- | --- | --- |
-| `pr-review` | `review`: four-angle PR review (five with accessibility when UI changes), every finding verified, graded 🔴/🟡/🔵, untested new code from CI coverage, optional inline comments; `security` and `accessibility` (WCAG 2.2 AA) audits | Matt (from `mtblck/boards`) |
+| `pr-review` | `review`: four-angle PR review (plus accessibility when UI changes and performance when client code, dependencies or build config change), every finding verified, graded 🔴/🟡/🔵, untested new code from CI coverage, optional inline comments; `security`, `accessibility` (WCAG 2.2 AA) and `performance` audits | Matt (from `mtblck/boards`) |
 | `dependency-review` | `dependabot`: Dependabot PR review: real diff, advisory reachability, supply-chain vetting, one verdict comment | Matt |
-| `repo-setup` | `repo-setup`: the baseline every repo gets: CI with coverage report, Dependabot, changelog, ADR template, Claude workflows (review, Dependabot review, docs drift check, `@claude`), security settings | Matt |
+| `repo-setup` | `repo-setup`: the baseline every repo gets: CI with coverage report, Dependabot, changelog, ADR template, bundle-size and Lighthouse checks, Claude workflows (review, Dependabot review, docs drift check, `@claude`), security settings | Matt |
 | `maintenance` | `release`: changelog and GitHub release from merged PRs; `docs-check`: README, docs, ADRs and privacy page against the code (also as a monthly drift issue); `adr`: decision records; `health-check`: weekly summary of alerts, red CI, skipped reviews, stale PRs and baseline drift across the repos; `test-gaps`: riskiest untested code, then tests for it | Matt |
 | `side-projects` | `new-project`, `portfolio-tool`, `project-tickets` | Matt's claude.ai skills |
 | `web-design-guidelines` | `web-design-guidelines`: UI and accessibility review | vendored from [vercel-labs](https://github.com/vercel-labs/web-interface-guidelines), MIT |
@@ -108,7 +108,13 @@ Full workflows to copy into a repo's `.github/workflows/`:
   until the secret exists. When the repo's CI uploads a coverage report (the
   [`ci.yml`](plugins/repo-setup/skills/repo-setup/templates/ci.yml) template with
   `coverage-report.mjs`), it waits for that run and hands the report to the review,
-  which flags new code no test runs.
+  which flags new code no test runs. If the repo has `perf.yml`, it does the same
+  with its bundle-size and Lighthouse numbers (waiting up to 15 minutes).
+- [`perf.yml`](plugins/repo-setup/skills/repo-setup/templates/perf.yml) and
+  [`perf.mjs`](plugins/repo-setup/skills/repo-setup/templates/perf.mjs) (as
+  `.github/scripts/perf.mjs`), web apps only: builds base and head, compares
+  gzipped bundle sizes and runs Lighthouse CI on a local production server, then
+  writes the job summary and the `perf` artifact. Reports, never fails a PR.
 - [`claude-dependabot.yml`](plugins/repo-setup/skills/repo-setup/templates/claude-dependabot.yml):
   reviews every Dependabot PR with `dependency-review` and posts (then updates) one
   verdict comment. Never merges or installs anything. Needs the token as a

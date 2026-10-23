@@ -1,7 +1,7 @@
 {
   "name": "repo-setup",
-  "version": "1.6.0",
-  "description": "Baseline for every one of Matt's repos: CLAUDE.md, README, docs/ with an ADR template, CI with a coverage report, changelog and weekly release-draft workflows, Claude review, Dependabot review, docs drift check and @claude workflows wired to this marketplace, license and public-repo guards.",
+  "version": "1.7.0",
+  "description": "Baseline for every one of Matt's repos: CLAUDE.md, README, docs/ with an ADR template, CI with a coverage report, performance measurements, changelog and weekly release-draft workflows, Claude review, Dependabot review, docs drift check and @claude workflows wired to this marketplace, license and public-repo guards.",
   "author": {
     "name": "mtblck"
   },
