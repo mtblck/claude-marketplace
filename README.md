@@ -116,6 +116,12 @@ Full workflows to copy into a repo's `.github/workflows/`:
   the docs are clean. Report-only: it never edits docs or opens a PR.
 - [`claude.yml`](plugins/repo-setup/skills/repo-setup/templates/claude.yml):
   `@claude` on demand, only from the owner, members and collaborators.
+- [`changelog.yml`](plugins/repo-setup/skills/repo-setup/templates/changelog.yml):
+  adds a line under Unreleased in `CHANGELOG.md` for each merged PR, from its title
+  and labels. A plain script, no Claude and no secret.
+- [`claude-release.yml`](plugins/repo-setup/skills/repo-setup/templates/claude-release.yml):
+  every Monday (or by hand) runs `/maintenance:release --draft`: a changelog PR and a
+  draft GitHub release. Never tags or publishes; skips Claude when Unreleased is empty.
 
 ### Secrets, once per repo
 
