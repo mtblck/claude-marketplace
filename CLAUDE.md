@@ -24,8 +24,10 @@ to try one plugin · `claude plugin marketplace add ./` for the whole checkout.
   only writes the one drift issue.
 - The workflow templates in `plugins/repo-setup/skills/repo-setup/templates/`
   are what every repo copies. Keep the fork-PR skip, the author-association
-  guard on `@claude`, the Dependabot-only guard on `claude-dependabot.yml`, and
-  the default-branch `.claude/` swap.
+  guard on `@claude`, the Dependabot-only guard on `claude-dependabot.yml`, the
+  default-branch `.claude/` swap, and `claude-release.yml` / `release --draft`
+  never tagging, publishing or merging (PR title text only reaches
+  `changelog.yml` through `env`).
 - The repo is public so every repo and session can load it without a token:
   never commit credentials to it (account names and IDs are fine).
 - Commit as `mtblck <105079242+mtblck@users.noreply.github.com>`.

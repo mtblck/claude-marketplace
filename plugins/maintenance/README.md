@@ -6,7 +6,9 @@ Keeping a project healthy between features. Matt's own; nothing vendored.
   workflow, a versioned package, or date tags for apps that deploy on every
   merge), drafts the CHANGELOG entry and release notes from merged PRs, picks the
   version, and after Matt's go opens the changelog PR, then tags and publishes the
-  GitHub release.
+  GitHub release. `--draft` is the unattended version for CI (`claude-release.yml`
+  in `repo-setup`): it opens the changelog PR and a draft release, publishes
+  nothing, and stops when nothing user-visible merged.
 - `/maintenance:docs-check`: checks README, CLAUDE.md, `docs/` (including ADRs and
   the load-bearing decisions), `.env.example`, the changelog and the privacy page
   against the code, privacy claims first, and proposes corrected text. With
@@ -25,4 +27,5 @@ Keeping a project healthy between features. Matt's own; nothing vendored.
 
 Pull requests get the per-PR version of the docs check from `pr-review`, which
 also suggests an ADR when a PR makes or reverses a load-bearing decision; the
-CHANGELOG and ADR templates live in `repo-setup`.
+CHANGELOG and ADR templates and the `changelog.yml` / `claude-release.yml`
+workflows live in `repo-setup`.

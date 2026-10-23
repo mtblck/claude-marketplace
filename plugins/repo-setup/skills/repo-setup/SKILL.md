@@ -61,9 +61,17 @@ first commit, if the repo is empty).
    their skills from the marketplace, so a PR can't change its own review and
    there is no per-repo copy to keep in step. Skip `claude-dependabot.yml` only
    if the repo has no dependencies at all.
-8. **`CHANGELOG.md`** from `templates/CHANGELOG.md` for anything with users:
-   PRs add user-visible changes under Unreleased, and the `release` skill
-   (`maintenance` plugin) turns them into a release.
+8. **`CHANGELOG.md`** from `templates/CHANGELOG.md` for anything with users,
+   with two workflows that keep it moving without anyone remembering:
+   `changelog.yml` (no Claude) adds a line under Unreleased for each merged PR,
+   from its title and labels; `claude-release.yml` runs the `release` skill
+   (`maintenance` plugin) in draft mode every Monday and on demand, opening a
+   changelog PR and a *draft* GitHub release. Matt merges and publishes; nothing
+   is tagged unattended. Quiet weeks stop before Claude runs. Drop the schedule
+   (keep the manual trigger) for repos nobody else uses, and skip both for a
+   repo that releases with Changesets or its own release workflow.
+   If a ruleset requires PRs on `main`, `changelog.yml` can't push; the release
+   draft then fills Unreleased from the merged PRs instead.
 9. **`REVIEW.md`** (optional) from `templates/REVIEW.md` when the repo has review
    focus worth stating: what matters most here, what to stop flagging.
 10. **`LICENSE`**: MIT unless Matt says otherwise.
