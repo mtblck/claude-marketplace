@@ -5,7 +5,7 @@
     "url": "https://github.com/mtblck"
   },
   "metadata": {
-    "description": "Matt's shared Claude Code skills: PR, security, accessibility and Dependabot review, repo setup, side-project workflow, plus curated development and design skills from upstream authors."
+    "description": "Matt's shared Claude Code skills: PR, security, accessibility and Dependabot review, repo setup and maintenance, side-project workflow, plus curated development and design skills from upstream authors."
   },
   "plugins": [
     {
@@ -23,8 +23,14 @@
     {
       "name": "repo-setup",
       "source": "./plugins/repo-setup",
-      "description": "Baseline files and workflows for every new or existing repo.",
+      "description": "Baseline files, settings and workflows for every new or existing repo: CI, Dependabot, changelog, Claude reviews, security settings.",
       "category": "development"
+    },
+    {
+      "name": "maintenance",
+      "source": "./plugins/maintenance",
+      "description": "release (changelog and release notes from merged PRs, tag and GitHub release) and docs-check (README, docs and privacy page against the code).",
+      "category": "productivity"
     },
     {
       "name": "side-projects",

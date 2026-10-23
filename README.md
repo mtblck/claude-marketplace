@@ -11,7 +11,8 @@ plugins are installed as `<plugin>@mtblck`.
 | --- | --- | --- |
 | `pr-review` | `review`: four-angle PR review (five with accessibility when UI changes), every finding verified, graded 🔴/🟡/🔵, optional inline comments; `security` and `accessibility` (WCAG 2.2 AA) audits | Matt (from `mtblck/boards`) |
 | `dependency-review` | `dependabot`: Dependabot PR review: real diff, advisory reachability, supply-chain vetting, one verdict comment | Matt |
-| `repo-setup` | `repo-setup`: the baseline every repo gets, with workflow and settings templates | Matt |
+| `repo-setup` | `repo-setup`: the baseline every repo gets: CI, Dependabot, changelog, Claude workflows, security settings | Matt |
+| `maintenance` | `release`: changelog and GitHub release from merged PRs; `docs-check`: README, docs and privacy page against the code | Matt |
 | `side-projects` | `new-project`, `portfolio-tool`, `project-tickets` | Matt's claude.ai skills |
 | `web-design-guidelines` | `web-design-guidelines`: UI and accessibility review | vendored from [vercel-labs](https://github.com/vercel-labs/web-interface-guidelines), MIT |
 | `frontend-design` | `frontend-design`: distinctive frontend design direction | upstream [anthropics/claude-plugins-official](https://github.com/anthropics/claude-plugins-official), Apache-2.0 |
@@ -42,6 +43,7 @@ Once, for every project:
 /plugin marketplace add mtblck/claude-marketplace
 /plugin install pr-review@mtblck
 /plugin install dependency-review@mtblck
+/plugin install maintenance@mtblck
 /plugin install side-projects@mtblck
 /plugin install superpowers@mtblck
 ```
@@ -64,6 +66,7 @@ template is [`plugins/repo-setup/skills/repo-setup/templates/settings.json`](plu
   "enabledPlugins": {
     "pr-review@mtblck": true,
     "dependency-review@mtblck": true,
+    "maintenance@mtblck": true,
     "repo-setup@mtblck": true,
     "side-projects@mtblck": true,
     "superpowers@mtblck": true

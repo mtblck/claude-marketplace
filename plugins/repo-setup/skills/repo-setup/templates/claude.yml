@@ -42,5 +42,6 @@ jobs:
           plugins: |
             pr-review@mtblck
             dependency-review@mtblck
+            maintenance@mtblck
             repo-setup@mtblck
             superpowers@mtblck

@@ -87,7 +87,11 @@ result), a suggested fix, and the severity from step 5.
    what the PR touches (e.g. RLS for a migration, the CI section for a workflow change).
 3. **Tests and docs.** New or changed behaviour with no test that would fail without it;
    tests that can't fail or assert the wrong thing; tests deleted, skipped or weakened;
-   README, docs or comments that the change makes wrong.
+   README, docs or comments that the change makes wrong. Read the docs that describe
+   what the PR touches (README, `docs/`, CLAUDE.md commands, `.env.example`, the
+   privacy page) and flag each claim it makes false; a new network call carrying user
+   content that the privacy page doesn't mention is 🔴. If `CHANGELOG.md` has an
+   **Unreleased** section, a user-visible change with no line there is 🔵.
 4. **Repo rules and design.** Violations of the CLAUDE.md / REVIEW.md rules (quote the
    rule); reimplementing a helper the repo already has (name it); logic in the wrong
    layer; dead code; names that mislead; complexity the change doesn't need; changes

@@ -1,7 +1,8 @@
 # repo-setup
 
 The baseline every one of Matt's repos gets: `CLAUDE.md`, README, `docs/`,
-`.claude/settings.json` enabling this marketplace, CI, the Claude review,
+`.claude/settings.json` enabling this marketplace, CI, Dependabot config with a
+cooldown, a changelog, GitHub security settings, the Claude review,
 Dependabot review and `@claude` workflows (which load `pr-review` and
 `dependency-review` from this marketplace), license, and
 the extra community files and prompt-injection guards for public repos.
