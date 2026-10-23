@@ -1,0 +1,8 @@
+{
+  "name": "cover-art",
+  "version": "1.0.0",
+  "description": "Minimalist, representational 16:10 cover illustrations for websites, apps, extensions and skills, made from the project's own repo, purpose and colours. For portfolio cards, case-study heroes and project thumbnails.",
+  "author": { "name": "mtblck" },
+  "license": "MIT",
+  "keywords": ["design", "illustration", "svg", "portfolio", "thumbnail", "cover"]
+}

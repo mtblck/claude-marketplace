@@ -39,6 +39,12 @@
       "category": "productivity"
     },
     {
+      "name": "cover-art",
+      "source": "./plugins/cover-art",
+      "description": "Minimalist, representational 16:10 cover illustrations for websites, apps, extensions and skills, made from the project's repo, purpose and colours.",
+      "category": "design"
+    },
+    {
       "name": "web-design-guidelines",
       "source": "./plugins/web-design-guidelines",
       "description": "UI and accessibility review against Vercel's Web Interface Guidelines. Vendored (MIT).",
