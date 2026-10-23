@@ -1,0 +1,64 @@
+name: CI
+
+# The baseline every repo runs on each PR and on main: install from the
+# lockfile, then lint, test and build. Required checks and the Dependabot
+# review both read this, so keep the job names stable.
+# Multi-app repos: copy the check job per app with `defaults.run.working-directory`.
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Lint, test and build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      # No dependency gets to run code at install. If one genuinely needs its
+      # install script, drop the flag and say which one and why here.
+      - run: npm ci --ignore-scripts
+      - run: npm run lint --if-present
+      - run: npm test --if-present
+      - run: npm run build --if-present
+
+  # Real-browser checks, for repos with an `npm run verify` (Playwright, ideally
+  # with axe). Delete this job if there is none yet.
+  e2e:
+    name: Browser verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npx playwright install --with-deps chromium
+      - run: npm run build
+      - run: npm run verify
+        env:
+          SHOTS: shots
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: verify-screenshots
+          path: shots
+          if-no-files-found: ignore

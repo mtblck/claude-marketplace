@@ -1,0 +1,14 @@
+{
+  "name": "maintenance",
+  "version": "1.0.0",
+  "description": "Keeping a project healthy between features: cut a release with a changelog drafted from merged PRs, and check that README, docs and the privacy page still match the code.",
+  "author": {
+    "name": "mtblck"
+  },
+  "license": "MIT",
+  "keywords": [
+    "release",
+    "changelog",
+    "documentation"
+  ]
+}

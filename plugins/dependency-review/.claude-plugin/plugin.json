@@ -1,0 +1,15 @@
+{
+  "name": "dependency-review",
+  "version": "1.0.0",
+  "description": "Reviews Dependabot PRs: what the diff really changes, whether each advisory is reachable in this repo, and supply-chain vetting of every version it introduces (npm, Cargo, PyPI, GitHub Actions). Posts one comment with a verdict; never merges or approves.",
+  "author": {
+    "name": "mtblck"
+  },
+  "license": "MIT",
+  "keywords": [
+    "dependabot",
+    "security",
+    "supply-chain",
+    "github-actions"
+  ]
+}
