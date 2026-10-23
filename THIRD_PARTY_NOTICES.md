@@ -27,6 +27,13 @@ open source).
 
 ## Ideas adapted
 
+- `plugins/dependency-review`: the shape of the review (work out what the diff really
+  changes, classify each advisory's reachability with evidence, vet every introduced
+  version's supply chain, fixed verdict rules) follows a Dependabot security-update
+  review prompt that a colleague of Matt's wrote for their employer's services and
+  Matt shared as an example. Rewritten and generalised here; the employer-specific
+  repos, registries and commands were dropped.
+
 - `plugins/pr-review`: the rule that a spec's silence on a behaviour is not
   permission, judged by a reasonable user's expectation, is adapted from
   obra/superpowers `skills/requesting-code-review/code-reviewer.md` (MIT,

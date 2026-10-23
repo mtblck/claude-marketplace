@@ -5,14 +5,20 @@
     "url": "https://github.com/mtblck"
   },
   "metadata": {
-    "description": "Matt's shared Claude Code skills: PR review, repo setup, side-project workflow, plus curated development and design skills from upstream authors."
+    "description": "Matt's shared Claude Code skills: PR, security, accessibility and Dependabot review, repo setup, side-project workflow, plus curated development and design skills from upstream authors."
   },
   "plugins": [
     {
       "name": "pr-review",
       "source": "./plugins/pr-review",
-      "description": "Verified, graded PR review with optional inline comments. Used by the Claude review GitHub Action.",
+      "description": "Verified, graded PR review (with an accessibility angle for UI changes) plus standalone security and accessibility audits. Used by the Claude review GitHub Action.",
       "category": "development"
+    },
+    {
+      "name": "dependency-review",
+      "source": "./plugins/dependency-review",
+      "description": "Reviews Dependabot PRs: real diff, advisory reachability with evidence, supply-chain vetting of every new version. Used by the Dependabot review GitHub Action.",
+      "category": "security"
     },
     {
       "name": "repo-setup",

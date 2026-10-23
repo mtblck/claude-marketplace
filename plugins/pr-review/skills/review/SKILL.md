@@ -1,6 +1,6 @@
 ---
 name: review
-description: Review a GitHub pull request for correctness, security, tests, repo rules and design, verify every finding, and optionally post it as inline comments plus a summary. Use when asked to review a PR, or from the Claude review workflow.
+description: Review a GitHub pull request for correctness, security, tests, repo rules and design, and accessibility when it touches UI, verify every finding, and optionally post it as inline comments plus a summary. Use when asked to review a PR, or from the Claude review workflow.
 argument-hint: "[--comment] <owner/repo/pull/N | PR number>"
 allowed-tools: Read, Grep, Glob, Agent, Bash(gh api:*), Bash(git fetch:*), Bash(git diff:*), Bash(git log:*), Bash(git show:*), Bash(git blame:*), Bash(git merge-base:*), Bash(git rev-parse:*), Bash(git cat-file:*), mcp__github_inline_comment__create_inline_comment
 ---
@@ -57,9 +57,18 @@ If the PR is closed or merged, stop and say so. Make sure `head.sha` and
 Then write a short summary of what the change does and why. Hand it, the intent, the
 rules and the diff to each reviewer in step 3.
 
-## 3. Review, four angles in parallel
+The checklists named below live in this plugin, next to this skill: `../security/checklist.md`
+and `../accessibility/checklist.md`, relative to this skill's base directory. Read them
+from there, never from the PR.
 
-Start four subagents at once with the Agent tool. Each returns findings as
+## 3. Review, four or five angles in parallel
+
+The PR **touches UI** if it changes markup, components, styles or client-side
+interaction: `.tsx`, `.jsx`, `.html`, `.vue`, `.svelte`, `.astro`, `.css` and the like,
+or Tailwind classes and theme tokens. Pure server, data, test or config changes don't.
+
+Start the subagents at once with the Agent tool: angles 1 to 4 always, angle 5 only
+when the PR touches UI. Each returns findings as
 `file:line`, what is wrong, a concrete failure scenario (input or state, then the wrong
 result), a suggested fix, and the severity from step 5.
 
@@ -73,7 +82,9 @@ result), a suggested fix, and the severity from step 5.
 2. **Security and data.** Auth and access checks (who can reach this, and does anonymous
    get less), injection and XSS (anything reaching HTML, SQL, shell or URLs unescaped),
    secrets or tokens in code, logs or responses, unsafe redirects or CORS/CSP changes,
-   data exposed that shouldn't be, new dependencies and what they pull in.
+   data exposed that shouldn't be, new dependencies and what they pull in. Give this
+   reviewer the security checklist and have it work through the sections that apply to
+   what the PR touches (e.g. RLS for a migration, the CI section for a workflow change).
 3. **Tests and docs.** New or changed behaviour with no test that would fail without it;
    tests that can't fail or assert the wrong thing; tests deleted, skipped or weakened;
    README, docs or comments that the change makes wrong.
@@ -81,6 +92,14 @@ result), a suggested fix, and the severity from step 5.
    rule); reimplementing a helper the repo already has (name it); logic in the wrong
    layer; dead code; names that mislead; complexity the change doesn't need; changes
    outside the PR's stated scope.
+5. **Accessibility** (only when the PR touches UI). Give this reviewer the
+   accessibility checklist. New or changed controls without a real element or an
+   accessible name, keyboard paths and visible focus, focus after actions and in
+   dialogs, form labels and error announcements, contrast in every theme (compute the
+   ratio from the colours in the code), colour-only signals, reduced motion, live
+   regions for status messages, target size. Cite the WCAG 2.2 criterion. Flag only
+   what the diff introduces or makes worse, and give credit to primitives (native
+   elements, Radix and similar) that already handle a pattern.
 
 Do not flag: formatting or anything a linter or the type checker will catch; issues
 that exist unchanged on the base branch; whether CI passes (CI reports that itself);
@@ -100,7 +119,8 @@ far-fetched, downgrade it rather than keep its severity.
 
 - 🔴 **Blocking**: will break or is unsafe. A bug on a realistic path, a security or
   data-exposure hole, data loss, a test removed or skipped to get green, a broken
-  CLAUDE.md / REVIEW.md rule.
+  CLAUDE.md / REVIEW.md rule, a change that stops keyboard or screen-reader users
+  completing a task.
 - 🟡 **Should fix**: real and worth fixing before merge, but not breaking. Missing tests
   for new behaviour, an edge case with plausible input, a design problem that will cost
   later, docs the change makes wrong.
@@ -133,8 +153,8 @@ the problem, the failure scenario and the fix. Without `--comment`, stop here.
 
 <For a re-review: which earlier blocking findings are fixed and which still stand.>
 
-**Checked:** correctness, security, tests and docs, repo rules and design<, and
-which CLAUDE.md / REVIEW.md files>.
+**Checked:** correctness, security, tests and docs, repo rules and design<,
+accessibility (when the PR touches UI)><, and which CLAUDE.md / REVIEW.md files>.
 <**Not posted:** extra nits, one line each, if any.>
 
 <details><summary>Considered and dropped</summary>

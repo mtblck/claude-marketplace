@@ -1,6 +1,6 @@
 ---
 name: repo-setup
-description: Use when setting up a new or empty repo for Matt, or bringing an existing repo up to his baseline - CLAUDE.md, README, docs/, CI, Claude review and @claude workflows, the shared plugin marketplace, license and public-repo guards.
+description: Use when setting up a new or empty repo for Matt, or bringing an existing repo up to his baseline - CLAUDE.md, README, docs/, CI, Claude review, Dependabot review and @claude workflows, the shared plugin marketplace, license and public-repo guards.
 ---
 
 # Repo setup baseline
@@ -42,9 +42,12 @@ first commit, if the repo is empty).
    committed lockfile, `npm test` and `npm run build`. Drop the `e2e` job if
    there's no `npm run verify`. Non-JS repos get the equivalent test + build job.
 6. **Claude workflows** from `templates/`: `claude-review.yml` (runs the shared
-   `pr-review` skill when a PR is opened as non-draft or marked ready) and
-   `claude.yml` (`@claude` on demand). Both load the skill from the marketplace,
-   so a PR can't change its own review and there is no per-repo copy to keep in step.
+   `pr-review` skill when a PR is opened as non-draft or marked ready),
+   `claude-dependabot.yml` (runs `dependency-review` on every Dependabot PR and
+   posts one verdict comment) and `claude.yml` (`@claude` on demand). All load
+   their skills from the marketplace, so a PR can't change its own review and
+   there is no per-repo copy to keep in step. Skip `claude-dependabot.yml` only
+   if the repo has no dependencies at all.
 7. **`REVIEW.md`** (optional) from `templates/REVIEW.md` when the repo has review
    focus worth stating: what matters most here, what to stop flagging.
 8. **`LICENSE`**: MIT unless Matt says otherwise.
@@ -69,5 +72,7 @@ a prompt-injection path with write access.
 
 A checklist of what's waiting on Matt:
 - [ ] Claude GitHub App installed on the repo (https://github.com/apps/claude)
-- [ ] `CLAUDE_CODE_OAUTH_TOKEN` repo secret (`claude setup-token` locally)
+- [ ] `CLAUDE_CODE_OAUTH_TOKEN` repo secret (`claude setup-token` locally), under
+      both Actions and Dependabot secrets (Dependabot runs see only the latter)
+- [ ] Dependabot alerts and security updates on (Settings → Code security)
 - [ ] Optional: required checks in Settings → Rules (private repos need GitHub Pro)
