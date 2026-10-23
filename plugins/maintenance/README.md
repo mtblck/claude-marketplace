@@ -24,8 +24,11 @@ Keeping a project healthy between features. Matt's own; nothing vendored.
   scheduled task (Mondays 8:35 New York time) runs it and posts the summary in
   Matt's Shared Skills project; it never posts findings to GitHub, since some
   repos are private and this one is public.
+- `/maintenance:test-gaps`: ranks the untested code that matters most (auth, data
+  writes, payments, parsing) using the coverage report, then on Matt's go writes
+  tests for the top few in one PR, setting up a first test suite if there is none.
 
 Pull requests get the per-PR version of the docs check from `pr-review`, which
-also suggests an ADR when a PR makes or reverses a load-bearing decision; the
-CHANGELOG and ADR templates and the `changelog.yml` / `claude-release.yml`
-workflows live in `repo-setup`.
+also suggests an ADR when a PR makes or reverses a load-bearing decision, and
+changed-line coverage; the CHANGELOG and ADR templates, the `changelog.yml` /
+`claude-release.yml` workflows and the coverage script live in `repo-setup`.
