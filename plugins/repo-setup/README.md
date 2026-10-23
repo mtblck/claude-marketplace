@@ -3,7 +3,8 @@
 The baseline every one of Matt's repos gets: `CLAUDE.md`, README, `docs/`,
 `.claude/settings.json` enabling this marketplace, CI with a coverage report,
 Dependabot config with a cooldown, a changelog kept current by a workflow plus a
-weekly release draft, GitHub security settings, the Claude review, Dependabot
+weekly release draft, GitHub security settings, bundle-size and Lighthouse
+measurements on PRs for web apps, the Claude review, Dependabot
 review, monthly docs drift check and `@claude` workflows (which load
 `pr-review`, `dependency-review` and `maintenance` from this marketplace), an ADR
 template in `docs/adr/`, license, and the extra community files and

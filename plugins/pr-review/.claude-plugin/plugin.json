@@ -1,7 +1,7 @@
 {
   "name": "pr-review",
-  "version": "1.4.0",
-  "description": "Matt's pull request review: parallel angles (correctness, security, tests and docs, repo rules and design, plus accessibility when the PR touches UI), every finding verified, untested new code flagged from CI coverage, optional inline comments plus a summary. Also standalone security and accessibility (WCAG 2.2 AA) audits. Runs locally or from the Claude GitHub Action.",
+  "version": "1.5.0",
+  "description": "Matt's pull request review: parallel angles (correctness, security, tests and docs, repo rules and design, plus accessibility when the PR touches UI and performance when it touches client code, dependencies or build config), every finding verified, untested new code flagged from CI coverage, optional inline comments plus a summary. Also standalone security, accessibility (WCAG 2.2 AA) and performance audits. Runs locally or from the Claude GitHub Action.",
   "author": {
     "name": "mtblck"
   },
@@ -11,6 +11,7 @@
     "pull-request",
     "github-actions",
     "security",
-    "accessibility"
+    "accessibility",
+    "performance"
   ]
 }
