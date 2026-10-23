@@ -1,6 +1,6 @@
 {
   "name": "repo-setup",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "description": "Baseline for every one of Matt's repos: CLAUDE.md, README, docs/, CI, Claude review, Dependabot review and @claude workflows wired to this marketplace, license and public-repo guards.",
   "author": {
     "name": "mtblck"

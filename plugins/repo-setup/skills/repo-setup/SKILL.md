@@ -69,8 +69,10 @@ first commit, if the repo is empty).
 
 ## GitHub security settings
 
-Repo settings, not files: apply them with `gh api` (or ask Matt to click them in
-Settings → Advanced Security), and say which were applied.
+Repo settings, not files: apply them with `gh api` where it works, and say which
+were applied. Claude's cloud sandbox refuses these endpoints (HTTP 403 from its
+proxy), so there hand Matt the link instead:
+`https://github.com/<o>/<r>/settings/security_analysis`, with which toggles to turn on.
 
 - Dependabot alerts and security updates:
   `gh api -X PUT repos/<o>/<r>/vulnerability-alerts` and
