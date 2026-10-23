@@ -29,7 +29,7 @@
     {
       "name": "maintenance",
       "source": "./plugins/maintenance",
-      "description": "release (changelog and release notes from merged PRs, tag and GitHub release), docs-check (README, docs, ADRs and privacy page against the code, on request or as a monthly drift issue) and adr (decision records).",
+      "description": "release (changelog and release notes from merged PRs, tag and GitHub release), docs-check (README, docs, ADRs and privacy page against the code, on request or as a monthly drift issue), adr (decision records) and health-check (weekly read-only summary of what needs attention across the repos).",
       "category": "productivity"
     },
     {

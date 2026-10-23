@@ -1,7 +1,7 @@
 {
   "name": "maintenance",
-  "version": "1.1.0",
-  "description": "Keeping a project healthy between features: cut a release with a changelog drafted from merged PRs, check that README, docs, ADRs and the privacy page still match the code (on request or as a monthly drift issue), and record decisions as ADRs.",
+  "version": "1.2.0",
+  "description": "Keeping a project healthy between features: cut a release with a changelog drafted from merged PRs, check that README, docs, ADRs and the privacy page still match the code (on request or as a monthly drift issue), record decisions as ADRs, and run a weekly health check across the repos.",
   "author": {
     "name": "mtblck"
   },
@@ -9,6 +9,7 @@
   "keywords": [
     "release",
     "changelog",
-    "documentation"
+    "documentation",
+    "health-check"
   ]
 }

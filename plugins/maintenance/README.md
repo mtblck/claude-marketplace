@@ -15,6 +15,13 @@ Keeping a project healthy between features. Matt's own; nothing vendored.
 - `/maintenance:adr`: drafts a decision record in `docs/adr/` from a PR, an issue
   or the conversation, numbered after the existing ones, and marks any ADR it
   reverses as superseded.
+- `/maintenance:health-check`: read-only sweep of Matt's repos (default: the
+  rollout set) for Dependabot alerts and PRs, red CI on the default branch,
+  Claude reviews skipped for a missing secret, stale or unreviewed PRs and drift
+  from the `repo-setup` templates, ranked worst first with links. A weekly
+  scheduled task (Mondays 8:35 New York time) runs it and posts the summary in
+  Matt's Shared Skills project; it never posts findings to GitHub, since some
+  repos are private and this one is public.
 
 Pull requests get the per-PR version of the docs check from `pr-review`, which
 also suggests an ADR when a PR makes or reverses a load-bearing decision; the
