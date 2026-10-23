@@ -11,8 +11,8 @@ plugins are installed as `<plugin>@mtblck`.
 | --- | --- | --- |
 | `pr-review` | `review`: four-angle PR review (five with accessibility when UI changes), every finding verified, graded 🔴/🟡/🔵, optional inline comments; `security` and `accessibility` (WCAG 2.2 AA) audits | Matt (from `mtblck/boards`) |
 | `dependency-review` | `dependabot`: Dependabot PR review: real diff, advisory reachability, supply-chain vetting, one verdict comment | Matt |
-| `repo-setup` | `repo-setup`: the baseline every repo gets: CI, Dependabot, changelog, Claude workflows, security settings | Matt |
-| `maintenance` | `release`: changelog and GitHub release from merged PRs; `docs-check`: README, docs and privacy page against the code | Matt |
+| `repo-setup` | `repo-setup`: the baseline every repo gets: CI, Dependabot, changelog, ADR template, Claude workflows (review, Dependabot review, docs drift check, `@claude`), security settings | Matt |
+| `maintenance` | `release`: changelog and GitHub release from merged PRs; `docs-check`: README, docs, ADRs and privacy page against the code (also as a monthly drift issue); `adr`: decision records | Matt |
 | `side-projects` | `new-project`, `portfolio-tool`, `project-tickets` | Matt's claude.ai skills |
 | `web-design-guidelines` | `web-design-guidelines`: UI and accessibility review | vendored from [vercel-labs](https://github.com/vercel-labs/web-interface-guidelines), MIT |
 | `frontend-design` | `frontend-design`: distinctive frontend design direction | upstream [anthropics/claude-plugins-official](https://github.com/anthropics/claude-plugins-official), Apache-2.0 |
@@ -110,6 +110,10 @@ Full workflows to copy into a repo's `.github/workflows/`:
   reviews every Dependabot PR with `dependency-review` and posts (then updates) one
   verdict comment. Never merges or installs anything. Needs the token as a
   Dependabot secret too.
+- [`claude-docs-check.yml`](plugins/repo-setup/skills/repo-setup/templates/claude-docs-check.yml):
+  once a month (or by hand), runs `maintenance:docs-check` on the default branch
+  and keeps one open "Docs drift" issue listing what's out of date, closing it when
+  the docs are clean. Report-only: it never edits docs or opens a PR.
 - [`claude.yml`](plugins/repo-setup/skills/repo-setup/templates/claude.yml):
   `@claude` on demand, only from the owner, members and collaborators.
 

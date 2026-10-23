@@ -50,6 +50,9 @@ If the PR is closed or merged, stop and say so. Make sure `head.sha` and
   directory the PR touches or its parents, and `REVIEW.md` if it exists (repo-specific
   review focus and things to ignore). If the PR changes one of these files, review that
   change like any other.
+- Recorded decisions, also from the base branch: the "Load-bearing decisions" in
+  `CLAUDE.md`, and the ADRs in `docs/adr/` (`git show origin/<base>:docs/adr/` lists
+  them; read the ones whose status is Accepted and whose subject the PR touches).
 - The code: for each changed file, read the whole file at `head.sha` (the working tree
   when it is checked out, else `git show <head.sha>:<path>`), not only the hunk.
   When a function's signature or behaviour changes, Grep for its callers and read them.
@@ -90,12 +93,21 @@ result), a suggested fix, and the severity from step 5.
    README, docs or comments that the change makes wrong. Read the docs that describe
    what the PR touches (README, `docs/`, CLAUDE.md commands, `.env.example`, the
    privacy page) and flag each claim it makes false; a new network call carrying user
-   content that the privacy page doesn't mention is 🔴. If `CHANGELOG.md` has an
-   **Unreleased** section, a user-visible change with no line there is 🔵.
+   content that the privacy page doesn't mention is 🔴. New things must be documented
+   where people look for them: an env var the code now reads that is missing from
+   `.env.example` (and the README's setup, if it lists them) is 🟡; a new
+   `package.json` script, CLI command or public route that the README doesn't mention
+   is 🔵. If `CHANGELOG.md` has an **Unreleased** section, a user-visible change with
+   no line there is 🔵.
 4. **Repo rules and design.** Violations of the CLAUDE.md / REVIEW.md rules (quote the
    rule); reimplementing a helper the repo already has (name it); logic in the wrong
    layer; dead code; names that mislead; complexity the change doesn't need; changes
-   outside the PR's stated scope.
+   outside the PR's stated scope. Recorded decisions: a PR that reverses an Accepted
+   ADR or a load-bearing decision without a new ADR superseding it is 🟡 (quote the
+   decision; the fix is the code or a superseding ADR in this PR, via
+   `/maintenance:adr`). A PR that makes a new decision of that weight (architecture, a
+   dependency or service choice, data storage, auth, hosting) with no ADR is a 🔵
+   suggestion to add one. Don't ask for ADRs on routine changes.
 5. **Accessibility** (only when the PR touches UI). Give this reviewer the
    accessibility checklist. New or changed controls without a real element or an
    accessible name, keyboard paths and visible focus, focus after actions and in

@@ -15,6 +15,10 @@ mtblck/claude-marketplace).
 
 - <The decision, and the reason it must not quietly change.>
 
+The full reasoning behind these, and every other decision worth keeping, is in
+`docs/adr/` (one short record per decision; copy `0000-template.md`). Reversing
+one means a new ADR that supersedes it, in the same PR.
+
 ## What bites
 
 - <The thing that broke once and will again.>
