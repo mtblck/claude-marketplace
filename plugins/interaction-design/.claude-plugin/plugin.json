@@ -1,0 +1,10 @@
+{
+  "name": "interaction-design",
+  "version": "1.0.0",
+  "description": "Microinteractions, motion, transitions, loading states, gestures and scroll animations, with timing, easing and prefers-reduced-motion guidance (CSS and Motion for React).",
+  "author": { "name": "Seth Hobson", "url": "https://github.com/wshobson" },
+  "homepage": "https://github.com/wshobson/agents/tree/main/plugins/ui-design/skills/interaction-design",
+  "repository": "https://github.com/wshobson/agents",
+  "license": "MIT",
+  "keywords": ["design", "ui", "motion", "animation", "microinteractions"]
+}
