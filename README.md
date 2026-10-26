@@ -9,7 +9,7 @@ plugins are installed as `<plugin>@mtblck`.
 
 | Plugin | Skills | Source |
 | --- | --- | --- |
-| `pr-review` | `review`: four-angle PR review (plus accessibility when UI changes and performance when client code, dependencies or build config change), every finding verified, graded 🔴/🟡/🔵, untested new code from CI coverage, optional inline comments; `security`, `accessibility` (WCAG 2.2 AA) and `performance` audits | Matt (from `mtblck/boards`) |
+| `pr-review` | `review`: four-angle PR review (plus accessibility when UI changes and performance when client code, dependencies or build config change), every finding verified, graded 🔴/🟡/🔵, untested new code from CI coverage, optional inline comments, run by a hook before a session marks its own PR ready; `security`, `accessibility` (WCAG 2.2 AA) and `performance` audits | Matt (from `mtblck/boards`) |
 | `dependency-review` | `dependabot`: Dependabot PR review: real diff, advisory reachability, supply-chain vetting, one verdict comment | Matt |
 | `repo-setup` | `repo-setup`: the baseline every repo gets: CI with coverage report, Dependabot, changelog, ADR template, bundle-size and Lighthouse checks, Claude workflows (review, Dependabot review, docs drift check, `@claude`), security settings | Matt |
 | `maintenance` | `release`: changelog and GitHub release from merged PRs; `docs-check`: README, docs, ADRs and privacy page against the code (also as a monthly drift issue); `adr`: decision records; `health-check`: weekly summary of alerts, red CI, skipped reviews, stale PRs and baseline drift across the repos; `test-gaps`: riskiest untested code, then tests for it | Matt |
