@@ -21,13 +21,13 @@ Paths are relative to this skill's folder.
 |---|---|
 | `scripts/kit.mjs` | The drawing kit: `scene()`, the shape helpers `rr`, `circ`, `poly`, `path`, and the style pieces (`shape`, `line`, `backdrop`, `accents`, `dashes`, `waterline`, `group`). Import it from a short script; never hand-type the SVG. |
 | `scripts/render.mjs` | `node scripts/render.mjs art.svg [--out DIR]` writes `art.png` (2×) and `art-thumb.png` (240 px wide). Uses Playwright only if a Chromium is already installed; exit 2 means no browser here, so open the SVG instead. |
-| `examples/*.mjs` + `.svg` | Four finished pieces and the scripts that drew them: `inbox` (empty inbox), `search` (no results), `offline` (connection lost), `launch` (all set). Copy the closest one to start. |
+| `examples/*.mjs` + `.svg` | Four finished pieces and the scripts that drew them: `inbox` (empty inbox), `search` (no results), `offline` (connection lost), `launch` (all set). Read the closest one before drawing. |
 
 ## Workflow
 
 1. **Name the moment.** One sentence: *what object, in what state, means this screen.* "Nothing here yet" is an empty container; "something broke" is a thing pulled apart, tipped over or sinking; "done" is a thing launched, sealed or ticked. Pick the everyday object over the abstract one.
-2. **Palette.** The default ink is steel blue `#4a82b0`. For a product with its own brand colour, pass `scene({ ink: '#hex' })` and the washes are derived from it. Use a mid-dark, slightly muted ink (contrast ≥ 3:1 on white); a neon or very light ink won't hold the line.
-3. **Draw** an 800 × 600 script from the closest example: backdrop circle first, then back-to-front parts, then accents, then the ground line and dashes. Shapes are `s.shape(geom, { fill, shade, glint })`; details inside them are `s.line(d, { weight: 0.75 })`.
+2. **Palette.** The default ink is steel blue `#4a82b0`. For a product with its own brand colour, pass `scene({ ink: '#4a82b0' })` (a 3- or 6-digit hex) and the washes are derived from it. Use a mid-dark, slightly muted ink (contrast ≥ 3:1 on white); a neon or very light ink won't hold the line.
+3. **Draw** an 800 × 600 script modelled on the closest example. Write it in the project (or the scratchpad), import the kit by its absolute path in this skill's folder (`import { scene, rr } from '/abs/path/to/scripts/kit.mjs'`) and write the SVG to a path in the project, not next to the kit. Order: backdrop circle first, then back-to-front parts, then accents, then the ground line and dashes. Shapes are `s.shape(geom, { fill, shade, glint })`; details inside them are `s.line(d, { weight: 0.75 })`.
 4. **Render and look.** `node scripts/render.mjs art.svg`, read both PNGs, fix what fails the checklist below, look once more.
 5. **Deliver** the SVG with alt text (one sentence saying what it shows, the same as its `<title>`), placed where the site keeps its images. Give `alt=""` instead when the heading next to it already says everything. For several screens in one product, draw them as a set: same ink, same canvas, same ground line height.
 

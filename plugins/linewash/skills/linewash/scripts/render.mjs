@@ -18,9 +18,10 @@ import { execSync } from 'node:child_process'
 
 const args = process.argv.slice(2)
 const outIdx = args.indexOf('--out')
-const outDir = outIdx >= 0 ? resolve(args[outIdx + 1]) : null
+const outArg = outIdx >= 0 ? args[outIdx + 1] : null
+const outDir = outArg && !outArg.startsWith('--') ? resolve(outArg) : null
 const files = args.filter((a, i) => a.endsWith('.svg') && !(outIdx >= 0 && i === outIdx + 1))
-if (!files.length) {
+if (!files.length || (outIdx >= 0 && !outDir)) {
   console.error('usage: node render.mjs art.svg [more.svg …] [--out DIR]')
   process.exit(1)
 }

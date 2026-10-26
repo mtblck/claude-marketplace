@@ -1,6 +1,6 @@
 // Offline: a plug pulled out of its socket, two short spark lines in the gap.
 import { writeFileSync } from 'node:fs'
-import { scene, rr, poly } from '../scripts/kit.mjs'
+import { scene, rr } from '../scripts/kit.mjs'
 
 const s = scene({ w: 800, h: 600 })
 s.backdrop(400, 230, 120)

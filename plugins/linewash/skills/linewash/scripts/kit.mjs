@@ -24,13 +24,20 @@ export const DEFAULT_PALETTE = {
 const hex2 = n => Math.round(n).toString(16).padStart(2, '0')
 function mix(hex, t) {
   // t = share of the ink colour, rest white
-  const c = [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16))
+  const m = /^#?([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(hex)
+  if (!m) throw new Error(`linewash: ink must be a hex colour like #4a82b0, got ${hex}`)
+  const h = m[1].length === 3 ? [...m[1]].map(ch => ch + ch).join('') : m[1]
+  const c = [0, 2, 4].map(i => parseInt(h.slice(i, i + 2), 16))
   return '#' + c.map(v => hex2(v * t + 255 * (1 - t))).join('')
 }
 
-/** A palette from any ink colour: the tints are the ink mixed into white. */
+/**
+ * A palette from any ink colour: the tints are the ink mixed into white. The
+ * default ink keeps the hand-picked tints above (sampled from the reference,
+ * slightly cooler than a plain mix), so scene() and scene({ ink: '#4a82b0' }) match.
+ */
 export function palette(ink) {
-  if (!ink) return { ...DEFAULT_PALETTE }
+  if (!ink || ink.toLowerCase() === DEFAULT_PALETTE.ink) return { ...DEFAULT_PALETTE }
   return { ink, wash: mix(ink, 0.24), mist: mix(ink, 0.13), haze: mix(ink, 0.08), paper: '#ffffff' }
 }
 
@@ -111,15 +118,23 @@ export function scene({ w = 800, h = 600, ink, colors, weight } = {}) {
         const inner = []
         if (shade) {
           const { angle = 0, to = 'wash', at = 0.55, soft = 0.3 } = shade === true ? {} : shade
-          const a = (angle * Math.PI) / 180
-          const x1 = 0.5 - Math.cos(a) / 2, y1 = 0.5 - Math.sin(a) / 2, x2 = 0.5 + Math.cos(a) / 2, y2 = 0.5 + Math.sin(a) / 2
+          const a = (angle * Math.PI) / 180, cos = Math.cos(a), sin = Math.sin(a)
           const s0 = Math.max(0, at - soft / 2), s1 = Math.min(1, at + soft / 2)
-          defs.push(`<linearGradient id="${id}g" x1="${f(x1)}" y1="${f(y1)}" x2="${f(x2)}" y2="${f(y2)}"><stop offset="${f(s0)}" stop-color="${tone(fill)}"/><stop offset="${f(s1)}" stop-color="${tone(to)}"/></linearGradient>`)
+          // With a known box the gradient runs in user space, so `angle` is the true
+          // on-screen angle whatever the shape's proportions; otherwise fall back to its bbox.
+          const [bx, by, bw, bh] = box
+          let ends = `x1="${f(0.5 - cos / 2)}" y1="${f(0.5 - sin / 2)}" x2="${f(0.5 + cos / 2)}" y2="${f(0.5 + sin / 2)}"`
+          if (bw && bh) {
+            const cx = bx + bw / 2, cy = by + bh / 2, r = (bw * Math.abs(cos) + bh * Math.abs(sin)) / 2
+            ends = `gradientUnits="userSpaceOnUse" x1="${f(cx - cos * r)}" y1="${f(cy - sin * r)}" x2="${f(cx + cos * r)}" y2="${f(cy + sin * r)}"`
+          }
+          defs.push(`<linearGradient id="${id}g" ${ends}><stop offset="${f(s0)}" stop-color="${tone(fill)}"/><stop offset="${f(s1)}" stop-color="${tone(to)}"/></linearGradient>`)
           inner.push(`<path d="${d}" fill="url(#${id}g)"/>`)
         }
         if (glint) {
           const { angle = -55, at = 0.3, width = 0.1, count = 2, gap = 0.08, fill: gf = 'paper' } = glint === true ? {} : glint
           const [bx, by, bw, bh] = box
+          if (!bw || !bh) throw new Error('linewash: glint needs the shape\'s box; use rr/circ/poly or path(d, [x, y, w, h])')
           const cx = bx + bw / 2, cy = by + bh / 2, L = Math.hypot(bw, bh)
           for (let i = 0; i < count; i++) {
             const wi = L * width * (i ? 0.5 : 1)
