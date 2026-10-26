@@ -11,7 +11,7 @@
     {
       "name": "pr-review",
       "source": "./plugins/pr-review",
-      "description": "Verified, graded PR review (with accessibility and performance angles when they apply) plus standalone security, accessibility and performance audits. Used by the Claude review GitHub Action.",
+      "description": "Verified, graded PR review (with accessibility and performance angles when they apply) plus standalone security, accessibility and performance audits. Used by the Claude review GitHub Action, and run by a hook before a Claude session marks its own PR ready.",
       "category": "development"
     },
     {

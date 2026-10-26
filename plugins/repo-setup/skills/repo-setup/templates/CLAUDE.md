@@ -7,9 +7,10 @@ setup and design notes.
 
 `npm test` · `npm run build` · `npm run dev` <· `npm run verify` (real-browser E2E)>
 
-PRs: open as drafts and mark them ready only when the work is done; that triggers
-the Claude review (`.github/workflows/claude-review.yml`, skill `pr-review` from
-mtblck/claude-marketplace).
+PRs: open as drafts and mark them ready only when the work is done. Before marking
+one ready, run `/pr-review:review <n>` and fix what it finds; the `pr-review` plugin
+(mtblck/claude-marketplace) holds the PR at draft until that review has run in the
+session. Marking it ready also triggers `.github/workflows/claude-review.yml`.
 
 ## Load-bearing decisions
 

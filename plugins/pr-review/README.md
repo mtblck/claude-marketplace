@@ -21,6 +21,26 @@ functions and branches that no test runs, each still verified against the tests.
 
 - Locally: `/pr-review:review 42` (prints only) or `/pr-review:review --comment owner/repo/pull/42`.
 - In CI: the `claude-review.yml` template in the `repo-setup` plugin.
+- Before a session readies its own PR: automatic, see below.
+
+### The ready-for-review hook
+
+`hooks/ready-gate.sh` makes the review part of readying a PR in any Claude session
+that has the plugin enabled, rather than leaving it to the review Action. It denies:
+
+- marking a PR ready (`mcp__github__update_pull_request` with `draft: false`,
+  `gh pr ready`, or `gh api` to `pulls/<n>/…/ready_for_review` or with `draft=false`)
+  until `/pr-review:review <n>` has run on that PR in the session, and
+- opening a PR that isn't a draft (`mcp__github__create_pull_request`, `gh pr create`
+  or `gh api …/pulls` without draft), so every PR goes through that step.
+
+The denial tells Claude to run the review (print only), fix every 🔴 and 🟡 finding,
+push, and mark the PR ready again. A review counts when it starts, through the
+`Skill` tool or a typed `/pr-review:review <n>`; the PR numbers are kept per
+session under `$TMPDIR/pr-review-gate/`, so a new session reviews again. When the
+user says to skip the review for a PR, the denial names the one-line command that
+records it. The hook does nothing in GitHub Actions (`GITHUB_ACTIONS` is set) and
+lets everything through when `jq` is missing.
 
 Per-repo tuning lives in the reviewed repo, not here: `CLAUDE.md` rules and an
 optional `REVIEW.md` (what matters most, what to stop flagging), both read from

@@ -1,0 +1,22 @@
+{
+  "description": "Review a PR in the session before it is marked ready (skipped in GitHub Actions)",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "mcp__github__create_pull_request|mcp__github__update_pull_request|Bash",
+        "hooks": [{ "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/ready-gate.sh\"" }]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Skill",
+        "hooks": [{ "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/ready-gate.sh\"" }]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [{ "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/ready-gate.sh\"" }]
+      }
+    ]
+  }
+}
