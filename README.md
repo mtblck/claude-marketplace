@@ -15,6 +15,7 @@ plugins are installed as `<plugin>@mtblck`.
 | `maintenance` | `release`: changelog and GitHub release from merged PRs; `docs-check`: README, docs, ADRs and privacy page against the code (also as a monthly drift issue); `adr`: decision records; `health-check`: weekly summary of alerts, red CI, skipped reviews, stale PRs and baseline drift across the repos; `test-gaps`: riskiest untested code, then tests for it | Matt |
 | `side-projects` | `new-project`, `portfolio-tool`, `project-tickets` | Matt's claude.ai skills |
 | `cover-art` | `cover-art`: minimalist, representational 16:10 cover illustrations for a project, from its repo, purpose and colours, for portfolio cards and case-study heroes | Matt |
+| `linewash` | `linewash`: spot illustrations for empty states, error pages, onboarding and success screens in one bold line with pale two-tone washes, as SVG | Matt |
 | `web-design-guidelines` | `web-design-guidelines`: UI and accessibility review | vendored from [vercel-labs](https://github.com/vercel-labs/web-interface-guidelines), MIT |
 | `interaction-design` | `interaction-design`: microinteractions, motion, transitions, loading states, reduced motion | vendored from [wshobson/agents](https://github.com/wshobson/agents), MIT |
 | `frontend-design` | `frontend-design`: distinctive frontend design direction | upstream [anthropics/claude-plugins-official](https://github.com/anthropics/claude-plugins-official), Apache-2.0 |

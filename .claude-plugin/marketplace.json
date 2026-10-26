@@ -45,6 +45,12 @@
       "category": "design"
     },
     {
+      "name": "linewash",
+      "source": "./plugins/linewash",
+      "description": "Spot illustrations for empty states, error pages, onboarding and success screens: one bold ink line, pale two-tone washes, a backdrop circle, floating accents, dashed ground lines.",
+      "category": "design"
+    },
+    {
       "name": "web-design-guidelines",
       "source": "./plugins/web-design-guidelines",
       "description": "UI and accessibility review against Vercel's Web Interface Guidelines. Vendored (MIT).",
