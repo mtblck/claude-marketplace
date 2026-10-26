@@ -180,12 +180,15 @@ the records and verifies.
 ## 7. Wire into Boards
 
 PR to `mtblck/boards`:
-- `projects.json`: `{ "slug", "name", "repo": "mtblck/<slug>", "url"?, "public": false }`.
+- `projects.json`: `{ "slug", "name", "repo": "mtblck/<slug>", "url"? }`. No `public`
+  field (Boards rejects it): the board is public exactly when the GitHub repo is,
+  and signed-out visitors see only public repos.
 Then, in the new repo, create the labels and a first handful of tickets (`project-tickets`
 "Setting up a repo once"; ticket body ends with `## Done when`).
 
 Tell Matt: **Boards' GitHub token is scoped to named repos**. He must add the
-new repo to it, or the board shows nothing.
+new repo to it, or the board shows nothing, and visitors won't see it even if
+the repo is public.
 
 ## 8. Add to the portfolio
 
