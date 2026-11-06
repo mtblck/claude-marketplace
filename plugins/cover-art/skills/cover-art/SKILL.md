@@ -1,6 +1,6 @@
 ---
 name: cover-art
-description: Make a minimalist, representational 16:10 cover illustration for a website, app, extension or Claude skill from its repo or URL, for portfolio cards, case-study heroes and project thumbnails.
+description: Make a minimalist, representational 16:10 cover illustration for a website, app, extension or Claude skill from its repo or URL, for portfolio cards, case-study heroes, project thumbnails and the matching Ko-fi announcement image.
 ---
 
 # cover-art
@@ -19,7 +19,7 @@ Paths are relative to this skill's folder.
 
 | File | Use |
 |---|---|
-| `scripts/render.mjs` | `node scripts/render.mjs cover.svg [--out DIR]` writes `cover.png` (1600 × 1000) and `cover-card.png` (380 × 238). Uses Playwright only if a Chromium is already installed and never installs one; exit 2 means no browser here, so open the SVG instead. |
+| `scripts/render.mjs` | `node scripts/render.mjs cover.svg [--out DIR]` writes `cover.png` (1600 × 1000), `cover-card.png` (380 × 238) and `cover-kofi.png` (1600 × 900, 16:9, cropped from the middle for Ko-fi). Uses Playwright only if a Chromium is already installed and never installs one; exit 2 means no browser here, so open the SVG instead. |
 | `examples/*.svg` | Seven finished covers, one or more per pattern below. Open two or three before drawing to match their margin, subject size and stroke weight. |
 
 ## Workflow
@@ -32,8 +32,9 @@ Paths are relative to this skill's folder.
    - Write the brief in five lines: *what it does (one verb)*, *who it's for*, *what it acts on*, *signature visual if any*, *palette* (ground, ink, 1–2 neutrals, accent, as hex).
 3. **Concepts.** Write three one-line concepts, each from a different pattern below, pick one and say why in a sentence. If the user is around, show all three; otherwise go with the pick. When the user suggests an object, draw it, and if it's a hard one draw two or three takes side by side at card size so they can choose by eye.
 4. **Draw** a 1600 × 1000 SVG with a script (Python or JS) rather than hand-typed paths, so geometry is computed and repeatable. Use the product's real assets where they help: its sample image, its own trace, its icon geometry.
-5. **Render and look.** `node scripts/render.mjs cover.svg`, then read both PNGs. Fix anything that fails the checklist, then look once more.
-6. **Deliver** the SVG (PNG only if the SVG is over ~150 KB, e.g. heavy pixel art) with alt text: one sentence saying what the picture shows. On mattblack.space (`mtblck/mb-portfolio`) that is `public/work/<slug>.svg` and the project's `cover` in `content/projects.json`, `{ "src": "/work/<slug>.svg", "alt": "…" }`, with `caption` only if the picture uses real product data worth naming. Elsewhere, put it where the site keeps its images and wire it the way that site does. Open a PR.
+5. **Render and look.** `node scripts/render.mjs cover.svg`, then read the full and card PNGs. Fix anything that fails the checklist, then look once more.
+6. **Deliver** the SVG (PNG only if the SVG is over ~150 KB, e.g. heavy pixel art) with alt text: one sentence saying what the picture shows. On mattblack.space (`mtblck/mb-portfolio`) that is `public/work/<slug>.svg` and the project's `cover` in `content/projects.json`, `{ "src": "/work/<slug>.svg", "alt": "…" }`, with `caption` only if the picture uses real product data worth naming. Elsewhere, put it where the site keeps its images and wire it the way that site does.
+7. **Ko-fi PNG, every time.** Each cover also ships as `<slug>-kofi.png` (1600 × 900) for announcing the project or an update on Ko-fi. Read it once to check the top and bottom crop cut nothing. On mattblack.space commit it to `kofi/<slug>.png` (outside `public/`, so the site doesn't serve it); elsewhere, keep it next to the cover's source. Attach it to your reply so it can be uploaded to Ko-fi straight away, with the same alt text. Then open a PR with the SVG, the `cover` entry and the Ko-fi PNG.
 
 ## Patterns (pick the one that fits the verb)
 
@@ -60,7 +61,7 @@ Avoid: browser windows and phone frames (that's a screenshot pretending), dashbo
 - **Motion** Covers are still. If the product is about motion, imply it: a lit packet mid-wire, a progress bar part-filled, a pencil at the end of its line.
 - **Set consistency** Covers in one gallery share margin, subject size and stroke weight, and differ in palette. That is what makes a wall of them feel curated rather than matched.
 
-## Review checklist (read both PNGs)
+## Review checklist (read the full and card PNGs)
 
 - At 380 px: can you say what the product does from the picture alone? Is the accent the first thing the eye lands on?
 - Nothing touches the safe margin; the subject isn't small and lost or cramped to the edges.
@@ -68,3 +69,4 @@ Avoid: browser windows and phone frames (that's a screenshot pretending), dashbo
 - No text, logos or recognisable third-party designs. No stray elements outside the subject.
 - Alt text describes the picture plainly ("A house drawn in pencil on graph paper, the pencil resting at the end of its line, with a green check"), not the product's marketing line.
 - SVG under ~150 KB; it renders identically in Chromium at both sizes.
+- The Ko-fi PNG is 1600 × 900 and the subject sits whole inside it.
