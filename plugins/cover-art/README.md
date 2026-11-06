@@ -4,12 +4,14 @@ One skill, `cover-art`: a minimalist, representational cover illustration for a
 website, app, extension or Claude skill. Give it a repo (or a URL) and it reads
 the project's purpose, design tokens and any hero visual, picks one of five
 concept patterns, draws a 1600 × 1000 SVG with a script, checks it at full and
-card size, and delivers it with alt text.
+card size, and delivers it with alt text, plus a 1600 × 900 Ko-fi PNG of the
+same cover for announcing the project or an update.
 
 The rule it works from is "one verb, one picture": draw the one thing the
 product does, in the product's own colours, with the accent only on that part.
 
-- `scripts/render.mjs` renders a cover at 1600 px and 380 px for review.
+- `scripts/render.mjs` renders a cover at 1600 px and 380 px for review, and
+  the 16:9 Ko-fi PNG.
 - `examples/` holds the seven covers made for mattblack.space while the style
   guide was worked out (Inlay, Collated, Bot Collector, Timeboxed, RetroRail,
   isogram, Does It Pencil).
