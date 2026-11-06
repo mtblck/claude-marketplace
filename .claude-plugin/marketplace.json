@@ -41,7 +41,7 @@
     {
       "name": "cover-art",
       "source": "./plugins/cover-art",
-      "description": "Minimalist, representational 16:10 cover illustrations for websites, apps, extensions and skills, made from the project's repo, purpose and colours.",
+      "description": "Full-bleed, representational 16:10 cover illustrations with the project's logo in a pill, for websites, apps, extensions and skills, made from the project's repo, purpose and colours.",
       "category": "design"
     },
     {
