@@ -40,12 +40,5 @@ open source).
   obra/superpowers `skills/requesting-code-review/code-reviewer.md` (MIT,
   © 2025 Jesse Vincent).
 
-- `plugins/brand-kit`: the logo process (a brief that lists the category's
-  clichés, many concepts cut to three of different structures, black first,
-  a checkpoint before the kit, the name set in many typefaces to choose from,
-  SVG drawn directly instead of traced from generated images, small-size and
-  dark previews) draws on ideas from kaankiziltug/logo-design-skill (MIT,
-  © 2026 kaankiziltug), tryopendata/skills `svg-design` and its OpenData
-  write-up, and plosson's Logo Creator skill. Written from scratch; no text or
-  code copied. At run time it downloads `opentype.js` (MIT) into a cache folder
-  and fonts from Google Fonts (SIL OFL / Apache 2.0); neither is in this repo.
+- `brand-kit` now lives in its own repo, mtblck/brand-kit (MIT, Matt's own),
+  pinned by sha; its THIRD_PARTY_NOTICES.md lists the ideas it draws on.
