@@ -52,8 +52,12 @@
     },
     {
       "name": "brand-kit",
-      "source": "./plugins/brand-kit",
-      "description": "logo (SVG logos with typefaces chosen from real Google Fonts, exported to SVG, PNG, favicons, app icons and printable brand guidelines) and icons (favicon, app and PWA icon sets from an existing logo).",
+      "source": {
+        "source": "github",
+        "repo": "mtblck/brand-kit",
+        "sha": "dba98bba24376da6326e42cfcb60ff2415e65e9d"
+      },
+      "description": "Matt's logo and brand kit plugin, from its own repo: SVG logos with typefaces from real Google Fonts, icons, brand guidelines PDF, email signature, business card, slides and social templates (MIT, mtblck/brand-kit).",
       "category": "design"
     },
     {
