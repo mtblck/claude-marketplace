@@ -1,26 +1,39 @@
 {
   "name": "Harbor",
   "tagline": "Everything you saved, safe in one place.",
+  "about": "Harbor keeps the links, notes and files you save from everywhere in one calm, searchable place, and gets them back to you when you need them.\n\nThe mark is a harbour mouth seen head on: an arch for shelter and a single beacon inside it, the thing you saved, waiting where you left it.",
+  "construction": "On a 256 grid: an arch of outer radius 104 and band 36 whose legs run straight to the baseline, and a beacon of radius 26 on the centre line, its top just above the spring of the arch.",
+  "website": "harbor.example",
+  "contact": {
+    "name": "Avery Lin",
+    "role": "Founder",
+    "email": "avery@harbor.example",
+    "phone": "+1 555 0134"
+  },
   "colors": [
     {
       "name": "Deep Water",
       "hex": "#12324a",
-      "role": "primary"
+      "role": "primary",
+      "usage": "The wordmark, headings and the brand field."
     },
     {
       "name": "Signal",
       "hex": "#f0643c",
-      "role": "accent"
+      "role": "accent",
+      "usage": "The beacon and one highlight per layout; never body text."
     },
     {
       "name": "Sand",
       "hex": "#f6f1e7",
-      "role": "paper"
+      "role": "paper",
+      "usage": "Backgrounds, and the mark on Deep Water."
     },
     {
       "name": "Mist",
       "hex": "#cfe0ea",
-      "role": "support"
+      "role": "support",
+      "usage": "Panels, rules and quiet backgrounds."
     }
   ],
   "type": {
