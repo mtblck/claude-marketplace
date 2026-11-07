@@ -36,7 +36,7 @@ One file describes a brand; `scripts/export.mjs` turns it into every deliverable
 | Field | Meaning |
 |---|---|
 | `name`, `shortName` | Brand name (guidelines, page titles, manifest). `shortName` is the home-screen label, at most 12 characters. |
-| `tagline` | Optional line for the guidelines' cover and type sample. |
+| `tagline` | Optional line for the guidelines' cover and type sample, and under the logo on the link-preview image. |
 | `about` | One or two short paragraphs (split with a blank line, `\n\n`) introducing the brand on the guidelines' cover. Keep it under ~90 words or page 1 overflows. |
 | `version` | Guidelines version, default `1.0`. |
 | `construction` | One sentence on how the mark is built, under the construction drawing. |
@@ -51,6 +51,8 @@ One file describes a brand; `scripts/export.mjs` turns it into every deliverable
 | `icon.themeColor` | Browser and manifest theme colour; defaults to the tile colour. |
 | `clearSpace` | Clear space as a share of the mark's height (default 0.25). |
 | `pngWidths` | Widths for logo PNGs. One-colour versions get one 1024 px PNG each. |
+| `social.background` | Background of `social/og-image.png` (default the paper colour). It shows the horizontal lockup (or the next logo that exists), the tagline in the display face, and an accent bar along the bottom. |
+| `social.avatarBackground`, `social.avatarScale` | Background and art size of `social/avatar.png`. Default the icon tile and `icon.maskableScale` (or 0.6), so the art survives the circle crop most sites apply. |
 | `out` | Output folder (default `dist`). |
 
-`node export.mjs brand.json --only icons` writes just `icons/` and `check.png`, which is what the `icons` skill uses for an existing logo.
+`node export.mjs brand.json --only icons` writes just `icons/` and `check.png` (no logos, guidelines, social images, PDFs or zip), which is what the `icons` skill uses for an existing logo.

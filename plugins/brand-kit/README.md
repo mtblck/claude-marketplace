@@ -19,6 +19,10 @@ What one `node scripts/export.mjs brand.json` writes:
 | `icons/` | `favicon.ico` (16/32/48), `favicon.svg`, `apple-touch-icon.png`, `icon-192/512.png`, `icon-maskable-512.png`, `app-icon-1024.png`, `site.webmanifest`, `head.html` |
 | `check.png` | size ramp from 16 px, light and dark, one-colour tests, favicon in browser tabs, app icon on a home screen and under Android's mask |
 | `brand-guidelines.pdf` (+ `.html`, one PNG per page) | printable US Letter brand guidelines: cover and logo versions; construction, clear space, minimum size, one colour, misuse and icons; typography; colour with HEX, RGB, CMYK and contrast |
+| `pdf/` | every logo as a vector PDF, for print shops |
+| `social/` | `og-image.png` (1200 × 630 link preview: logo, tagline, accent bar) and `avatar.png` (800 × 800, circle-safe) |
+| `README.md` | which file to use for what |
+| `<name>-brand-kit.zip` | all of the above in one download |
 
 Scripts (in `skills/logo/scripts/`, Node 18+):
 

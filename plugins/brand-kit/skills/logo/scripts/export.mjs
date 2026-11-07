@@ -12,7 +12,11 @@
  *            site.webmanifest and head.html (the <link> tags to paste)
  *   check.html + check.png              small-size, dark, one-colour and icon-mask tests
  *   brand-guidelines.html / .pdf / -N.png  printable US Letter brand guidelines (guide.mjs)
- * --only icons skips the logos and the brand guidelines (for the icons skill).
+ *   social/  og-image.png (1200 × 630 link preview) and avatar.png (800 × 800)   (package.mjs)
+ *   pdf/     every logo in svg/ as a vector PDF, for print
+ *   README.md                which file to use for what
+ *   <name>-brand-kit.zip     everything above in one download
+ * --only icons skips the logos, guidelines, social images, PDFs and zip (for the icons skill).
  *
  * brand.json (paths relative to it; see references/brand-json.md):
  * {
@@ -28,6 +32,7 @@ import { readFileSync, writeFileSync, mkdirSync } from 'node:fs'
 import { join, resolve, dirname, relative } from 'node:path'
 import { browser, png, htmlShot, viewBox } from './render.mjs'
 import { guide, darkest } from './guide.mjs'
+import { social, pdfLogos, readme, zip } from './package.mjs'
 
 const args = process.argv.slice(2)
 const cfgPath = args.find((a) => a.endsWith('.json'))
@@ -192,6 +197,13 @@ wrote(await htmlShot(b, join(out, 'check.html'), join(out, 'check.png'), { width
 if (!onlyIcons) {
   const markVb = cfg.logos?.mark ? viewBox(read(cfg.logos.mark.file)) : null
   for (const f of await guide({ b, cfg, files, out, colors, ink, paper, dark, accent: byRole('accent'), markVb })) wrote(f)
+
+  // ── Social images, print PDFs, README and the zip ──────────────────────────
+  for (const f of await social({ b, cfg, out, files, iconSvg, tile, scale: cfg.social?.avatarScale ?? icon.maskableScale ?? Math.min(scale, 0.6), paper, ink, accent: byRole('accent') })) wrote(f)
+  for (const f of await pdfLogos({ b, out })) wrote(f)
+  wrote(readme({ cfg, out, files }))
+  const slug = String(cfg.name || 'brand').toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'brand'
+  wrote(zip({ out, name: `${slug}-brand-kit` }))
 }
 await b.close()
 
