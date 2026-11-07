@@ -7,7 +7,7 @@
  *
  * Writes <name>-<width>.png next to each SVG (or into --out), transparent
  * unless --bg is given. --sheet instead puts all the SVGs on one numbered
- * comparison sheet: each large, at 32 px and 16 px, and as a white silhouette on dark. Used as a module by export.mjs and specimen.mjs.
+ * comparison sheet: each large, at 32 px and 16 px, and on a dark ground. Used as a module by export.mjs and specimen.mjs.
  * Uses Playwright only if it and a Chromium are already installed; it never
  * installs one. Exit 2 means "no browser here": open the SVGs instead.
  */
@@ -110,7 +110,7 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
     const html = `<!doctype html><html><body style="margin:0;padding:24px;background:#eee;font:13px system-ui,sans-serif;width:${Math.min(files.length, 3) * 380 + 48}px;box-sizing:border-box">
 <style>.g{display:flex;flex-wrap:wrap;gap:16px}.c{width:364px;background:#fff;border-radius:10px;padding:16px;box-sizing:border-box;position:relative}
 .c b{position:absolute;top:10px;left:14px;font-size:18px}.big{height:240px;display:grid;place-items:center}
-.sm{display:flex;align-items:center;gap:16px;padding:10px;border-top:1px solid #eee}.sm span{color:#888;margin-left:auto}.dk{background:#1d1d1f;border-radius:6px}.dk img{filter:brightness(0) invert(1)}</style>
+.sm{display:flex;align-items:center;gap:16px;padding:10px;border-top:1px solid #eee}.sm span{color:#888;margin-left:auto}.dk{background:#1d1d1f;border-radius:6px}</style>
 <div class="g">${files.map(cell).join('')}</div></body></html>`
     const tmp = join(dirname(resolve(opt('--sheet'))), '.sheet.html')
     const { writeFileSync, rmSync } = await import('node:fs')

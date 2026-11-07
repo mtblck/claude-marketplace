@@ -66,7 +66,9 @@ if (!onlyIcons) {
   for (const [key, l] of logos) {
     const entry = (files[key] = {})
     const variants = [['', l.file], ['-dark', l.dark]]
-    if (l.mono !== false) variants.push(['-black', mono(read(l.file), '#000000')], ['-white', mono(read(l.file), '#ffffff')])
+    // One-colour versions: drawn ones (l.black / l.white) win; otherwise recolour the main file.
+    const flat = l.black || l.white ? read(l.black || l.white) : read(l.file)
+    if (l.mono !== false) variants.push(['-black', mono(flat, '#000000')], ['-white', mono(flat, '#ffffff')])
     for (const [suffix, src] of variants) {
       if (!src) continue
       const text = src.startsWith('<') ? src : read(src)
@@ -189,8 +191,11 @@ wrote(await htmlShot(b, join(out, 'check.html'), join(out, 'check.png'), { width
 if (!onlyIcons) {
   const type = cfg.type || {}
   const fams = Object.values(type).filter((t) => t?.family)
+  // One css2 family= per family, with every weight the brand uses.
+  const weights = new Map()
+  for (const t of fams) weights.set(t.family, new Set([...(weights.get(t.family) || [400]), t.weight || 400]))
   const gf = fams.length
-    ? `https://fonts.googleapis.com/css2?${fams.map((t) => `family=${encodeURIComponent(t.family).replace(/%20/g, '+')}:wght@${[...new Set([400, t.weight || 400])].sort().join(';')}`).join('&')}&display=swap`
+    ? `https://fonts.googleapis.com/css2?${[...weights].map(([fam, ws]) => `family=${encodeURIComponent(fam).replace(/%20/g, '+')}:wght@${[...ws].sort((a, b) => a - b).join(';')}`).join('&')}&display=swap`
     : null
   const disp = type.display, body = type.text || type.display
   const ff = (t) => (t ? `'${t.family}', system-ui, sans-serif` : 'system-ui, sans-serif')
@@ -234,7 +239,7 @@ ${colors.length ? `<h2>Colour</h2><p>Contrast is against white and against ${esc
       (c) => `<div class="sw"><div style="background:${c.hex}"></div><p><b>${esc(c.name)}</b>${c.role ? ` · ${esc(c.role)}` : ''}<br>${c.hex.toUpperCase()} · rgb(${rgb(c.hex).join(', ')})<br>on white ${contrast(c.hex, '#ffffff').toFixed(1)}:1 · on dark ${contrast(c.hex, dark).toFixed(1)}:1</p></div>`
     )
     .join('')}</div>` : ''}
-${fams.length ? `<h2>Typography</h2><p>${disp ? `${esc(disp.family)} for the wordmark and headings` : ''}${body && body !== disp ? `, ${esc(body.family)} for everything else` : ''}. Both are free Google Fonts.</p>
+${fams.length ? `<h2>Typography</h2><p>${weights.size === 1 ? `${esc(fams[0].family)} for everything: the wordmark and headings at ${disp?.weight || 700}, body copy at ${body?.weight || 400}. It's a free Google Font.` : `${esc(disp.family)} for the wordmark and headings, ${esc(body.family)} for everything else. Both are free Google Fonts.`}</p>
 ${disp ? `<p style="font:${disp.weight || 700} 56px/1.1 ${ff(disp)};margin:0 0 8px">Aa Bb Cc 0123</p><p style="font:${disp.weight || 700} 32px/1.2 ${ff(disp)};margin:0 0 24px">${esc(cfg.tagline || `The quick brown fox, by ${cfg.name}`)}</p>` : ''}
 ${body ? `<p style="font:${body.weight || 400} 17px/1.6 ${ff(body)};max-width:62ch">Body copy is set in ${esc(body.family)} at 16 to 18 px with a line height around 1.55. Keep lines to 60 to 75 characters and let the display face carry the personality in headings, so the page stays calm to read.</p>` : ''}
 <pre>${esc(gf ? `<link rel="stylesheet" href="${gf}">\n\n` : '')}${esc(`:root {\n${disp ? `  --font-display: ${ff(disp)};\n` : ''}${body ? `  --font-body: ${ff(body)};\n` : ''}${colors.map((c) => `  --${(c.role || c.name).toLowerCase().replace(/[^a-z0-9]+/g, '-')}: ${c.hex};`).join('\n')}\n}`)}</pre>` : ''}
