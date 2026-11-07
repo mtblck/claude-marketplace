@@ -1,0 +1,53 @@
+# brand.json
+
+One file describes a brand; `scripts/export.mjs` turns it into every deliverable. File paths are relative to `brand.json`. Only `name` and either `logos.mark` or `icon.file` are required.
+
+```json
+{
+  "name": "Harbor",
+  "shortName": "Harbor",
+  "tagline": "Everything you saved, safe in one place.",
+  "colors": [
+    { "name": "Deep Water", "hex": "#12324a", "role": "primary" },
+    { "name": "Signal", "hex": "#f0643c", "role": "accent" },
+    { "name": "Sand", "hex": "#f6f1e7", "role": "paper" },
+    { "name": "Mist", "hex": "#cfe0ea", "role": "support" }
+  ],
+  "type": {
+    "display": { "family": "Space Grotesk", "weight": 700 },
+    "text": { "family": "Inter", "weight": 400 }
+  },
+  "logos": {
+    "mark": { "file": "mark.svg", "dark": "mark-dark.svg", "minWidth": 16 },
+    "horizontal": { "file": "logo-horizontal.svg", "dark": "logo-horizontal-dark.svg", "minWidth": 96 },
+    "stacked": { "file": "logo-stacked.svg", "dark": "logo-stacked-dark.svg", "minWidth": 64 }
+  },
+  "icon": {
+    "file": "mark-dark.svg",
+    "background": "#12324a",
+    "favicon": "favicon.svg"
+  },
+  "clearSpace": 0.25,
+  "pngWidths": [256, 512, 1024, 2048],
+  "out": "dist"
+}
+```
+
+| Field | Meaning |
+|---|---|
+| `name`, `shortName` | Brand name (brand sheet, page titles, manifest). `shortName` is the home-screen label, at most 12 characters. |
+| `tagline` | Optional line for the brand sheet. |
+| `colors[]` | `name`, `hex`, `role`. Roles the export uses: `primary` (one-colour reversed ground, CSS), `accent` (white-on-accent test), `paper` (default icon tile, sheet hero), `dark` (dark grounds; defaults to the darkest colour). Any other role is listed and exported as a CSS variable. |
+| `type.display`, `type.text` | Google Font `family` and `weight` for the wordmark and headings, and for body copy. The brand sheet loads them live and prints the `<link>` and CSS. |
+| `logos.<key>` | Any number of logos. `mark` is special: it drives the size ramp, clear-space diagram and one-colour tests. Usual keys: `mark`, `horizontal`, `stacked`, `wordmark`. `file` is the light-ground version; `dark` is the version for dark grounds; `minWidth` is in px; `mono: false` skips the black and white versions. |
+| `icon.file` | The art placed on icon tiles (usually the mark, or its dark version on a dark tile). Defaults to `logos.mark.file`. |
+| `icon.background` | Tile colour for apple-touch, PWA, maskable and 1024 app icons. Defaults to the paper colour. |
+| `icon.scale`, `icon.maskableScale` | Share of the tile the art fills: 0.62 and 0.5 by default. |
+| `icon.favicon` | A separate SVG for 16–48 px (simplified, or already on its own tile). Defaults to `icon.file`. |
+| `icon.faviconBackground`, `icon.faviconScale` | Put the favicon art on a rounded tile of this colour (scale default 0.78). Use this when the mark alone vanishes in a light or dark tab. |
+| `icon.themeColor` | Browser and manifest theme colour; defaults to the tile colour. |
+| `clearSpace` | Clear space as a share of the mark's height (default 0.25). |
+| `pngWidths` | Widths for logo PNGs. One-colour versions get one 1024 px PNG each. |
+| `out` | Output folder (default `dist`). |
+
+`node export.mjs brand.json --only icons` writes just `icons/` and `check.png`, which is what the `icons` skill uses for an existing logo.

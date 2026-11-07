@@ -1,0 +1,8 @@
+{
+  "name": "brand-kit",
+  "version": "1.0.0",
+  "description": "Logos designed as clean SVG with typefaces chosen from real Google Fonts on a specimen sheet, exported from one brand.json to SVG and PNG logos, dark and one-colour versions, favicons, app and PWA icons, a webmanifest and a one-page brand sheet. Also makes icon sets for existing logos.",
+  "author": { "name": "mtblck" },
+  "license": "MIT",
+  "keywords": ["design", "logo", "branding", "svg", "png", "typography", "favicon", "app-icon", "brand-guidelines"]
+}

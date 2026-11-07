@@ -51,6 +51,12 @@
       "category": "design"
     },
     {
+      "name": "brand-kit",
+      "source": "./plugins/brand-kit",
+      "description": "logo (SVG logos with typefaces chosen from real Google Fonts, exported to SVG, PNG, favicons, app icons and a brand sheet) and icons (favicon, app and PWA icon sets from an existing logo).",
+      "category": "design"
+    },
+    {
       "name": "web-design-guidelines",
       "source": "./plugins/web-design-guidelines",
       "description": "UI and accessibility review against Vercel's Web Interface Guidelines. Vendored (MIT).",
