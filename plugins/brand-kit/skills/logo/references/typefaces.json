@@ -1,0 +1,146 @@
+{
+  "_about": "Curated Google Fonts for wordmarks, grouped by voice. Every family here is free for commercial logo use (SIL OFL or Apache 2.0). `weights` are the ones worth trying for a wordmark; `text` lists body faces that sit well beside the group. specimen.mjs reads this file: --group <key>.",
+  "groups": {
+    "geometric": {
+      "voice": "Clean, modern, confident, built from circles and straight lines. Tech products, tools, startups.",
+      "families": [
+        { "family": "Outfit", "weights": [500, 600, 700] },
+        { "family": "Space Grotesk", "weights": [500, 700] },
+        { "family": "Manrope", "weights": [600, 800] },
+        { "family": "Sora", "weights": [600, 700] },
+        { "family": "Urbanist", "weights": [600, 800] },
+        { "family": "Lexend", "weights": [500, 700] },
+        { "family": "Plus Jakarta Sans", "weights": [600, 800] },
+        { "family": "Red Hat Display", "weights": [600, 800] },
+        { "family": "Jost", "weights": [500, 700] },
+        { "family": "Poppins", "weights": [600, 700] }
+      ],
+      "text": ["Inter", "DM Sans", "Plus Jakarta Sans"]
+    },
+    "grotesque": {
+      "voice": "Neutral, sturdy, matter-of-fact. Lets the symbol do the talking; good for utilities and dev tools.",
+      "families": [
+        { "family": "Inter Tight", "weights": [600, 800] },
+        { "family": "Archivo", "weights": [600, 800] },
+        { "family": "Schibsted Grotesk", "weights": [600, 800] },
+        { "family": "Instrument Sans", "weights": [600, 700] },
+        { "family": "Hanken Grotesk", "weights": [600, 800] },
+        { "family": "Familjen Grotesk", "weights": [600, 700] },
+        { "family": "Onest", "weights": [600, 800] },
+        { "family": "Public Sans", "weights": [600, 800] }
+      ],
+      "text": ["Inter", "IBM Plex Sans", "Public Sans"]
+    },
+    "humanist": {
+      "voice": "Warm, readable, human; calligraphic stress in the curves. Services, community, education, health.",
+      "families": [
+        { "family": "Figtree", "weights": [600, 800] },
+        { "family": "Nunito Sans", "weights": [700, 900] },
+        { "family": "Mulish", "weights": [700, 900] },
+        { "family": "Fira Sans", "weights": [600, 800] },
+        { "family": "Work Sans", "weights": [600, 700] },
+        { "family": "Albert Sans", "weights": [600, 800] },
+        { "family": "Rethink Sans", "weights": [600, 800] },
+        { "family": "Karla", "weights": [600, 800] }
+      ],
+      "text": ["Source Sans 3", "Figtree", "Work Sans"]
+    },
+    "rounded": {
+      "voice": "Friendly, soft, playful. Consumer apps, kids, food, games.",
+      "families": [
+        { "family": "Nunito", "weights": [700, 900] },
+        { "family": "Quicksand", "weights": [600, 700] },
+        { "family": "Varela Round", "weights": [400] },
+        { "family": "Fredoka", "weights": [500, 600] },
+        { "family": "Baloo 2", "weights": [600, 800] },
+        { "family": "M PLUS Rounded 1c", "weights": [700, 800] }
+      ],
+      "text": ["Nunito", "DM Sans", "Figtree"]
+    },
+    "display": {
+      "voice": "Loud, characterful, made to be noticed. Events, media, games, music, bold consumer brands.",
+      "families": [
+        { "family": "Syne", "weights": [700, 800] },
+        { "family": "Unbounded", "weights": [600, 800] },
+        { "family": "Bricolage Grotesque", "weights": [600, 800] },
+        { "family": "Rubik", "weights": [600, 800] },
+        { "family": "Chakra Petch", "weights": [600, 700] },
+        { "family": "Righteous", "weights": [400] },
+        { "family": "Bungee", "weights": [400] },
+        { "family": "Anybody", "weights": [700, 900] }
+      ],
+      "text": ["Inter", "Space Grotesk", "DM Sans"]
+    },
+    "condensed": {
+      "voice": "Tall, compact, urgent. Sport, outdoor, signage, labels, anything that must fit a narrow space.",
+      "families": [
+        { "family": "Oswald", "weights": [500, 700] },
+        { "family": "Barlow Condensed", "weights": [600, 800] },
+        { "family": "Bebas Neue", "weights": [400] },
+        { "family": "Big Shoulders Display", "weights": [700, 900] },
+        { "family": "Antonio", "weights": [600, 700] },
+        { "family": "Saira Condensed", "weights": [600, 800] }
+      ],
+      "text": ["Barlow", "Inter", "Source Sans 3"]
+    },
+    "serif-modern": {
+      "voice": "High contrast, fashionable, editorial. Beauty, fashion, magazines, premium goods.",
+      "families": [
+        { "family": "Playfair Display", "weights": [600, 800] },
+        { "family": "Bodoni Moda", "weights": [600, 800] },
+        { "family": "DM Serif Display", "weights": [400] },
+        { "family": "Prata", "weights": [400] },
+        { "family": "Abril Fatface", "weights": [400] },
+        { "family": "Instrument Serif", "weights": [400] }
+      ],
+      "text": ["Inter", "Source Serif 4", "DM Sans"]
+    },
+    "serif-classic": {
+      "voice": "Literary, established, crafted. Publishing, food and drink, law, heritage and makers.",
+      "families": [
+        { "family": "Fraunces", "weights": [600, 800] },
+        { "family": "Young Serif", "weights": [400] },
+        { "family": "Newsreader", "weights": [500, 700] },
+        { "family": "Cormorant Garamond", "weights": [600, 700] },
+        { "family": "EB Garamond", "weights": [600, 800] },
+        { "family": "Libre Caslon Text", "weights": [400, 700] },
+        { "family": "Crimson Pro", "weights": [600, 800] },
+        { "family": "Spectral", "weights": [600, 800] }
+      ],
+      "text": ["Source Serif 4", "Literata", "Inter"]
+    },
+    "slab": {
+      "voice": "Solid, dependable, a little mechanical or rustic. Hardware, workshops, coffee, outdoors.",
+      "families": [
+        { "family": "Zilla Slab", "weights": [600, 700] },
+        { "family": "Roboto Slab", "weights": [600, 800] },
+        { "family": "Arvo", "weights": [700] },
+        { "family": "Bitter", "weights": [600, 800] },
+        { "family": "Josefin Slab", "weights": [600, 700] }
+      ],
+      "text": ["Inter", "Source Sans 3", "Bitter"]
+    },
+    "mono": {
+      "voice": "Technical, precise, terminal-flavoured. Developer tools, data, infrastructure.",
+      "families": [
+        { "family": "JetBrains Mono", "weights": [600, 800] },
+        { "family": "IBM Plex Mono", "weights": [500, 700] },
+        { "family": "Space Mono", "weights": [400, 700] },
+        { "family": "DM Mono", "weights": [500] },
+        { "family": "Martian Mono", "weights": [600, 800] }
+      ],
+      "text": ["Inter", "IBM Plex Sans", "Space Grotesk"]
+    },
+    "script": {
+      "voice": "Personal, handmade, nostalgic. Bakeries, cafés, craft, personal brands. Use only when the brand truly is handmade.",
+      "families": [
+        { "family": "Caveat", "weights": [600, 700] },
+        { "family": "Dancing Script", "weights": [600, 700] },
+        { "family": "Yellowtail", "weights": [400] },
+        { "family": "Pacifico", "weights": [400] },
+        { "family": "Kaushan Script", "weights": [400] }
+      ],
+      "text": ["Nunito Sans", "Work Sans", "Lora"]
+    }
+  }
+}
