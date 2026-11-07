@@ -107,13 +107,16 @@ ${sig}
     written.push(join(d, 'signature.txt'))
     // Preview: the signature under a short message, in a mail window, light and dark.
     const shown = sig.replace(esc(src), 'data:image/png;base64,' + readFileSync(logoPng).toString('base64'))
-    const pane = (dark) => `<div class="m${dark ? ' d' : ''}"><div class="bar"><i></i><i></i><i></i><span>${dark ? 'Dark mode' : 'New message'}</span></div><div class="b"><p>Hi Sam,</p><p>Thanks for the call today. The files are attached.</p><p>Best,</p><div class="s">${shown}</div></div></div>`
+    // Dark mode as clients do it: text colours lightened, images left alone.
+    const lighten = (hex) => '#' + hex.slice(1).match(/../g).map((h) => Math.round(parseInt(h, 16) + (255 - parseInt(h, 16)) * 0.6).toString(16).padStart(2, '0')).join('')
+    const darkSig = shown.split(ink).join('#e8eae9').split(muted).join('#a3aaa6').split(link).join(lighten(link))
+    const pane = (dark) => `<div class="m${dark ? ' d' : ''}"><div class="bar"><i></i><i></i><i></i><span>${dark ? 'Dark mode' : 'New message'}</span></div><div class="b"><p>Hi Sam,</p><p>Thanks for the call today. The files are attached.</p><p>Best,</p><div class="s">${dark ? darkSig : shown}</div></div></div>`
     previews.email = rel(await shoot(`<!doctype html><html><head>${gf}<style>
 body{margin:0;background:#eceeed;padding:28px;display:flex;gap:28px;font-family:Arial,Helvetica,sans-serif}
 .m{width:520px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.12)}
 .bar{display:flex;gap:6px;align-items:center;padding:10px 14px;background:#f4f4f4;font-size:12px;color:#777}.bar i{width:10px;height:10px;border-radius:50%;background:#d6d6d6}.bar span{margin-left:8px}
 .b{padding:20px 24px 26px;font-size:14px;color:#222}.b p{margin:0 0 12px}.s{margin-top:18px}
-.d{background:#1f1f1f}.d .bar{background:#2b2b2b;color:#aaa}.d .b{background:#fff;filter:invert(1) hue-rotate(180deg)}.d .b img{filter:invert(1) hue-rotate(180deg)}
+.d{background:#1f1f1f}.d .bar{background:#2b2b2b;color:#aaa}.d .b{background:#1f1f1f;color:#e6e6e6}
 </style></head><body>${pane(false)}${pane(true)}</body></html>`, join(d, 'preview.png'), 1124, 330, 2))
   }
 
