@@ -13,6 +13,7 @@
  *   check.html + check.png              small-size, dark, one-colour and icon-mask tests
  *   brand-guidelines.html / .pdf / -N.png  printable US Letter brand guidelines (guide.mjs)
  *   social/  og-image.png (1200 × 630 link preview) and avatar.png (800 × 800)   (package.mjs)
+ *   templates/  email signature, business card, slides (.pptx + PDF) and social posts (templates.mjs)
  *   pdf/     every logo in svg/ as a vector PDF, for print
  *   README.md                which file to use for what
  *   <name>-brand-kit.zip     everything above in one download
@@ -33,6 +34,7 @@ import { join, resolve, dirname, relative } from 'node:path'
 import { browser, png, htmlShot, viewBox } from './render.mjs'
 import { guide, darkest } from './guide.mjs'
 import { social, pdfLogos, readme, zip } from './package.mjs'
+import { templates } from './templates.mjs'
 
 const args = process.argv.slice(2)
 const cfgPath = args.find((a) => a.endsWith('.json'))
@@ -195,11 +197,19 @@ wrote(await htmlShot(b, join(out, 'check.html'), join(out, 'check.png'), { width
 
 // ── Brand guidelines (US Letter pages: HTML, PDF, PNG per page) ────────────
 if (!onlyIcons) {
+  // ── Social images and templates first: the guidelines show them ────────────
+  const accent = byRole('accent')
+  for (const f of await social({ b, cfg, out, files, iconSvg, tile, scale: cfg.social?.avatarScale ?? icon.maskableScale ?? Math.min(scale, 0.6), paper, ink, accent })) wrote(f)
+  let previews = null
+  if (cfg.templates !== false) {
+    const t = await templates({ b, cfg, out, files, iconSvg, tile, scale, colors, ink, paper })
+    t.written.forEach(wrote)
+    previews = t.previews
+  }
   const markVb = cfg.logos?.mark ? viewBox(read(cfg.logos.mark.file)) : null
-  for (const f of await guide({ b, cfg, files, out, colors, ink, paper, dark, accent: byRole('accent'), markVb })) wrote(f)
+  for (const f of await guide({ b, cfg, files, out, colors, ink, paper, dark, accent, markVb, previews })) wrote(f)
 
-  // ── Social images, print PDFs, README and the zip ──────────────────────────
-  for (const f of await social({ b, cfg, out, files, iconSvg, tile, scale: cfg.social?.avatarScale ?? icon.maskableScale ?? Math.min(scale, 0.6), paper, ink, accent: byRole('accent') })) wrote(f)
+  // ── Print PDFs, README and the zip ──────────────────────────────────────────
   for (const f of await pdfLogos({ b, out })) wrote(f)
   wrote(readme({ cfg, out, files }))
   const slug = String(cfg.name || 'brand').toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'brand'

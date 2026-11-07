@@ -53,6 +53,9 @@ One file describes a brand; `scripts/export.mjs` turns it into every deliverable
 | `pngWidths` | Widths for logo PNGs. One-colour versions get one 1024 px PNG each. |
 | `social.background` | Background of `social/og-image.png` (default the paper colour). It shows the horizontal lockup (or the next logo that exists), the tagline in the display face, and an accent bar along the bottom. |
 | `social.avatarBackground`, `social.avatarScale` | Background and art size of `social/avatar.png`. Default the icon tile and `icon.maskableScale` (or 0.6), so the art survives the circle crop most sites apply. |
+| `website` | The site, without `https://`, for the email signature, business card, closing slide and posts. |
+| `contact` | `{ name, role, email, phone }` for the email signature and business card. Defaults are placeholders ("Your Name", "Role", `you@<website>`). |
+| `templates` | `false` skips the templates. `templates.background` is the field colour for card fronts, title slides and posts (default the primary colour). `templates.email.logoUrl` is where the signature's `logo.png` is hosted (until set, the HTML points at the local file). `templates.social.headline` and `.kicker` replace the sample post copy (default the tagline and website). |
 | `out` | Output folder (default `dist`). |
 
 `node export.mjs brand.json --only icons` writes just `icons/` and `check.png` (no logos, guidelines, social images, PDFs or zip), which is what the `icons` skill uses for an existing logo.

@@ -45,7 +45,7 @@ function saturation(hex) {
 }
 const esc = (s) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;')
 
-export async function guide({ b, cfg, files, out, colors, ink, paper, dark, accent, markVb }) {
+export async function guide({ b, cfg, files, out, colors, ink, paper, dark, accent, markVb, previews }) {
   const type = cfg.type || {}
   const disp = type.display || type.text, body = type.text || type.display
   const fams = [disp, body].filter(Boolean)
@@ -66,6 +66,7 @@ export async function guide({ b, cfg, files, out, colors, ink, paper, dark, acce
   const cs = cfg.clearSpace ?? 0.25
   const logos = Object.entries(cfg.logos || {})
 
+  const total = previews ? 5 : 3
   const section = (n, title) => `<div class="sec"><h2>${title}</h2><span class="rule"></span><span class="pill">${String(n).padStart(2, '0')}</span></div>`
   const head = `<header class="top">${mark ? `<img src="${mark.svg}" alt="" class="tm">` : ''}<b>${esc(cfg.name)}</b><span>Brand guidelines</span><span class="r">Version ${esc(version)} · ${date}</span></header>`
   const foot = (n, total) => `<footer class="foot"><span>${esc(cfg.name)} · Brand guidelines</span><span>${n} / ${total}</span></footer>`
@@ -90,7 +91,7 @@ ${section(1, 'Logo')}
   ${files.stacked ? tile(files.stacked.svg, '#ffffff', 'Stacked', 96, ';border:1px solid #e3e3e3') : ''}
 </div>
 <p class="note">Use the full logo wherever there is room, and the mark alone where space is small or square. On dark grounds use the dark version; where only one ink is available, use the one-colour logo in black or white.</p>
-${foot(1, 3)}</section>`
+${foot(1, total)}</section>`
 
   // ── Page 2: logo rules ──
   const minRows = logos.filter(([, l]) => l.minWidth).map(([k, l]) => {
@@ -130,7 +131,7 @@ ${section(2, 'Logo rules')}
   <figure><img src="icons/favicon-48.png" alt="" style="width:32px;margin:32px"><figcaption>Favicon</figcaption></figure>
   <p class="note">Files in <code>icons/</code>. Platforms round or mask the corners themselves; supply the square art as it is.</p>
 </div>
-${foot(2, 3)}</section>`
+${foot(2, total)}</section>`
 
   // ── Page 3: typography and colour ──
   const spec = (t, role) => t ? `<div class="spec">
@@ -157,7 +158,35 @@ ${section(4, 'Colour')}
 <div class="bar">${colors.map((c) => `<span style="flex:${roleWeight(c.role)};background:${c.hex}"></span>`).join('')}</div>
 <div class="swatches">${colors.map((c) => `<div class="sw"><i style="background:${c.hex}${lum(c.hex) > 0.85 ? ';box-shadow:inset 0 0 0 1px #ddd' : ''}"></i><div><b>${esc(c.name)}</b>${c.role ? ` <span>${esc(c.role)}</span>` : ''}<br>HEX ${c.hex.toUpperCase()}<br>RGB ${rgb(c.hex).join(' ')}<br>CMYK ${cmyk(c.hex).join(' ')}<br>${contrast(c.hex, '#ffffff').toFixed(1)}:1 on white${c.usage ? `<br><em>${esc(c.usage)}</em>` : ''}</div></div>`).join('')}</div>
 <p class="note">The bar shows roughly how much of each colour to use. Text needs 4.5:1 against its background (3:1 for large type and graphics). CMYK values are a starting point for print; ask for a proof.</p>
-${foot(3, 3)}</section>`
+${foot(3, total)}</section>`
+
+  // ── Pages 4–5: templates (when export made them) ──
+  const site = String(cfg.contact?.website || cfg.website || '').replace(/^https?:\/\//, '').replace(/\/$/, '')
+  const p4 = previews ? `<section class="page">${head}
+${section(5, 'Email signature')}
+<img class="shot" src="${previews.email}" alt="">
+<div class="cols">
+  <p class="note">Files in <code>templates/email/</code>. Host <code>logo.png</code> (set <code>templates.email.logoUrl</code> and export again), open <code>signature.html</code> in a browser, select all, copy and paste it into the mail client’s signature setting. <code>signature.txt</code> is the plain-text version.</p>
+  <p class="note">One table with inline styles, so Gmail and Outlook keep it. The logo is the app-icon art on its own tile so it survives dark mode, and the text falls back to Arial where ${esc(disp?.family || 'the brand face')} isn’t installed. Keep it to name, role, contact and site: no quotes, banners or icon rows.</p>
+</div>
+${section(6, 'Business card')}
+<div class="cards"><figure><img src="${previews.cardFront}" alt=""><figcaption>Front</figcaption></figure><figure><img src="${previews.cardBack}" alt=""><figcaption>Back</figcaption></figure></div>
+<div class="cols">
+  <p class="note"><b>Size</b> 3.5 × 2 in trim (85 × 55 mm in Europe), with 0.125 in bleed on every side: <code>business-card.pdf</code> is 3.75 × 2.25 in, one page per side, fonts embedded and the logo in vector. Keep text 0.25 in inside the trim.</p>
+  <p class="note"><b>Layout</b> The front carries only the logo, on the brand colour; the back carries the person: name in ${esc(disp?.family || 'the display face')} 10.5 pt, role and up to four contact lines at 7.5 pt, never under 6.5 pt. Order a proof: printers convert RGB to CMYK, so check the colour against the values on page 3.</p>
+</div>
+${foot(4, total)}</section>` : ''
+  const sizeNames = { 'post-square': 'Square post · 1080 × 1080', 'post-portrait': 'Portrait post · 1080 × 1350', story: 'Story · 1080 × 1920', 'kofi-cover': 'Ko-fi cover · 1200 × 400', 'x-header': 'X header · 1500 × 500' }
+  const socialFig = (p) => `<figure><img src="${p}" alt=""><figcaption>${sizeNames[p.split('/').pop().replace('.png', '')] || ''}</figcaption></figure>`
+  const p5 = previews ? `<section class="page">${head}
+${section(7, 'Slides')}
+<div class="slides">${previews.slides.map((p, i) => `<figure><img src="${p}" alt=""><figcaption>${['Title', 'Section', 'Content', 'Two columns', 'Statement', 'Closing'][i] || ''}</figcaption></figure>`).join('')}</div>
+<p class="note">Files in <code>templates/slides/</code>: an editable <code>.pptx</code> (each layout is a slide master with placeholders; opens in PowerPoint, Keynote and Google Slides) and a PDF. 16:9 with 0.75 in margins; titles in ${esc(disp?.family || 'the display face')} 38 pt (54 on the title slide), body 22–24 pt and never under 18; six points at most. Brand colour on title, section and closing slides, paper behind content. The full logo opens and closes the deck; content slides carry only the small mark.</p>
+${section(8, 'Social')}
+<div class="posts">${previews.social.filter((p) => !/kofi|x-header/.test(p)).map(socialFig).join('')}<figure><img src="social/og-image.png" alt=""><figcaption>Link preview · 1200 × 630</figcaption></figure></div>
+<div class="banners">${previews.social.filter((p) => /kofi|x-header/.test(p)).map(socialFig).join('')}</div>
+<p class="note">Files in <code>templates/social/</code>, each with a <code>-blank</code> version (field, logo and bar, no text) for designing posts in Canva or Figma. One headline of eight words or fewer per image, the dark logo small in the top corner, the ${accent ? 'accent' : 'brand'} bar along the bottom. Stories keep text out of the top 250 and bottom 300 px; the Ko-fi cover crops its sides on phones, and the X header’s lower left sits under the profile picture.${site ? '' : ''}</p>
+${foot(5, total)}</section>` : ''
 
   const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>${esc(cfg.name)} brand guidelines</title>
 ${gf ? `<link rel="stylesheet" href="${gf}">` : ''}<style>
@@ -205,7 +234,14 @@ h3{font-size:13px;margin:4px 0 8px}
 .sw{display:flex;gap:10px;font-size:9.5px;line-height:1.45;color:#444}.sw i{flex:none;width:30px;height:30px;border-radius:50%}.sw b{color:#111;font-size:11px}.sw span{color:#888;text-transform:uppercase;letter-spacing:.05em;font-size:8.5px}
 .foot{margin-top:auto;display:flex;justify-content:space-between;font-size:9px;color:#888;border-top:1px solid #e5e5e5;padding-top:8px}
 code{font:10px ui-monospace,Menlo,monospace}
-</style></head><body>${p1}${p2}${p3}</body></html>`
+.shot{width:100%;border-radius:10px}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.cards{display:flex;gap:24px;justify-content:center;padding:22px;background:#f2f3f2;border-radius:12px}.cards figure,.slides figure,.posts figure,.banners figure{margin:0;display:flex;flex-direction:column;gap:6px;font-size:9.5px;color:#555}
+.cards img{width:3.2in;border-radius:4px;box-shadow:0 1px 2px rgba(0,0,0,.12),0 6px 16px rgba(0,0,0,.1)}
+.slides{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.slides img{width:100%;border-radius:4px;box-shadow:0 0 0 1px #e3e3e3}
+.posts{display:flex;gap:12px;align-items:flex-end}.posts img{height:1.55in;border-radius:4px;box-shadow:0 0 0 1px #e3e3e3}
+.banners{display:flex;gap:12px}.banners figure{flex:1}.banners img{width:100%;border-radius:4px}
+</style></head><body>${p1}${p2}${p3}${p4}${p5}</body></html>`
 
   const file = join(out, 'brand-guidelines.html')
   writeFileSync(file, html)

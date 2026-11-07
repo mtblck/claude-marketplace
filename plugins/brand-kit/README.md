@@ -21,6 +21,7 @@ What one `node scripts/export.mjs brand.json` writes:
 | `brand-guidelines.pdf` (+ `.html`, one PNG per page) | printable US Letter brand guidelines: cover and logo versions; construction, clear space, minimum size, one colour, misuse and icons; typography; colour with HEX, RGB, CMYK and contrast |
 | `pdf/` | every logo as a vector PDF, for print shops |
 | `social/` | `og-image.png` (1200 × 630 link preview: logo, tagline, accent bar) and `avatar.png` (800 × 800, circle-safe) |
+| `templates/` | email signature (HTML + text), business card (print PDF with bleed), slide template (`.pptx` + PDF) and social posts (square, portrait, story, Ko-fi cover, X header, each with a blank), with two pages about them in the guidelines |
 | `README.md` | which file to use for what |
 | `<name>-brand-kit.zip` | all of the above in one download |
 
