@@ -43,9 +43,9 @@
       "source": {
         "source": "github",
         "repo": "mtblck/cover-art",
-        "sha": "eed292846ec15281f90675d503f4ea082d31d888"
+        "sha": "9b48aacf400f84212a17a0a4161b6cf5c4413230"
       },
-      "description": "Full-bleed, representational 16:10 cover illustrations with the project's logo in a pill, for websites, apps, extensions and skills, made from the project's repo, purpose and colours, from its own repo (MIT, mtblck/cover-art).",
+      "description": "Full-bleed, representational 16:10 cover illustrations with the project's logo in a pill, for websites, apps, extensions and skills, with a 16:9 Ko-fi PNG and a square Instagram SVG and PNG of each, made from the project's repo, purpose and colours, from its own repo (MIT, mtblck/cover-art).",
       "category": "design"
     },
     {
