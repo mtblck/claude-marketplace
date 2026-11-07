@@ -36,6 +36,7 @@ The rules `logo` draws by. Read the section you need: before drawing, before loc
 ## Lockups
 
 - **Horizontal** The word's cap height is 40–55 % of the mark's height (`capRatio`, default 0.46), centred on the mark's vertical middle. The gap is 25–40 % of the mark's height (default 0.32).
+- **Mark as a letter** A solid, simple mark (a square, a circle) can instead sit at exactly the cap height, top on the capitals and bottom on the baseline, with a gap of about 40 % of the cap height: `lockup({ capRatio: 1, gap: 0.4 })`. It reads as the word's first letter and keeps the lockup compact. Render both options side by side and choose by eye; keep the larger-mark version for the stacked lockup.
 - **Stacked** The word centred under the mark, cap height about 30 % of the mark's width, gap about a third of the mark.
 - **Balance** Neither half should dominate. If the mark looks heavier, shrink it slightly or step the wordmark up a weight; don't change the mark's internal proportions.
 - **Clear space** Default 25 % of the mark's height on every side (`clearSpace` in `brand.json`). Minimum widths: mark 16 px, horizontal 96 px, stacked 64 px unless the check sheet says otherwise.
