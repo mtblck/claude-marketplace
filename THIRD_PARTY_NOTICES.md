@@ -42,3 +42,6 @@ open source).
 
 - `brand-kit` now lives in its own repo, mtblck/brand-kit (MIT, Matt's own),
   pinned by sha; its THIRD_PARTY_NOTICES.md lists the ideas it draws on.
+
+- `cover-art` now lives in its own repo, mtblck/cover-art (MIT, Matt's own),
+  pinned by sha.

@@ -40,8 +40,12 @@
     },
     {
       "name": "cover-art",
-      "source": "./plugins/cover-art",
-      "description": "Minimalist, representational 16:10 cover illustrations for websites, apps, extensions and skills, made from the project's repo, purpose and colours.",
+      "source": {
+        "source": "github",
+        "repo": "mtblck/cover-art",
+        "sha": "eed292846ec15281f90675d503f4ea082d31d888"
+      },
+      "description": "Full-bleed, representational 16:10 cover illustrations with the project's logo in a pill, for websites, apps, extensions and skills, made from the project's repo, purpose and colours, from its own repo (MIT, mtblck/cover-art).",
       "category": "design"
     },
     {
