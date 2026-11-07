@@ -53,7 +53,7 @@
     {
       "name": "brand-kit",
       "source": "./plugins/brand-kit",
-      "description": "logo (SVG logos with typefaces chosen from real Google Fonts, exported to SVG, PNG, favicons, app icons and a brand sheet) and icons (favicon, app and PWA icon sets from an existing logo).",
+      "description": "logo (SVG logos with typefaces chosen from real Google Fonts, exported to SVG, PNG, favicons, app icons and printable brand guidelines) and icons (favicon, app and PWA icon sets from an existing logo).",
       "category": "design"
     },
     {

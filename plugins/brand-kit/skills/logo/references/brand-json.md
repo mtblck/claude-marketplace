@@ -35,10 +35,13 @@ One file describes a brand; `scripts/export.mjs` turns it into every deliverable
 
 | Field | Meaning |
 |---|---|
-| `name`, `shortName` | Brand name (brand sheet, page titles, manifest). `shortName` is the home-screen label, at most 12 characters. |
-| `tagline` | Optional line for the brand sheet. |
-| `colors[]` | `name`, `hex`, `role`. Roles the export uses: `primary` (one-colour reversed ground, CSS), `accent` (white-on-accent test), `paper` (default icon tile, sheet hero), `dark` (dark grounds; defaults to the darkest colour). Any other role is listed and exported as a CSS variable. |
-| `type.display`, `type.text` | Google Font `family` and `weight` for the wordmark and headings, and for body copy. The brand sheet loads them live and prints the `<link>` and CSS. |
+| `name`, `shortName` | Brand name (guidelines, page titles, manifest). `shortName` is the home-screen label, at most 12 characters. |
+| `tagline` | Optional line for the guidelines' cover and type sample. |
+| `about` | One or two short paragraphs (split with a blank line, `\n\n`) introducing the brand on the guidelines' cover. Keep it under ~90 words or page 1 overflows. |
+| `version` | Guidelines version, default `1.0`. |
+| `construction` | One sentence on how the mark is built, under the construction drawing. |
+| `colors[]` | `name`, `hex`, `role`, optional `usage` (one sentence: where this colour goes). Roles the export uses: `primary` (one-colour reversed ground, CSS), `accent` (white-on-accent test), `paper` (default icon tile, sheet hero), `dark` (dark grounds; defaults to the darkest colour). Any other role is listed and exported as a CSS variable. |
+| `type.display`, `type.text` | Google Font `family` and `weight` for the wordmark and headings, and for body copy. The guidelines load them live for the specimens. |
 | `logos.<key>` | Any number of logos. `mark` is special: it drives the size ramp, clear-space diagram and one-colour tests. Usual keys: `mark`, `horizontal`, `stacked`, `wordmark`. `file` is the light-ground version; `dark` is the version for dark grounds; `minWidth` is in px. `black` (or `white`) is a hand-drawn one-colour version, needed when the logo sits on its own tile or relies on two colours touching; it is recoloured to make both. Without it, the main file is recoloured. `mono: false` skips the one-colour versions. |
 | `icon.file` | The art placed on icon tiles (usually the mark, or its dark version on a dark tile). Defaults to `logos.mark.file`. |
 | `icon.background` | Tile colour for apple-touch, PWA, maskable and 1024 app icons. Defaults to the paper colour. |

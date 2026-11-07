@@ -18,7 +18,7 @@ What one `node scripts/export.mjs brand.json` writes:
 | `png/` | every logo at 256–2048 px wide, transparent |
 | `icons/` | `favicon.ico` (16/32/48), `favicon.svg`, `apple-touch-icon.png`, `icon-192/512.png`, `icon-maskable-512.png`, `app-icon-1024.png`, `site.webmanifest`, `head.html` |
 | `check.png` | size ramp from 16 px, light and dark, one-colour tests, favicon in browser tabs, app icon on a home screen and under Android's mask |
-| `brand-sheet.html` / `.png` | one-page brand guide: logos, clear space, colours with contrast ratios, live typefaces with the CSS to use them, icons, don'ts |
+| `brand-guidelines.pdf` (+ `.html`, one PNG per page) | printable US Letter brand guidelines: cover and logo versions; construction, clear space, minimum size, one colour, misuse and icons; typography; colour with HEX, RGB, CMYK and contrast |
 
 Scripts (in `skills/logo/scripts/`, Node 18+):
 

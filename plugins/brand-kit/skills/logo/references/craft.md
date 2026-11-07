@@ -44,7 +44,7 @@ The rules `logo` draws by. Read the section you need: before drawing, before loc
 ## Colour
 
 - Start from the product's existing tokens. If there are none, choose a primary colour from the brief's adjectives (deep blue reads trustworthy, green growth, warm reds and oranges energy, black and white editorial), then add one accent with a clearly different hue and lightness, a paper (warm or cool off-white) and a dark.
-- The primary colour carries the wordmark, so it needs 4.5:1 or more on white; the brand sheet shows each contrast ratio.
+- The primary colour carries the wordmark, so it needs 4.5:1 or more on white; the guidelines show each contrast ratio.
 - The accent goes on one part of the mark, the part that carries the idea (Harbor's beacon).
 - The dark version swaps the primary colour for the paper and keeps the accent if it still has 3:1 or more against the dark. If not, lighten the accent for the dark version.
 - Every logo also exists in pure black and pure white. `export.mjs` makes these by recolouring every fill, which is why holes must be real holes.

@@ -1,6 +1,6 @@
 ---
 name: logo
-description: Design a logo as clean SVG (symbol, wordmark, monogram or combination), choose its typeface from real Google Fonts, and export the full kit (SVG and PNG logos, dark and one-colour versions, favicons, app icons, webmanifest and a one-page brand sheet). Use for a new logo, a logo refresh, or a brand identity for a product, project or business.
+description: Design a logo as clean SVG (symbol, wordmark, monogram or combination), choose its typeface from real Google Fonts, and export the full kit (SVG and PNG logos, dark and one-colour versions, favicons, app icons, webmanifest and printable brand guidelines). Use for a new logo, a logo refresh, or a brand identity for a product, project or business.
 ---
 
 # logo
@@ -21,7 +21,7 @@ Paths are relative to this skill's folder.
 |---|---|
 | `scripts/brand.mjs` | The kit. `loadFont(family, weight)` fetches a Google Font once (cached in `~/.cache/brand-kit`). `text(font, str, {size, tracking, x, y, anchor})` returns the word as an outlined path with its measurements. `lockup({mark, font, name, layout})` builds horizontal or stacked lockups. Shape helpers: `circle`, `ring`, `rect`, `poly`, `ngon`, `polar`, `arcBand`, `place`, plus `svg()` and `write()`. Import it from a draw script by absolute path; never hand-type a logo's SVG. |
 | `scripts/specimen.mjs` | `node scripts/specimen.mjs "Name" --group geometric,humanist [--font "Fraunces:600"] [--out DIR]` sets the name in every listed face at matched cap height on one numbered sheet (`specimen.svg` + `.png`). |
-| `scripts/export.mjs` | `node scripts/export.mjs brand.json` writes `dist/` with `svg/`, `png/`, `icons/` (favicon.ico/svg, apple-touch, PWA and maskable, 1024 app icon, manifest, `head.html`), `check.png` and `brand-sheet.html` + `.png`. |
+| `scripts/export.mjs` | `node scripts/export.mjs brand.json` writes `dist/` with `svg/`, `png/`, `icons/` (favicon.ico/svg, apple-touch, PWA and maskable, 1024 app icon, manifest, `head.html`), `check.png`, and `brand-guidelines.pdf` (US Letter, three pages, also as `.html` and one PNG per page; drawn by `guide.mjs`). |
 | `scripts/render.mjs` | `node scripts/render.mjs art.svg --width 512` for a quick PNG of any SVG while drawing. |
 | `references/typefaces.json` | Around 70 commercially free Google Fonts in eleven voices (geometric, grotesque, humanist, rounded, display, condensed, serif-modern, serif-classic, slab, mono, script), each with body faces that pair with it. |
 | `references/craft.md` | Construction rules, the shape vocabulary, lockup proportions, small-size and icon rules. Read it before drawing. |
@@ -37,9 +37,9 @@ The scripts need Node 18+. Rendering uses Playwright's Chromium if one is instal
 3. **Type.** Pick two or three voices from `typefaces.json` that match the adjectives and run `specimen.mjs` on the name, adding any extra faces with `--font`. Try the name in sentence case and in capitals or lower case if it might suit. Shortlist two or three faces, and note any letter with a shape the mark could borrow, such as a round `o`, a shared stem or a notch.
 4. **Draw** each of the three concepts with a script that imports `brand.mjs`. Draw it in black first on a 256 grid, and only then add colour. Build its horizontal lockup with the shortlisted face. Render all three side by side at 512 and at 32 px into one PNG, number them, and look.
 5. **Checkpoint.** Show the user the three concepts (the PNG, plus the specimen sheet if type is still open) with your recommendation. If they're around, wait for their pick before building the kit; it's the one decision that's theirs. If they've said to go ahead, take your recommendation. Iterate by number ("2, but a lighter wordmark"); keep earlier rounds in `rounds/01/`, `rounds/02/` so nothing is lost.
-6. **Refine** the chosen concept against `references/craft.md`: optical corrections, consistent radii and stroke weights, tracking, a simplified favicon if the mark has a detail under 1/32 of its size, and dark and one-colour versions. Write `brand.json`.
-7. **Export and check.** Run `node scripts/export.mjs brand.json`, then read `dist/check.png` and `dist/brand-sheet.png`. Fix whatever fails the checklist below and export again. Expect at least two passes.
-8. **Deliver** `dist/` (attach `brand-sheet.png` and `check.png` to the reply, link the folder), the draw script and `brand.json`, so the logo can be changed later by editing code. In a repo, the logo SVGs go where the site keeps its images and `icons/` goes in `public/` with `head.html` pasted into the layout. Say plainly that the logo hasn't been checked for trademark conflicts.
+6. **Refine** the chosen concept against `references/craft.md`: optical corrections, consistent radii and stroke weights, tracking, a simplified favicon if the mark has a detail under 1/32 of its size, and dark and one-colour versions. Write `brand.json`, including `about` (two short paragraphs for the guidelines' introduction), `construction` (one sentence on how the mark is built) and a `usage` line per colour.
+7. **Export and check.** Run `node scripts/export.mjs brand.json`, then read `dist/check.png` and every `dist/brand-guidelines-N.png` (the export warns if a page overflows Letter). Fix whatever fails the checklist below and export again. Expect at least two passes.
+8. **Deliver** `dist/` (attach `brand-guidelines.pdf` and `check.png` to the reply, link the folder), the draw script and `brand.json`, so the logo can be changed later by editing code. In a repo, the logo SVGs go where the site keeps its images and `icons/` goes in `public/` with `head.html` pasted into the layout. Say plainly that the logo hasn't been checked for trademark conflicts.
 
 ## Style rules (the short version; details in craft.md)
 
@@ -49,7 +49,7 @@ The scripts need Node 18+. Rendering uses Playwright's Chromium if one is instal
 - **Lockups** The wordmark's cap height is about 40–55 % of the mark's height in a horizontal lockup, with a gap of about a third of the mark. The stacked version centres the word under the mark. Both use the same mark and word, just placed differently.
 - **Colour** Start from the product's own tokens if it has them. One primary colour that passes 4.5:1 on white (it will carry the wordmark), an accent used on one part of the mark, and a paper and a dark. Every version must also work in pure black and pure white.
 
-## Review checklist (read check.png and brand-sheet.png)
+## Review checklist (read check.png and the brand-guidelines pages)
 
 - At 16 and 32 px the mark is still recognisably itself, not a smudge; the favicon reads in both the light and the dark tab.
 - One-colour black, white on the ink, and white on the accent all hold, with no part relying on a second colour to be seen.

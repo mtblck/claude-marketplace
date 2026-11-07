@@ -16,7 +16,7 @@ plugins are installed as `<plugin>@mtblck`.
 | `side-projects` | `new-project`, `portfolio-tool`, `project-tickets` | Matt's claude.ai skills |
 | `cover-art` | `cover-art`: minimalist, representational 16:10 cover illustrations for a project, from its repo, purpose and colours, for portfolio cards and case-study heroes | Matt |
 | `linewash` | `linewash`: spot illustrations for empty states, error pages, onboarding and success screens in one bold line with pale two-tone washes, as SVG | Matt |
-| `brand-kit` | `logo`: SVG logos with the typeface picked from a specimen sheet of real Google Fonts, exported to SVG and PNG, dark and one-colour versions, favicons, app icons, webmanifest and a one-page brand sheet; `icons`: favicon, app and PWA icon sets from an existing logo | Matt |
+| `brand-kit` | `logo`: SVG logos with the typeface picked from a specimen sheet of real Google Fonts, exported to SVG and PNG, dark and one-colour versions, favicons, app icons, webmanifest and printable US Letter brand guidelines (PDF); `icons`: favicon, app and PWA icon sets from an existing logo | Matt |
 | `web-design-guidelines` | `web-design-guidelines`: UI and accessibility review | vendored from [vercel-labs](https://github.com/vercel-labs/web-interface-guidelines), MIT |
 | `interaction-design` | `interaction-design`: microinteractions, motion, transitions, loading states, reduced motion | vendored from [wshobson/agents](https://github.com/wshobson/agents), MIT |
 | `frontend-design` | `frontend-design`: distinctive frontend design direction | upstream [anthropics/claude-plugins-official](https://github.com/anthropics/claude-plugins-official), Apache-2.0 |
