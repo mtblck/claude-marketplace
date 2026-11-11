@@ -52,10 +52,12 @@ for (const f of run.findings || []) {
 const finding = (g) => {
   const urls = [...g.urls]
   const many = urls.length > 1
+  const first = g.msgs[0].split(/(?<=[.;:])\s/)[0]
+  const rest = g.msgs[0].slice(first.length).trim()
   return {
     id: `finding.${g.id}`,
-    title: g.msgs[0].split(/(?<=[.;:])\s/)[0].replace(/[.;:]$/, ''),
-    detail: many ? `${g.msgs[0]}${g.msgs.length > 1 ? ` (and ${g.msgs.length - 1} similar)` : ''}` : g.msgs[0],
+    title: first.replace(/[.;:]$/, ''),
+    detail: `${rest}${g.msgs.length > 1 ? `${rest ? ' ' : ''}(${g.msgs.length} occurrences)` : ''}`,
     where: urls.length ? `${many ? `${urls.length} pages: ` : ''}${urls.slice(0, 6).join(', ')}${urls.length > 6 ? ' …' : ''}` : '',
     priority: g.sev,
     links: [],
