@@ -18,8 +18,9 @@ import { writeFileSync } from 'node:fs'
 import { createRequire } from 'node:module'
 import { execSync } from 'node:child_process'
 import { join } from 'node:path'
+import { parseSocial, fetchImage, socialFindings } from './lib/social.mjs'
 
-const VERSION = '1.0.0'
+const VERSION = '1.1.0'
 
 // ---------------------------------------------------------------- arguments
 
@@ -454,7 +455,8 @@ async function main() {
           const page = await ctx.newPage()
           try {
             await page.goto(p.finalUrl, { waitUntil: 'networkidle', timeout: TIMEOUT * 2 })
-            p.rendered = extract(await page.content(), p.finalUrl)
+            p.renderedHtml = await page.content()
+            p.rendered = extract(p.renderedHtml, p.finalUrl)
           } catch (e) {
             p.renderError = e.message.split('\n')[0]
           }
@@ -485,6 +487,7 @@ async function main() {
 
   // per-page checks
   const titles = new Map()
+  const imageCache = new Map()
   const descs = new Map()
   const byUrl = new Map(results.map((p) => [p.finalUrl, p]))
   for (const p of results) {
@@ -579,9 +582,17 @@ async function main() {
     for (const j of ld.filter((j) => !j.ok)) add('P1', 'jsonld.invalid', `JSON-LD block does not parse: ${j.error}.`, p.url)
     p.schemaTypes = [...new Set(ld.flatMap((j) => j.types || []))]
 
-    const og = r?.og?.title ? r.og : d.og
-    if (!d.og.title || !d.og.image) add('P3', 'og.missing', `Raw HTML lacks ${[!d.og.title && 'og:title', !d.og.image && 'og:image'].filter(Boolean).join(' and ')}; link previews (which never run JavaScript) fall back to guesses.`, p.url)
-    if (og.image && !/^https?:\/\//i.test(og.image)) add('P3', 'og.relative-image', `og:image is relative ("${og.image}"); most scrapers need an absolute URL.`, p.url)
+    // social cards: raw HTML only, since link-preview scrapers never run JavaScript
+    const soc = parseSocial(cache.get(p.url)?.body || '', p.finalUrl)
+    const firstImg = soc.og.images[0]?.url
+    let img = null
+    if (firstImg) {
+      const key = toLocal(firstImg)
+      if (!imageCache.has(key)) imageCache.set(key, await fetchImage(key, { timeout: TIMEOUT }))
+      img = imageCache.get(key)
+    }
+    socialFindings(soc, img, (sev, id, msg) => add(sev, id, msg, p.url), { rendered: p.renderedHtml ? parseSocial(p.renderedHtml, p.finalUrl) : null, pageIsHttps: /^https:/.test(p.finalUrl) })
+    p.social = { title: soc.og.title || soc.title, description: soc.og.description || soc.description, image: firstImg || null, imageSize: img?.size ? `${img.size.width}×${img.size.height}` : null, twitterCard: soc.twitter.card }
     if (d.mixed.length) add('P2', 'mixed-content', `${d.mixed.length} http:// resource(s) on an https page (e.g. ${d.mixed[0]}).`, p.url)
 
     const hl = d.hreflang.length ? d.hreflang : r?.hreflang || []
@@ -662,6 +673,7 @@ async function main() {
       wordsRaw: p.raw?.words ?? null,
       wordsRendered: p.rendered?.words ?? null,
       schemaTypes: p.schemaTypes || [],
+      social: p.social || null,
       hreflang: (p.raw?.hreflang.length ? p.raw.hreflang : p.rendered?.hreflang) || [],
       renderError: p.renderError,
     })),
@@ -693,6 +705,12 @@ function report(r) {
   for (const p of r.pages) {
     const t = (p.title || p.renderedTitle || '').replace(/\|/g, '\\|').slice(0, 60)
     L.push(`| ${p.url} | ${p.status}${p.redirects ? ` (${p.redirects} redirect)` : ''} | ${t || '—'} | ${p.wordsRaw ?? '—'} / ${p.wordsRendered ?? '—'} | ${p.canonical ? (p.canonical === p.finalUrl ? 'self' : p.canonical) : '—'} | ${p.schemaTypes.join(', ') || '—'} |`)
+  }
+  const sharable = r.pages.filter((p) => p.social)
+  if (sharable.length) {
+    L.push('', '## Social cards (served HTML)', '', '| URL | Card title | Description | Image | twitter:card |', '| --- | --- | --- | --- | --- |')
+    const cell = (v, n) => (v ? String(v).replace(/\|/g, '\\|').slice(0, n) : '—')
+    for (const p of sharable) L.push(`| ${p.url} | ${cell(p.social.title, 50)} | ${cell(p.social.description, 60)} | ${p.social.image ? `${cell(p.social.image, 60)}${p.social.imageSize ? ` (${p.social.imageSize})` : ''}` : '—'} | ${p.social.twitterCard || '—'} |`)
   }
   return L.join('\n') + '\n'
 }

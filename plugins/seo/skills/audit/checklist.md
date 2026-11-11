@@ -35,7 +35,7 @@ a line in the report.
 - **Parameters and facets** (filters, sorts, tracking params) don't create
   crawlable duplicate URLs, or they canonicalise to the clean URL.
 
-## 2. Metadata and canonicals
+## 2. Metadata, canonicals and social cards
 
 - **Title:** present, unique per page, describes the page (primary topic first,
   site name last), roughly 30–60 characters so it isn't cut off. Titles that are
@@ -52,7 +52,9 @@ a line in the report.
   for structure, not styling.
 - **Open Graph and Twitter cards** (`og:title`, `og:description`, absolute
   `og:image` at 1200×630, `twitter:card`): not ranking signals, but they decide
-  how shared links look, and link-preview scrapers never run JavaScript.
+  how shared links look, and link-preview scrapers never run JavaScript. The
+  checker's `social.*` findings cover them; hand anything deeper (previews,
+  per-page images, fixes) to the `social` skill.
 - **International sites:** `hreflang` with valid codes (`en-GB`, not `en-UK`),
   a self-reference on every page, return links from every alternate (a one-way
   pair is ignored), consistent with canonicals (each locale canonicalises to

@@ -83,8 +83,8 @@ be.
 ## 3. Code pass
 
 Start subagents in parallel, one per area of `checklist.md` next to this file
-(crawl and index; metadata and canonicals; rendering and links; structured data;
-content and E-E-A-T; performance and mobile; AI search). Give each the stack, the
+(crawl and index; metadata, canonicals and social cards; rendering and links;
+structured data; content and E-E-A-T; performance and mobile; AI search). Give each the stack, the
 route classification, the checker's JSON and the area's checklist section. Each
 reads the code that produces those pages in full and returns findings as: the
 route(s), what is wrong, the evidence (checker finding, served HTML, `file:line`),

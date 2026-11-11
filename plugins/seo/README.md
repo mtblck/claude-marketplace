@@ -9,6 +9,7 @@ the place in the code that causes it.
 | `/seo:audit [url \| route \| fix]` | Full audit: crawl and index controls, metadata and canonicals, sitemaps, raw vs rendered HTML, links, structured data, Core Web Vitals, content and E-E-A-T, AI search. Verified findings graded P1/P2/P3, a technical score, `SEO-AUDIT.md`. With `fix`, fixes shared code first and re-measures. |
 | `/seo:page <url \| route> [query]` | One page against the query it should win and the pages that rank for it: intent, title and description options, content gaps, internal links. |
 | `/seo:schema [url \| route] [type]` | Find, validate and write schema.org JSON-LD the way the stack does head content. |
+| `/seo:social [url ...]` | Social cards and link previews: OG and Twitter tags on every page, the share image fetched and measured, and a picture of how the link unfurls on Slack, Facebook, X, LinkedIn and iMessage. |
 | `/seo:ai-search [url]` | AI crawler access, pages that work without JavaScript, quotable content, entity clarity, llms.txt, each call labelled documented or judgement. |
 
 Claude also picks them up from their descriptions ("why isn't this page indexed?").
@@ -28,7 +29,7 @@ AI search fetchers, training crawlers and control tokens), the sitemap or sitema
 index, and an even sample of sitemap URLs (or a crawl from the home page), then
 checks status codes, redirects, noindex in sitemaps, titles and descriptions
 (missing, length, duplicates), canonicals and their targets, `lang`, viewport,
-headings, images, JSON-LD parsing, Open Graph, mixed content, hreflang codes and
+headings, images, JSON-LD parsing, Open Graph and Twitter card tags (and fetches each share image to check its status, type, file size, pixel size and ratio), mixed content, hreflang codes and
 return links, internal link status, soft 404s, http → https and www/apex
 consolidation (live sites only), and what only appears after JavaScript runs.
 Exit 1 when there's a P1, so it can gate a deploy. It only sends GET requests to
@@ -36,6 +37,11 @@ the site it's pointed at.
 
 The score deducts once per kind of problem (P1 12, P2 4, P3 1). It's a gauge for
 comparing runs, not a ranking prediction.
+
+`scripts/social-preview.mjs --url <page> [--url ...] --out <dir>` draws how each
+page unfurls on Slack, Facebook, X, LinkedIn and iMessage (HTML, plus a PNG with
+Playwright), from the served HTML only, the way the scrapers see it. The layouts
+are close approximations, not pixel copies.
 
 Test: `node --test "plugins/seo/scripts/test/*.test.mjs"` (serves a fixture site
 with planted problems on localhost).
