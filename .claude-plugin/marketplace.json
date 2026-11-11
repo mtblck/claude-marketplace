@@ -39,6 +39,12 @@
       "category": "productivity"
     },
     {
+      "name": "seo",
+      "source": "./plugins/seo",
+      "description": "SEO audits: full site audit (crawl and index, metadata, canonicals, sitemaps, rendering, structured data, Core Web Vitals, content, AI search) with a bundled zero-dependency checker run against the live site or a local build, plus one-page review, structured data and AI search readiness skills.",
+      "category": "development"
+    },
+    {
       "name": "cover-art",
       "source": {
         "source": "github",
