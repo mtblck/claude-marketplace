@@ -1,0 +1,23 @@
+{
+  "name": "seo",
+  "version": "1.3.1",
+  "description": "SEO audits for Matt's sites and apps: a full audit (crawl and index, metadata, canonicals, sitemaps, rendering, structured data, Core Web Vitals, content, AI search) measured with a bundled zero-dependency checker against the live site or a local build and read against the code, plus a one-page review against what ranks, structured data, social cards and link previews (Slack, Facebook, X, LinkedIn, iMessage), and AI search readiness. Report-only unless asked to fix.",
+  "author": {
+    "name": "mtblck"
+  },
+  "license": "MIT",
+  "keywords": [
+    "seo",
+    "audit",
+    "technical-seo",
+    "structured-data",
+    "json-ld",
+    "open-graph",
+    "social-cards",
+    "sitemap",
+    "robots-txt",
+    "core-web-vitals",
+    "geo",
+    "ai-search"
+  ]
+}

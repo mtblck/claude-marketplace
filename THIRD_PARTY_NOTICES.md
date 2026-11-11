@@ -28,6 +28,20 @@ open source).
 
 ## Ideas adapted
 
+- `plugins/seo`: written from scratch after surveying SEO skills on GitHub
+  (2026-11-11); no text or code was copied. Ideas taken: treating fetched pages as
+  untrusted data and splitting the audit into parallel specialist passes
+  (AgriciDaniel/claude-seo, MIT); the crawl → technical → on-page → content →
+  authority order and the warning that raw fetches can't see JavaScript-injected
+  JSON-LD (coreyhaines31/marketingskills, MIT); reading the code and the served
+  site together, classifying routes as public-index / public-noindex / private,
+  fixing shared infrastructure first and proving fixes by re-fetching
+  (umutxyp/Seo-Promt-Master, MIT); not inventing ranking weights
+  (addyosmani/web-quality-skills, MIT); reviewing a page against the live top
+  results (inhouseseo/superseo-skills, Apache-2.0); separating AI search crawlers
+  from training crawlers (zubair-trabzada/geo-seo-claude, MIT). The plugin's
+  README has the full survey.
+
 - `plugins/dependency-review`: the shape of the review (work out what the diff really
   changes, classify each advisory's reachability with evidence, vet every introduced
   version's supply chain, fixed verdict rules) follows a Dependabot security-update

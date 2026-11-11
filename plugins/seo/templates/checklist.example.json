@@ -1,0 +1,329 @@
+{
+  "title": "Example portfolio launch checklist",
+  "url": "https://portfolio.example",
+  "generated": "2026-11-11",
+  "source": "seo-check 1.3.1 via /seo:audit (example data)",
+  "score": 60,
+  "sections": [
+    {
+      "id": "p1",
+      "title": "Fix before launch",
+      "intro": "These stop pages from being crawled or indexed, or break every share of a page.",
+      "items": []
+    },
+    {
+      "id": "p2",
+      "title": "Fix soon",
+      "intro": "These cost visibility or clicks.",
+      "items": [
+        {
+          "id": "finding.canonical.js-only",
+          "title": "Put the canonical link in the served HTML",
+          "detail": "The canonical is added by react-helmet after load. Fixed by prerendering, or set it per route in the prerendered HTML.",
+          "where": "src/components/Seo.tsx:14",
+          "priority": "P2",
+          "links": [],
+          "done": false,
+          "doneAt": null,
+          "note": ""
+        },
+        {
+          "id": "finding.description.missing",
+          "title": "Write a meta description for each page",
+          "detail": "No page has one. One or two sentences each, about 150 characters.",
+          "where": "src/components/Seo.tsx",
+          "priority": "P2",
+          "links": [],
+          "done": false,
+          "doneAt": null,
+          "note": ""
+        },
+        {
+          "id": "finding.icons.favicon-missing",
+          "title": "Add a favicon",
+          "detail": "/favicon.ico answers with the app shell, so search results and tabs show a generic globe. The brand-kit icons skill makes the full set.",
+          "where": "public/",
+          "priority": "P2",
+          "links": [],
+          "done": false,
+          "doneAt": null,
+          "note": ""
+        },
+        {
+          "id": "finding.render.content-js-only",
+          "title": "Prerender the public pages",
+          "detail": "Every page is an empty <div id=\"root\"> until JavaScript runs. Google renders it later, but Slack, Facebook, LinkedIn and AI crawlers see nothing. Prerender the five public routes at build time.",
+          "where": "vite.config.ts, src/main.tsx",
+          "priority": "P2",
+          "links": [],
+          "done": false,
+          "doneAt": null,
+          "note": ""
+        },
+        {
+          "id": "finding.sitemap.missing",
+          "title": "Generate a sitemap",
+          "detail": "/sitemap.xml returns the app shell. Generate one at build time from the route list and add a Sitemap: line to robots.txt.",
+          "where": "scripts/build-sitemap.mjs (new)",
+          "priority": "P2",
+          "links": [],
+          "done": false,
+          "doneAt": null,
+          "note": ""
+        },
+        {
+          "id": "finding.social.description",
+          "title": "Add og:description",
+          "detail": "Shared links show no summary.",
+          "where": "index.html",
+          "priority": "P2",
+          "links": [],
+          "done": false,
+          "doneAt": null,
+          "note": ""
+        },
+        {
+          "id": "finding.social.image",
+          "title": "Add a share image",
+          "detail": "No og:image on any page, so shared links show no picture. Use the cover-art share image for project pages and a brand-kit image for the rest.",
+          "where": "index.html",
+          "priority": "P2",
+          "links": [],
+          "done": false,
+          "doneAt": null,
+          "note": ""
+        },
+        {
+          "id": "finding.soft-404",
+          "title": "Return a real 404 for unknown URLs",
+          "detail": "Any made-up URL answers 200 with the home page shell. Add a 404.html and stop rewriting every path to index.html.",
+          "where": "vercel.json:3",
+          "priority": "P2",
+          "links": [],
+          "done": false,
+          "doneAt": null,
+          "note": ""
+        }
+      ]
+    },
+    {
+      "id": "p3",
+      "title": "Polish",
+      "intro": "Small things worth doing while you are in the code.",
+      "items": [
+        {
+          "id": "finding.icons.apple-touch",
+          "title": "Add an apple-touch-icon",
+          "detail": "A 180\u00d7180 PNG for iOS home screens and iMessage link previews.",
+          "where": "index.html, public/",
+          "priority": "P3",
+          "links": [],
+          "done": false,
+          "doneAt": null,
+          "note": ""
+        },
+        {
+          "id": "finding.icons.theme-color",
+          "title": "Add a theme-color meta tag",
+          "detail": "Mobile browser bars and some link previews (Discord) use it for the accent colour.",
+          "where": "index.html",
+          "priority": "P3",
+          "links": [],
+          "done": false,
+          "doneAt": null,
+          "note": ""
+        },
+        {
+          "id": "finding.links.js-only",
+          "title": "Serve navigation links in the HTML",
+          "detail": "The nav has no <a href> links until JavaScript runs. Prerendering fixes this too.",
+          "where": "src/components/Nav.tsx",
+          "priority": "P3",
+          "links": [],
+          "done": false,
+          "doneAt": null,
+          "note": ""
+        },
+        {
+          "id": "finding.robots.missing",
+          "title": "Add a robots.txt",
+          "detail": "Crawlers treat a missing one as \"allow all\", but it should list the sitemap.",
+          "where": "public/robots.txt (new)",
+          "priority": "P3",
+          "links": [],
+          "done": false,
+          "doneAt": null,
+          "note": ""
+        },
+        {
+          "id": "finding.social.og-title",
+          "title": "Add og:title",
+          "detail": "Facebook, Slack and LinkedIn fall back to <title>, which carries the site-name suffix.",
+          "where": "index.html",
+          "priority": "P3",
+          "links": [],
+          "done": false,
+          "doneAt": null,
+          "note": ""
+        },
+        {
+          "id": "finding.social.twitter-card",
+          "title": "Add twitter:card",
+          "detail": "X shows at most a small card without it. Use summary_large_image.",
+          "where": "index.html",
+          "priority": "P3",
+          "links": [],
+          "done": false,
+          "doneAt": null,
+          "note": ""
+        },
+        {
+          "id": "finding.title.changes",
+          "title": "Put the real page title in the HTML",
+          "detail": "The served title is \"Vite App\"; JavaScript changes it later, so link previews and AI crawlers see \"Vite App\".",
+          "where": "index.html:7",
+          "priority": "P3",
+          "links": [],
+          "done": false,
+          "doneAt": null,
+          "note": ""
+        },
+        {
+          "id": "finding.title.short",
+          "title": "Replace the \"Vite App\" title",
+          "detail": "Covered by the item above once the real titles are served.",
+          "where": "index.html:7",
+          "priority": "P3",
+          "links": [],
+          "done": false,
+          "doneAt": null,
+          "note": ""
+        }
+      ]
+    },
+    {
+      "id": "setup",
+      "title": "Set up once",
+      "intro": "No crawl can see these. Tick what is already done.",
+      "items": [
+        {
+          "id": "setup.gsc",
+          "title": "Verify the site in Google Search Console",
+          "detail": "Add a Domain property and verify it with the DNS TXT record, so every protocol and subdomain is covered.",
+          "where": "",
+          "priority": null,
+          "links": [
+            {
+              "label": "Open Search Console",
+              "href": "https://search.google.com/search-console"
+            }
+          ],
+          "done": true,
+          "doneAt": "2026-11-10",
+          "note": ""
+        },
+        {
+          "id": "setup.gsc-sitemap",
+          "title": "Submit the sitemap in Search Console",
+          "detail": "Sitemaps \u2192 add the sitemap URL. Then check Pages \u2192 \"Why pages aren't indexed\" a few days later.",
+          "where": "",
+          "priority": null,
+          "links": [
+            {
+              "label": "Sitemaps report help",
+              "href": "https://support.google.com/webmasters/answer/7451001"
+            }
+          ],
+          "done": true,
+          "doneAt": "2026-11-10",
+          "note": ""
+        },
+        {
+          "id": "setup.bing",
+          "title": "Add the site to Bing Webmaster Tools",
+          "detail": "Import it from Search Console in one step, then submit the sitemap. Bing feeds DuckDuckGo, Yahoo, Copilot and several AI search products.",
+          "where": "",
+          "priority": null,
+          "links": [
+            {
+              "label": "Open Bing Webmaster Tools",
+              "href": "https://www.bing.com/webmasters"
+            }
+          ],
+          "done": false,
+          "doneAt": null,
+          "note": "Import from Search Console once the sitemap is live"
+        },
+        {
+          "id": "setup.indexnow",
+          "title": "Decide on IndexNow",
+          "detail": "Optional: tells Bing, Yandex, Seznam and Naver about changed pages straight away (not Google). Worth it for sites that publish often.",
+          "where": "",
+          "priority": null,
+          "links": [
+            {
+              "label": "IndexNow",
+              "href": "https://www.indexnow.org"
+            }
+          ],
+          "done": false,
+          "doneAt": null,
+          "note": ""
+        },
+        {
+          "id": "setup.profiles",
+          "title": "Link profiles both ways",
+          "detail": "List the GitHub, LinkedIn and social profiles in the Person or Organization JSON-LD sameAs, and link each profile back to the site. For Mastodon, add <link rel=\"me\"> and <meta name=\"fediverse:creator\"> to the home page.",
+          "where": "",
+          "priority": null,
+          "links": [],
+          "done": false,
+          "doneAt": null,
+          "note": ""
+        },
+        {
+          "id": "setup.analytics",
+          "title": "Make organic search traffic measurable",
+          "detail": "Vercel Web Analytics referrers, GA4 or Plausible: something that separates search traffic, so the next audit can show what changed.",
+          "where": "",
+          "priority": null,
+          "links": [],
+          "done": false,
+          "doneAt": null,
+          "note": ""
+        },
+        {
+          "id": "setup.share-test",
+          "title": "Share the home page once on each platform",
+          "detail": "Paste the link in a Slack DM to yourself and run it through the Facebook Sharing Debugger and LinkedIn Post Inspector, which also refresh their caches.",
+          "where": "",
+          "priority": null,
+          "links": [
+            {
+              "label": "Facebook Sharing Debugger",
+              "href": "https://developers.facebook.com/tools/debug/"
+            },
+            {
+              "label": "LinkedIn Post Inspector",
+              "href": "https://www.linkedin.com/post-inspector/"
+            }
+          ],
+          "done": false,
+          "doneAt": null,
+          "note": ""
+        },
+        {
+          "id": "setup.redirects",
+          "title": "Keep redirects for old URLs",
+          "detail": "When routes change or the site moves domain, 301 every URL that ever had traffic to its new home, and keep the old property in Search Console.",
+          "where": "",
+          "priority": null,
+          "links": [],
+          "done": false,
+          "doneAt": null,
+          "note": ""
+        }
+      ]
+    }
+  ]
+}
