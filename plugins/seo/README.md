@@ -6,7 +6,7 @@ the place in the code that causes it.
 
 | Skill | Use it for |
 | --- | --- |
-| `/seo:audit [url \| route \| fix]` | Full audit: crawl and index controls, metadata and canonicals, sitemaps, raw vs rendered HTML, links, structured data, Core Web Vitals, content and E-E-A-T, AI search. Verified findings graded P1/P2/P3, a technical score, `SEO-AUDIT.md`. With `fix`, fixes shared code first and re-measures. |
+| `/seo:audit [url \| route \| fix]` | Full audit: crawl and index controls, metadata and canonicals, sitemaps, raw vs rendered HTML, links, structured data, Core Web Vitals, content and E-E-A-T, AI search. Verified findings graded P1/P2/P3, a technical score, `SEO-AUDIT.md`, and an interactive launch checklist to tick off. With `fix`, fixes shared code first and re-measures. |
 | `/seo:page <url \| route> [query]` | One page against the query it should win and the pages that rank for it: intent, title and description options, content gaps, internal links. |
 | `/seo:schema [url \| route] [type]` | Find, validate and write schema.org JSON-LD the way the stack does head content. |
 | `/seo:social [url ...]` | Social cards and link previews: OG and Twitter tags on every page, the share image fetched and measured, and a picture of how the link unfurls on Slack, Facebook, X, LinkedIn and iMessage. |
@@ -42,6 +42,12 @@ comparing runs, not a ranking prediction.
 page unfurls on Slack, Facebook, X, LinkedIn and iMessage (HTML, plus a PNG with
 Playwright), from the served HTML only, the way the scrapers see it. The layouts
 are close approximations, not pixel copies.
+
+`scripts/checklist.mjs --from seo.json --out <dir>` turns a checker run into an
+interactive launch checklist (`templates/checklist.html` plus `checklist.json`):
+fixes grouped by priority, the set-up-once steps, ticks, dates and notes, and
+"Copy as Markdown". Published as an Artifact, ticks save into the page; re-runs
+carry ticks over and move fixed items to their own section.
 
 Test: `node --test "plugins/seo/scripts/test/*.test.mjs"` (serves a fixture site
 with planted problems on localhost).

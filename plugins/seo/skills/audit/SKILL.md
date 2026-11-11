@@ -137,7 +137,29 @@ repo, unless asked):
 5. **Next run:** the exact command to re-run the checker, so the score can be
    compared.
 
-Lead the reply with the summary, then link the report.
+Then make the **launch checklist**, an interactive page where the owner ticks
+off fixes and set-up steps and leaves notes:
+
+1. `node "${CLAUDE_PLUGIN_ROOT}/scripts/checklist.mjs" --from seo-live.json --out <dir>`
+   (the checker's `--json` output; add `--previous <old>/checklist.json` when
+   re-auditing a site that already has one, so ticks and notes carry over and
+   fixed items move to "Fixed since last audit"). It writes `checklist.json`
+   and `checklist.html`.
+2. Edit `checklist.json` to match the verified findings: drop items step 4
+   rejected, add findings the code pass found that the checker can't see,
+   rewrite each `title` as a plain action ("Return a real 404 for unknown
+   URLs"), and fill `detail` (what's wrong and the fix) and `where` (the
+   `file:line` to change). `templates/checklist.example.json` shows the shape.
+3. If the Artifact tool is available, publish `checklist.html` with
+   `files: {"checklist.json": "<dir>/checklist.json"}`,
+   `capabilities: {"artifact": {}}`, `icon: "checklist"` and a one-line
+   description. Ticks and notes then save into the page for everyone who can
+   edit it; others keep theirs in their own browser. Re-auditing the same
+   site: read the live `checklist.json` from the artifact first, pass it as
+   `--previous`, and publish to the same URL. Without the Artifact tool, put
+   the checklist in `SEO-AUDIT.md` as a Markdown task list instead.
+
+Lead the reply with the summary, then link the report and the checklist.
 
 ## 7. Fix (only when asked)
 

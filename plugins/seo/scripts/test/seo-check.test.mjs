@@ -7,7 +7,7 @@ import { createServer } from 'node:http'
 import { execFile } from 'node:child_process'
 import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
-import { mkdtempSync, readFileSync } from 'node:fs'
+import { mkdtempSync, readFileSync, writeFileSync, existsSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 
 const SCRIPT = join(dirname(fileURLToPath(import.meta.url)), '..', 'seo-check.mjs')
@@ -102,4 +102,36 @@ test('reports the planted problems', async () => {
   assert.equal(gpt.allowed, false)
   assert.equal(google.allowed, true)
   assert.deepEqual(r.pages.find((p) => p.url.endsWith(`${port}/`)).schemaTypes, ['Organization'])
+})
+
+test('checklist.mjs builds the checklist and carries ticks over', async () => {
+  const dir = mkdtempSync(join(tmpdir(), 'seo-checklist-'))
+  const run = { tool: 'seo-check test', url: 'https://example.com/', startedAt: '2026-11-11T00:00:00Z', findings: [
+    { sev: 'P1', id: 'page.noindex-in-sitemap', msg: 'Page is noindex but listed in the sitemap.', url: 'https://example.com/a' },
+    { sev: 'P2', id: 'img.alt', msg: '2 image(s) without an alt attribute.', url: 'https://example.com/a' },
+    { sev: 'P2', id: 'img.alt', msg: '1 image(s) without an alt attribute.', url: 'https://example.com/b' },
+  ] }
+  writeFileSync(join(dir, 'run.json'), JSON.stringify(run))
+  const CL = join(dirname(SCRIPT), 'checklist.mjs')
+  const go = (args) => new Promise((resolve, reject) => execFile('node', [CL, ...args], (err) => (err ? reject(err) : resolve())))
+  await go(['--from', join(dir, 'run.json'), '--out', join(dir, 'v1')])
+  const v1 = JSON.parse(readFileSync(join(dir, 'v1', 'checklist.json'), 'utf8'))
+  assert.deepEqual(v1.sections.map((s) => s.id), ['p1', 'p2', 'p3', 'setup'])
+  const alt = v1.sections[1].items[0]
+  assert.equal(alt.id, 'finding.img.alt')
+  assert.match(alt.where, /^2 pages: /)
+  assert.ok(existsSync(join(dir, 'v1', 'checklist.html')))
+  // tick one finding and one set-up step, then re-run with the P1 fixed
+  v1.sections[1].items[0].done = true
+  v1.sections[1].items[0].note = 'alt text added'
+  v1.sections[3].items[0].done = true
+  writeFileSync(join(dir, 'v1', 'checklist.json'), JSON.stringify(v1))
+  writeFileSync(join(dir, 'run2.json'), JSON.stringify({ ...run, findings: run.findings.slice(1) }))
+  await go(['--from', join(dir, 'run2.json'), '--out', join(dir, 'v2'), '--previous', join(dir, 'v1', 'checklist.json')])
+  const v2 = JSON.parse(readFileSync(join(dir, 'v2', 'checklist.json'), 'utf8'))
+  const all = v2.sections.flatMap((s) => s.items)
+  assert.equal(all.find((i) => i.id === 'finding.img.alt').note, 'alt text added')
+  assert.equal(all.find((i) => i.id === 'setup.gsc').done, true)
+  const fixed = v2.sections.find((s) => s.id === 'fixed')
+  assert.deepEqual(fixed.items.map((i) => [i.id, i.done]), [['finding.page.noindex-in-sitemap', true]])
 })

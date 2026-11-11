@@ -1,0 +1,249 @@
+<title>Launch Checklist</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column; a sticky progress strip; sections as plain
+   groups, items as rows with a large tick target. State lives in
+   checklist.json beside this page and is saved back with the artifact
+   capability. */
+:root {
+  --bg: #f5f7f6; --surface: #ffffff; --fg: #17201d; --muted: #5c6b66; --line: #dbe3e0;
+  --accent: #0f7a5f; --accent-soft: #e2f2ec;
+  --p1: #b42318; --p1-soft: #fde8e6; --p2: #a15c07; --p2-soft: #fdf1dc; --p3: #55615d; --p3-soft: #eaefed;
+  --font-display: "Space Grotesk", "Inter", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0f1513; --surface: #161e1b; --fg: #e4ece9; --muted: #93a39d; --line: #26322e;
+  --accent: #3fc79f; --accent-soft: #143429;
+  --p1: #ff8a7a; --p1-soft: #3a1714; --p2: #f0b44c; --p2-soft: #35260b; --p3: #a3b1ac; --p3-soft: #222b28;
+  color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #0f1513; --surface: #161e1b; --fg: #e4ece9; --muted: #93a39d; --line: #26322e;
+  --accent: #3fc79f; --accent-soft: #143429;
+  --p1: #ff8a7a; --p1-soft: #3a1714; --p2: #f0b44c; --p2-soft: #35260b; --p3: #a3b1ac; --p3-soft: #222b28;
+  color-scheme: dark }
+body { background: var(--bg); color: var(--fg); font-family: var(--font-body); font-size: 15px; line-height: 1.5; }
+.wrap { max-width: 760px; margin: 0 auto; padding-block: 28px 64px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 28px; }
+header { display: grid; gap: 6px; }
+.eyebrow { font: 500 12px/1 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+h1 { font: 600 30px/1.15 var(--font-display); margin: 0; text-wrap: balance; }
+.site { font: 400 13px/1.4 var(--font-mono); color: var(--muted); word-break: break-all; }
+.site a { color: inherit; }
+.nowrap { white-space: nowrap; }
+.strip { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); padding-block: 10px; display: grid; gap: 8px; border-bottom: 1px solid var(--line); }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+.strip-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; }
+.count { font: 600 14px/1 var(--font-body); font-variant-numeric: tabular-nums; }
+.bar { height: 6px; border-radius: 3px; background: var(--line); overflow: hidden; }
+.bar > i { display: block; height: 100%; width: 0; background: var(--accent); transition: width .25s ease; }
+.tools { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+button.ghost { font: 500 13px/1 var(--font-body); color: var(--fg); background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px; cursor: pointer; }
+button.ghost:hover { border-color: var(--muted); }
+label.toggle { font-size: 13px; color: var(--muted); display: inline-flex; gap: 6px; align-items: center; cursor: pointer; }
+.status { font-size: 12px; color: var(--muted); min-height: 1em; }
+section { display: grid; gap: 10px; }
+.sec-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+h2 { font: 600 19px/1.3 var(--font-display); margin: 0; }
+.sec-count { font: 400 13px/1 var(--font-mono); color: var(--muted); font-variant-numeric: tabular-nums; }
+.intro { color: var(--muted); margin: -4px 0 2px; max-width: 65ch; }
+ul.items { list-style: none; margin: 0; padding: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; }
+li.item { display: grid; grid-template-columns: 28px 1fr; gap: 4px 12px; padding: 14px 16px; border-top: 1px solid var(--line); }
+li.item:first-child { border-top: 0; }
+li.item input[type=checkbox] { width: 20px; height: 20px; margin: 2px 0 0; accent-color: var(--accent); cursor: pointer; }
+.body { min-width: 0; display: grid; gap: 4px; }
+.title-row { display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+.item-title { font-weight: 600; cursor: pointer; }
+li.done .item-title { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--line); }
+.chip { font: 500 11px/1 var(--font-mono); padding: 4px 6px; border-radius: 4px; letter-spacing: .03em; }
+.chip.P1 { color: var(--p1); background: var(--p1-soft); } .chip.P2 { color: var(--p2); background: var(--p2-soft); } .chip.P3 { color: var(--p3); background: var(--p3-soft); }
+.detail { color: var(--muted); max-width: 65ch; overflow-wrap: anywhere; }
+.detail code, .where { font: 400 12.5px/1.4 var(--font-mono); }
+.where { color: var(--muted); overflow-wrap: anywhere; }
+.links { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 13px; }
+.links a { color: var(--accent); font-weight: 500; }
+.meta { font-size: 12px; color: var(--muted); }
+.note { box-sizing: border-box; width: 100%; font: 400 13px/1.4 var(--font-body); color: var(--fg); background: transparent; border: 1px solid transparent; border-radius: 6px; padding: 4px 8px; margin-left: -8px; width: calc(100% + 8px); resize: vertical; min-height: 28px; }
+.note:hover, .note:not(:placeholder-shown) { border-color: var(--line); background: var(--bg); }
+.note:focus, button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.empty { background: var(--surface); border: 1px dashed var(--line); border-radius: 10px; padding: 24px; color: var(--muted); }
+.hide-done li.done { display: none; }
+footer { font-size: 12px; color: var(--muted); }
+@media (prefers-reduced-motion: reduce) { .bar > i { transition: none; } }
+</style>
+
+<div class="wrap" id="app">
+  <header>
+    <div class="eyebrow">SEO launch checklist</div>
+    <h1 id="h1">Loading checklist…</h1>
+    <div class="site" id="site"></div>
+  </header>
+  <div class="strip" aria-live="polite">
+    <div class="strip-row">
+      <span class="count" id="count">0 of 0 done</span>
+      <div class="tools">
+        <label class="toggle"><input type="checkbox" id="hide-done"> Hide done</label>
+        <button class="ghost" id="copy" type="button">Copy as Markdown</button>
+      </div>
+    </div>
+    <div class="bar"><i id="bar"></i></div>
+    <div class="status" id="status"></div>
+  </div>
+  <main id="sections"></main>
+  <footer id="foot"></footer>
+</div>
+
+<script>
+(() => {
+  const $ = (id) => document.getElementById(id)
+  const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e }
+  const LOCAL_KEY = 'seo-checklist-v1'
+  let state = null
+  let saver = null          // artifact namespace when this viewer can save
+  let canSave = false
+  let timer = null
+  let dirty = false
+
+  function safeHref(h) { try { const u = new URL(h); return u.protocol === 'https:' || u.protocol === 'http:' ? u.href : null } catch { return null } }
+  function items() { return state ? state.sections.flatMap((s) => s.items) : [] }
+  function status(t) { $('status').textContent = t || '' }
+
+  function render() {
+    const all = items()
+    const done = all.filter((i) => i.done).length
+    $('count').textContent = `${done} of ${all.length} done`
+    $('bar').style.width = all.length ? `${(done / all.length) * 100}%` : '0'
+    const main = $('sections')
+    main.replaceChildren()
+    if (!state) return
+    for (const sec of state.sections) {
+      if (!sec.items.length) continue
+      const s = el('section')
+      const head = el('div', 'sec-head')
+      head.append(el('h2', null, sec.title), el('span', 'sec-count', `${sec.items.filter((i) => i.done).length}/${sec.items.length}`))
+      s.append(head)
+      if (sec.intro) s.append(el('p', 'intro', sec.intro))
+      const ul = el('ul', 'items')
+      for (const it of sec.items) {
+        const li = el('li', 'item' + (it.done ? ' done' : ''))
+        const box = document.createElement('input')
+        box.type = 'checkbox'; box.id = `c-${it.id}`; box.checked = !!it.done
+        box.addEventListener('change', () => { it.done = box.checked; it.doneAt = box.checked ? new Date().toISOString().slice(0, 10) : null; changed(); render() })
+        const body = el('div', 'body')
+        const row = el('div', 'title-row')
+        if (it.priority) row.append(el('span', `chip ${it.priority}`, it.priority))
+        const t = el('label', 'item-title', it.title); t.htmlFor = box.id
+        row.append(t)
+        body.append(row)
+        if (it.detail) body.append(el('div', 'detail', it.detail))
+        if (it.where) body.append(el('div', 'where', it.where))
+        const links = (it.links || []).map((l) => ({ ...l, href: safeHref(l.href) })).filter((l) => l.href)
+        if (links.length) {
+          const box2 = el('div', 'links')
+          for (const l of links) { const a = el('a', null, l.label || l.href); a.href = l.href; a.target = '_blank'; a.rel = 'noopener'; box2.append(a) }
+          body.append(box2)
+        }
+        if (it.done && it.doneAt) body.append(el('div', 'meta', `Done ${it.doneAt}`))
+        const note = document.createElement('textarea')
+        note.className = 'note'; note.id = `n-${it.id}`; note.rows = 1
+        note.placeholder = canSave ? 'Add a note' : 'Note (kept in this browser only)'
+        note.value = it.note || ''
+        note.addEventListener('input', () => { it.note = note.value; changed(true) })
+        body.append(note)
+        li.append(box, body)
+        ul.append(li)
+      }
+      s.append(ul)
+      main.append(s)
+    }
+  }
+
+  function changed(typing) {
+    dirty = true
+    try { localStorage.setItem(LOCAL_KEY + ':' + (state.url || ''), JSON.stringify(state)) } catch {}
+    if (!canSave) { status('Saved in this browser only.'); return }
+    status('Saving…')
+    clearTimeout(timer)
+    timer = setTimeout(save, typing ? 2500 : 1200)
+  }
+
+  async function save() {
+    if (!dirty || !saver) return
+    dirty = false
+    state.updated = new Date().toISOString()
+    try {
+      await saver.publish({ 'checklist.json': { content: JSON.stringify(state, null, 2), contentType: 'application/json' } })
+      status('Saved for everyone with this link.')
+    } catch (e) {
+      const code = e && e.code
+      if (code === 'conflict') { status('Someone else saved at the same time; reloading their version.'); return }
+      if (code === 'rate_limited') { dirty = true; status('Saving paused for a moment…'); timer = setTimeout(save, 8000); return }
+      canSave = false
+      status(code === 'not_writer' || code === 'not_granted' || code === 'capability_disabled' || code === 'capability_removed'
+        ? 'You can tick items, but only people who can edit this page save them for everyone. Your ticks stay in this browser.'
+        : 'Could not save just now. Your ticks stay in this browser.')
+    }
+  }
+
+  function markdown() {
+    const L = [`# ${state.title || 'SEO launch checklist'}`, '', `${state.url || ''}`, '']
+    for (const sec of state.sections) {
+      if (!sec.items.length) continue
+      L.push(`## ${sec.title}`, '')
+      for (const it of sec.items) {
+        L.push(`- [${it.done ? 'x' : ' '}] ${it.priority ? `**${it.priority}** ` : ''}${it.title}${it.note ? ` (${it.note})` : ''}`)
+      }
+      L.push('')
+    }
+    return L.join('\n')
+  }
+
+  $('copy').addEventListener('click', () => {
+    if (!state) return
+    const text = markdown()
+    navigator.clipboard.writeText(text).then(() => status('Copied as Markdown.'), () => {
+      const ta = document.createElement('textarea'); ta.value = text; document.body.append(ta); ta.select(); status('Select-all and copy the text box at the bottom.')
+    })
+  })
+  $('hide-done').addEventListener('change', (e) => $('app').classList.toggle('hide-done', e.target.checked))
+
+  // A viewer who can't save keeps their own ticks in this browser.
+  function overlayLocal() {
+    try {
+      const mine = JSON.parse(localStorage.getItem(LOCAL_KEY + ':' + (state.url || '')) || 'null')
+      if (!mine) return
+      const byId = new Map(mine.sections.flatMap((s) => s.items).map((i) => [i.id, i]))
+      for (const it of items()) { const m = byId.get(it.id); if (m) { it.done = m.done; it.doneAt = m.doneAt; it.note = m.note } }
+      render()
+    } catch {}
+  }
+
+  async function load() {
+    try {
+      const res = await fetch('checklist.json', { cache: 'no-store' })
+      if (!res.ok) throw new Error(res.status)
+      state = await res.json()
+    } catch {
+      $('h1').textContent = 'No checklist yet'
+      const m = el('div', 'empty', 'This page shows checklist.json from the same folder. Run /seo:audit on a site to create one.')
+      $('sections').replaceChildren(m)
+      return
+    }
+    $('h1').textContent = state.title || 'SEO launch checklist'
+    $('site').replaceChildren()
+    const href = safeHref(state.url || '')
+    if (href) { const a = el('a', null, state.url); a.href = href; a.target = '_blank'; a.rel = 'noopener'; $('site').append(a) }
+    if (state.generated) { $('site').append(document.createTextNode(' · ')); $('site').append(el('span', 'nowrap', `audited ${state.generated}`)) }
+    $('foot').textContent = state.source ? `Made by ${state.source}. Re-run the audit to refresh the findings; ticks and notes on items that still apply carry over.` : ''
+    render()
+    try {
+      const api = window.claude && window.claude.use ? await window.claude.use('artifact') : null
+      if (api) { saver = api; canSave = true; render(); status('Ticks and notes save for everyone with this link.') }
+      else { overlayLocal(); status('Ticks and notes stay in this browser.') }
+    } catch { overlayLocal(); status('Ticks and notes stay in this browser.') }
+  }
+  load()
+})()
+</script>
