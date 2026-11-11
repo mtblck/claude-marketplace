@@ -36,13 +36,14 @@ const png = (w, h) => {
 
 function site(port) {
   const o = `http://localhost:${port}`
-  const images = { '/og.png': png(1200, 630), '/small.png': png(100, 100), '/card.svg': '<svg xmlns="http://www.w3.org/2000/svg"/>' }
+  const images = { '/icon.png': png(32, 32), '/og.png': png(1200, 630), '/small.png': png(100, 100), '/card.svg': '<svg xmlns="http://www.w3.org/2000/svg"/>' }
   const routes = {
     '/robots.txt': [200, 'text/plain', `User-agent: *\nAllow: /\n\nUser-agent: GPTBot\nUser-agent: OAI-SearchBot\nDisallow: /\n\nSitemap: ${o}/sitemap.xml\n`],
     '/sitemap.xml': [200, 'application/xml', `<?xml version="1.0"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${['/', '/about', '/dup-a', '/dup-b', '/secret', '/old', '/fr', '/en'].map((p) => `<url><loc>${o}${p}</loc><lastmod>2026-01-01</lastmod></url>`).join('\n')}
 </urlset>`],
-    '/': [200, 'text/html', page({ title: 'Home of the fixture site', desc: 'A fixture site used to test the seo-check script end to end.', canonical: `${o}/`, extraHead: '<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Fixture"}</script>' })],
+    '/': [200, 'text/html', page({ title: 'Home of the fixture site', desc: 'A fixture site used to test the seo-check script end to end.', canonical: `${o}/`, extraHead: '<link rel="icon" href="/icon.png"><link rel="manifest" href="/site.webmanifest"><script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Fixture"}</script>' })],
+    '/site.webmanifest': [200, 'application/manifest+json', JSON.stringify({ name: 'Fixture', icons: [{ src: '/icon.png', sizes: '192x192' }] })],
     '/about': [200, 'text/html', page({ title: 'About the fixture', desc: null, canonical: `${o}/about`, h1: null, lang: null, og: '<meta property="og:image" content="/small.png">', body: '<img src="/a.png"><h1>One</h1><h1>Two</h1><h4>Skip</h4>' })],
     '/dup-a': [200, 'text/html', page({ title: 'Same title for two pages', desc: 'Shared description for both duplicate pages in this fixture.', canonical: `${o}/dup-a`, og: `<meta property="og:title" content="t"><meta property="og:image" content="${o}/card.svg">`, extraHead: '<script type="application/ld+json">{ broken </script>' })],
     '/dup-b': [200, 'text/html', page({ title: 'Same title for two pages', desc: 'Shared description for both duplicate pages in this fixture.', canonical: `${o}/missing` })],
@@ -89,12 +90,13 @@ test('reports the planted problems', async () => {
     'robots.blocks-ai-search', 'sitemap.lastmod-uniform', 'soft-404', 'description.missing', 'html.lang', 'h1.multiple',
     'headings.skip', 'img.alt', 'img.dimensions', 'jsonld.invalid', 'title.duplicate', 'description.duplicate',
     'canonical.bad-target', 'social.image-relative', 'social.image-small', 'social.image-svg', 'social.image-broken',
+    'icons.favicon-small', 'icons.apple-touch', 'icons.manifest-icons', 'icons.theme-color',
     'social.og-title', 'social.og-description', 'social.twitter-card', 'page.noindex-in-sitemap', 'sitemap.redirect', 'hreflang.code', 'hreflang.return', 'links.broken',
   ]) assert.ok(ids.has(id), `expected ${id}; got ${[...ids].join(', ')}`)
   const home = r.pages.find((p) => p.url.endsWith(`${port}/`))
   assert.equal(home.social.imageSize, '1200×630')
   assert.ok(!r.findings.some((f) => f.url === home.url && /^social\.image-(broken|small|svg|relative|type|heavy|ratio)/.test(f.id)), 'home og:image is fine')
-  for (const id of ['robots.blocks-search', 'title.missing', 'html.viewport', 'canonical.conflict']) assert.ok(!ids.has(id), `did not expect ${id}`)
+  for (const id of ['icons.favicon-missing', 'icons.manifest-broken', 'robots.blocks-search', 'title.missing', 'html.viewport', 'canonical.conflict']) assert.ok(!ids.has(id), `did not expect ${id}`)
   const gpt = r.crawlers.find((c) => c.agent === 'GPTBot')
   const google = r.crawlers.find((c) => c.agent === 'Googlebot')
   assert.equal(gpt.allowed, false)

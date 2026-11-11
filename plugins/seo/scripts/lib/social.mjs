@@ -126,6 +126,16 @@ export function imageSize(buf) {
       i += 2 + len
     }
   }
+  if (buf[0] === 0 && buf[1] === 0 && buf[2] === 1 && buf[3] === 0) {
+    // ICO: one directory entry per size; 0 means 256
+    let width = 0
+    let height = 0
+    for (let i = 0, n = buf.readUInt16LE(4); i < n && 6 + i * 16 + 1 < buf.length; i++) {
+      width = Math.max(width, buf[6 + i * 16] || 256)
+      height = Math.max(height, buf[7 + i * 16] || 256)
+    }
+    return { type: 'ico', width, height }
+  }
   if (/^\s*(<\?xml|<svg)/i.test(buf.toString('utf8', 0, 200))) return { type: 'svg', width: null, height: null }
   return null
 }

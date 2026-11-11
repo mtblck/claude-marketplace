@@ -30,7 +30,7 @@ index, and an even sample of sitemap URLs (or a crawl from the home page), then
 checks status codes, redirects, noindex in sitemaps, titles and descriptions
 (missing, length, duplicates), canonicals and their targets, `lang`, viewport,
 headings, images, JSON-LD parsing, Open Graph and Twitter card tags (and fetches each share image to check its status, type, file size, pixel size and ratio), mixed content, hreflang codes and
-return links, internal link status, soft 404s, http → https and www/apex
+return links, internal link status, favicons, apple-touch-icon, manifest and theme-color, soft 404s, http → https and www/apex
 consolidation (live sites only), and what only appears after JavaScript runs.
 Exit 1 when there's a P1, so it can gate a deploy. It only sends GET requests to
 the site it's pointed at.

@@ -20,7 +20,7 @@ import { execSync } from 'node:child_process'
 import { join } from 'node:path'
 import { parseSocial, fetchImage, socialFindings } from './lib/social.mjs'
 
-const VERSION = '1.1.0'
+const VERSION = '1.2.0'
 
 // ---------------------------------------------------------------- arguments
 
@@ -630,6 +630,10 @@ async function main() {
   const jsOnlyNav = results.filter((p) => p.raw && p.rendered && p.raw.links.length === 0 && p.rendered.links.length > 0)
   if (jsOnlyNav.length) add('P3', 'links.js-only', `${jsOnlyNav.length} page(s) have no <a href> links until JavaScript runs.`, jsOnlyNav[0].url)
 
+  // icons: Google shows the favicon beside the site in results; browsers,
+  // home screens and some link previews use the rest
+  const iconInfo = await checkIcons(home, robots)
+
   // llms.txt: reported, never graded
   const llms = await get(`${origin}/llms.txt`, { accept: 'text/plain,text/markdown,*/*;q=0.5' })
   const llmsInfo = { status: llms.status, present: llms.status === 200 && !/<html/i.test(llms.body.slice(0, 300)) }
@@ -658,6 +662,7 @@ async function main() {
     crawlers: matrix.map(({ agent, kind, allowed, rule }) => ({ agent, kind, allowed, rule })),
     sitemaps: { files: sm.files, errors: sm.errors, urlCount: sm.urls.length },
     llmsTxt: llmsInfo,
+    icons: iconInfo,
     pages: results.map((p) => ({
       url: p.url,
       finalUrl: p.finalUrl,
@@ -689,6 +694,68 @@ async function main() {
   process.exit(counts.P1 ? 1 : 0)
 }
 
+async function checkIcons(home, robots) {
+  const html = (home.body || '').replace(/<!--[\s\S]*?-->/g, ' ')
+  const head = (html.match(/<head\b[\s\S]*?<\/head\s*>/i) || [html])[0]
+  const links = tags(head, 'link').map((a) => ({ ...a, rels: (a.rel || '').toLowerCase().split(/\s+/) }))
+  const metas = tags(head, 'meta')
+  const abs = (h) => new URL(h, home.finalUrl).href
+  const info = { favicons: [], appleTouchIcon: null, manifest: null, themeColor: null }
+  const url = home.finalUrl
+  const declared = links.filter((l) => l.rels.includes('icon') && l.href)
+  const candidates = declared.length ? declared.map((l) => abs(l.href)) : [`${origin}/favicon.ico`]
+  for (const u of candidates) {
+    const img = await fetchImage(toLocalUrl(u), { ua: UA, timeout: TIMEOUT })
+    const entry = { url: u, declared: declared.length > 0, status: img.status, size: img.size ? `${img.size.width ?? 'any'}×${img.size.height ?? 'any'}` : null, type: img.size?.type || null, isImage: !!img.size || /^image\//i.test(img.type || '') }
+    info.favicons.push(entry)
+    if (img.status === 200 && img.size && img.size.width && img.size.height && img.size.width !== img.size.height) add('P2', 'icons.favicon-not-square', `Favicon ${u} is ${img.size.width}×${img.size.height}; Google only shows square favicons.`, url)
+    if (img.status && img.status !== 200 && declared.length) add('P2', 'icons.favicon-broken', `Declared favicon ${u} answers ${img.status}.`, url)
+    try {
+      const path = new URL(u).pathname
+      if (sameSite(u) && !robotsAllows(robots, 'Googlebot-Image', path).allowed) add('P2', 'icons.favicon-blocked', `robots.txt blocks ${path} for Google's image crawler, so Google can't show the favicon.`, url)
+    } catch {}
+  }
+  const ok = info.favicons.filter((f) => f.status === 200 && f.isImage)
+  if (!ok.length) add('P2', 'icons.favicon-missing', `No favicon found (${declared.length ? 'declared icons fail to load' : 'no <link rel="icon"> and /favicon.ico is missing or not an image'}); search results and tabs show a generic globe. The brand-kit plugin's icons skill makes a full set.`, url)
+  else {
+    const biggest = Math.max(...ok.map((f) => (f.type === 'svg' ? 999 : parseInt(f.size) || 0)))
+    if (biggest < 48) add('P3', 'icons.favicon-small', `Largest favicon is ${biggest}px; Google asks for at least 48×48 (a 48px multiple, or SVG).`, url)
+  }
+  const apple = links.find((l) => l.rels.includes('apple-touch-icon') && l.href)
+  info.appleTouchIcon = apple ? abs(apple.href) : null
+  if (!apple) add('P3', 'icons.apple-touch', 'No apple-touch-icon (180×180 PNG) for iOS home screens and iMessage link previews.', url)
+  const mf = links.find((l) => l.rels.includes('manifest') && l.href)
+  if (mf) {
+    const r = await get(toLocalUrl(abs(mf.href)), { accept: 'application/manifest+json,application/json,*/*;q=0.5' })
+    let data = null
+    try {
+      data = JSON.parse(r.body)
+    } catch {}
+    info.manifest = { url: abs(mf.href), status: r.status, valid: !!data }
+    if (r.status !== 200 || !data) add('P3', 'icons.manifest-broken', `Web app manifest ${mf.href} ${r.status !== 200 ? `answers ${r.status}` : 'is not valid JSON'}.`, url)
+    else {
+      const sizes = (data.icons || []).flatMap((i) => String(i.sizes || '').split(/\s+/))
+      const missing = ['192x192', '512x512'].filter((s) => !sizes.includes(s) && !sizes.includes('any'))
+      if (!data.name && !data.short_name) add('P3', 'icons.manifest-name', 'Web app manifest has no name or short_name.', url)
+      if (missing.length) add('P3', 'icons.manifest-icons', `Web app manifest lacks ${missing.join(' and ')} icons (needed for install and Android home screens).`, url)
+    }
+  }
+  const tc = metas.find((m) => (m.name || '').toLowerCase() === 'theme-color')
+  info.themeColor = tc ? tc.content : null
+  if (!tc) add('P3', 'icons.theme-color', 'No <meta name="theme-color">; mobile browser bars and some link previews (Discord) use it for the accent colour.', url)
+  return info
+}
+
+function toLocalUrl(u) {
+  if (!LOCAL) return u
+  try {
+    const x = new URL(u)
+    return x.origin === origin ? u : origin + x.pathname + x.search
+  } catch {
+    return u
+  }
+}
+
 function report(r) {
   const L = []
   L.push(`# seo-check: ${r.url}`, '')
@@ -700,6 +767,7 @@ function report(r) {
   if (r.linksUnreachable.length) L.push('', `Not graded: ${r.linksUnreachable.length} internal link(s) could not be fetched from here (network, not necessarily broken): ${r.linksUnreachable.slice(0, 5).join(', ')}${r.linksUnreachable.length > 5 ? ' …' : ''}.`)
   L.push('', '## Crawler access to /', '', '| Crawler | Kind | Allowed | Rule |', '| --- | --- | --- | --- |')
   for (const c of r.crawlers) L.push(`| ${c.agent} | ${c.kind} | ${c.allowed ? 'yes' : '**no**'} | ${c.rule || '(no matching rule)'} |`)
+  if (r.icons) L.push('', `Icons: favicon ${r.icons.favicons.map((f) => `${f.url} (${f.status}${f.size ? `, ${f.size}` : ''})`).join(', ') || 'none'} · apple-touch-icon ${r.icons.appleTouchIcon ? 'yes' : 'no'} · manifest ${r.icons.manifest ? (r.icons.manifest.valid ? 'yes' : 'broken') : 'no'} · theme-color ${r.icons.themeColor || 'none'}`)
   L.push('', `robots.txt: ${r.robots.status} · Sitemap lines: ${r.robots.sitemaps.join(', ') || 'none'} · llms.txt: ${r.llmsTxt.present ? 'present' : 'absent'} (optional; not graded)`)
   L.push('', '## Pages', '', '| URL | Status | Title | Words raw / rendered | Canonical | Schema |', '| --- | --- | --- | --- | --- | --- |')
   for (const p of r.pages) {

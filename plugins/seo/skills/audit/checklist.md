@@ -141,3 +141,38 @@ states plainly who it is and what it does on the home and about pages.
 - **Local business / shop:** consistent name, address and phone everywhere,
   `LocalBusiness` or `Product` schema, Google Business Profile, unique product and
   category copy.
+
+## 8. Icons
+
+The checker's `icons.*` findings. A square favicon of at least 48×48 (or SVG),
+declared with `<link rel="icon">`, that loads and that robots.txt doesn't block:
+Google shows it beside the site in results. Also an `apple-touch-icon` (180×180
+PNG, used by iOS and iMessage previews), a web app manifest with `name` and 192
+and 512 px icons for installable apps, and `<meta name="theme-color">`. The
+`brand-kit` plugin's `icons` skill makes the whole set from the logo.
+
+## 9. Set up once per site
+
+Things no crawl can see. Ask the owner which are done; list the rest in the
+report's "What wasn't checked" with the link to do each.
+
+- **Google Search Console:** domain property verified (DNS TXT record), sitemap
+  submitted, no manual actions or security issues, Page indexing report reviewed
+  for "Crawled - currently not indexed" and "Duplicate, Google chose different
+  canonical". search.google.com/search-console
+- **Bing Webmaster Tools:** site added (it can import from Search Console),
+  sitemap submitted. Bing's index feeds DuckDuckGo, Yahoo, Copilot and several AI
+  search products. bing.com/webmasters
+- **IndexNow:** optional; pings Bing, Yandex, Seznam and Naver when pages change
+  (not Google). A key file at the root and a request on deploy; Vercel and
+  Cloudflare have integrations. Worth it for sites that publish often.
+- **Profiles link back:** the site's `Person` or `Organization` JSON-LD
+  `sameAs` lists its profiles, and the profiles link to the site. For Mastodon,
+  `<link rel="me" href="https://mastodon.example/@name">` on the home page
+  verifies the profile link, and `<meta name="fediverse:creator"
+  content="@name@mastodon.example">` credits the author on shared links.
+- **Analytics** that can tell organic search traffic apart (Vercel Web Analytics
+  referrers, GA4, Plausible), so the next audit can measure what changed.
+- **Redirects kept** for every URL that ever had traffic when routes change or
+  the site moves domain, and the old domain's property kept in Search Console.
+

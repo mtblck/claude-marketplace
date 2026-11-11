@@ -84,7 +84,8 @@ be.
 
 Start subagents in parallel, one per area of `checklist.md` next to this file
 (crawl and index; metadata, canonicals and social cards; rendering and links;
-structured data; content and E-E-A-T; performance and mobile; AI search). Give each the stack, the
+structured data; content and E-E-A-T; performance and mobile; AI search; icons).
+Section 9, "Set up once per site", is a question for the owner, not a subagent. Give each the stack, the
 route classification, the checker's JSON and the area's checklist section. Each
 reads the code that produces those pages in full and returns findings as: the
 route(s), what is wrong, the evidence (checker finding, served HTML, `file:line`),
@@ -131,7 +132,8 @@ repo, unless asked):
    (`file:line`), fix, and effort (S/M/L).
 3. **Area verdicts** from step 5.
 4. **What wasn't checked** (field CWV, Search Console, backlinks, live host
-   checks on a local build) and how to check it.
+   checks on a local build) and how to check it, plus the "Set up once per
+   site" items from `checklist.md` that aren't confirmed done.
 5. **Next run:** the exact command to re-run the checker, so the score can be
    compared.
 
