@@ -83,8 +83,18 @@ crops (X small cards, WhatsApp) still work. A versioned file name
   shareable routes (per-route HTML with its own tags) or injecting tags per route
   at the edge. Propose the approach and its cost before changing the build.
 - **Images:** one default image for the site plus per-page images where pages get
-  shared. Generate them rather than hand-making each one: Next's
-  `opengraph-image.tsx`, a build script that screenshots a template with
-  Playwright, or the `brand-kit` plugin's social templates for the default.
+  shared. Don't draw them here; hand off to the plugin that owns the look:
+  - **A project's own picture** (an app's home page, a portfolio case study):
+    the `cover-art` skill (`/cover-art:cover-art`, from `cover-art@mtblck`)
+    draws the project's cover and renders it as a 1200 × 630 share image
+    (`<name>-og.png`) alongside the cover, so the share card matches the
+    portfolio card.
+  - **A site-wide default from the logo and colours:** the `brand-kit` plugin's
+    social export (its 1200 × 630 Open Graph image).
+  - **Many pages with text on them** (posts, docs): generate at build time from
+    a template (Next's `opengraph-image.tsx`, or a script that screenshots a
+    template with Playwright).
+  If the needed plugin isn't enabled in the repo, say which one to enable
+  rather than improvising an image.
 - Build, re-run the checker and `social-preview.mjs`, and show the before and
   after PNGs.
