@@ -33,11 +33,14 @@ const here = dirname(fileURLToPath(import.meta.url))
 const SETUP = [
   ['setup.gsc', 'Verify the site in Google Search Console', 'Add a Domain property and verify it with the DNS TXT record, so every protocol and subdomain is covered.', [['Open Search Console', 'https://search.google.com/search-console']]],
   ['setup.gsc-sitemap', 'Submit the sitemap in Search Console', 'Sitemaps → add the sitemap URL. Then check Pages → "Why pages aren\'t indexed" a few days later.', [['Sitemaps report help', 'https://support.google.com/webmasters/answer/7451001']]],
+  ['setup.gsc-health', 'Check Manual actions and Security issues', 'Search Console → Security & Manual actions. Both should say "No issues detected"; anything else outranks every other item here.', [['Manual actions report help', 'https://support.google.com/webmasters/answer/9044175']]],
   ['setup.bing', 'Add the site to Bing Webmaster Tools', 'Import it from Search Console in one step, then submit the sitemap. Bing feeds DuckDuckGo, Yahoo, Copilot and several AI search products.', [['Open Bing Webmaster Tools', 'https://www.bing.com/webmasters']]],
   ['setup.indexnow', 'Decide on IndexNow', 'Optional: tells Bing, Yandex, Seznam and Naver about changed pages straight away (not Google). Worth it for sites that publish often.', [['IndexNow', 'https://www.indexnow.org']]],
   ['setup.profiles', 'Link profiles both ways', 'List the GitHub, LinkedIn and social profiles in the Person or Organization JSON-LD sameAs, and link each profile back to the site. For Mastodon, add <link rel="me"> and <meta name="fediverse:creator"> to the home page.', []],
   ['setup.analytics', 'Make organic search traffic measurable', 'Vercel Web Analytics referrers, GA4 or Plausible: something that separates search traffic, so the next audit can show what changed.', []],
   ['setup.share-test', 'Share the home page once on each platform', 'Paste the link in a Slack DM to yourself and run it through the Facebook Sharing Debugger and LinkedIn Post Inspector, which also refresh their caches.', [['Facebook Sharing Debugger', 'https://developers.facebook.com/tools/debug/'], ['LinkedIn Post Inspector', 'https://www.linkedin.com/post-inspector/']]],
+  ['setup.links', 'Review who links to the site', 'Search Console → Links shows the top linking sites and pages. Search the brand and product names for mentions that don\'t link, and ask those authors for a link.', []],
+  ['setup.refresh', 'Refresh content older than a year', 'Revisit pages whose facts, screenshots or "latest" claims haven\'t changed in 12 months; update them and their lastmod, or retire them with a redirect.', []],
   ['setup.redirects', 'Keep redirects for old URLs', 'When routes change or the site moves domain, 301 every URL that ever had traffic to its new home, and keep the old property in Search Console.', []],
 ]
 

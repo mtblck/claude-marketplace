@@ -63,6 +63,14 @@ Run the bundled checker against the best target you can reach, in this order:
    `web_fetch_vercel_url` can fetch a deployment's HTML, robots.txt and sitemap.
    Use it to confirm what production serves for the key routes.
 
+Add `--crawl 300` (or the site's page count) to also walk the links from the home
+page: it reports click depth (pages more than three clicks deep), orphans
+(sitemap URLs no crawled page links to) and messy URLs (uppercase, underscores,
+tracking parameters, mixed trailing slashes, http links on an https site). It
+only follows links in the raw HTML, so a page reachable only through JavaScript
+counts as an orphan: that is the point, since crawlers that don't render can't
+find it either.
+
 If `${CLAUDE_PLUGIN_ROOT}` isn't set, the script is `scripts/seo-check.mjs` in this
 plugin's folder (two levels above this skill). It needs Node 18+ and nothing else;
 it renders pages with Playwright when Playwright is installed (it is in Claude's

@@ -30,7 +30,8 @@ types present.
 If the user gave one, use it. Otherwise infer the primary query from the title,
 H1, URL and opening paragraph, say why in one sentence, and list two or three
 secondary queries the page could also answer. If the page has no clear query
-(common on portfolio and app pages), say so: that is the first finding.
+(common on portfolio and app pages), say so: that is the first finding. If a
+`keywords.md` map exists, take the page's primary query from it.
 
 ## 3. Look at what ranks (when web search is available)
 

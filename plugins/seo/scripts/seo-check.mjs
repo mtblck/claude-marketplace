@@ -20,7 +20,7 @@ import { execSync } from 'node:child_process'
 import { join } from 'node:path'
 import { parseSocial, fetchImage, socialFindings } from './lib/social.mjs'
 
-const VERSION = '1.2.0'
+const VERSION = '1.4.0'
 
 // ---------------------------------------------------------------- arguments
 
@@ -38,6 +38,8 @@ if (argv.includes('--help') || argv.includes('-h') || !opt('url')) {
   --pages LIST      comma-separated paths or URLs to always include
   --render MODE     auto (default: render with Playwright when installed), on, off
   --max-links N     internal links to status-check (default 150, 0 to skip)
+  --crawl N         follow internal links from the home page up to N pages to
+                    measure click depth and find orphan sitemap URLs (default 0: off)
   --json FILE       write the full result as JSON
   --md FILE         write the report as Markdown
   --ua STRING       user agent (default identifies seo-check)
@@ -55,6 +57,7 @@ try {
 }
 const MAX = Number(opt('max', 25))
 const MAX_LINKS = Number(opt('max-links', 150))
+const CRAWL = Number(opt('crawl', 0))
 const RENDER = String(opt('render', 'auto'))
 const TIMEOUT = Number(opt('timeout', 15000))
 const DELAY = Number(opt('delay', 150))
@@ -610,6 +613,42 @@ async function main() {
   for (const [t, us] of titles) if (us.length > 1) add('P2', 'title.duplicate', `${us.length} pages share the title "${t}": ${us.slice(0, 4).join(', ')}${us.length > 4 ? ' …' : ''}.`, us[0])
   for (const [t, us] of descs) if (us.length > 1) add('P2', 'description.duplicate', `${us.length} pages share one meta description: ${us.slice(0, 4).join(', ')}${us.length > 4 ? ' …' : ''}.`, us[0])
 
+  // link graph: click depth from the home page and sitemap URLs nothing links to
+  const graph = CRAWL > 0 ? await crawlGraph(home, inSitemap) : null
+
+  // URL hygiene and http:// links, over every internal URL seen
+  const seenUrls = new Set()
+  const httpLinks = new Map()
+  for (const p of results) for (const l of [...(p.raw?.links || [])]) {
+    if (!l.abs) continue
+    try {
+      const u = new URL(l.abs)
+      const sameHost = u.hostname.replace(/^www\./, '') === base.hostname.replace(/^www\./, '')
+      if (sameHost && u.protocol === 'http:' && base.protocol === 'https:') httpLinks.set(l.abs, p.url)
+      if (sameSite(l.abs)) seenUrls.add(norm(l.abs))
+    } catch {}
+  }
+  if (httpLinks.size) add('P3', 'links.http', `${httpLinks.size} internal link(s) use http:// (a redirect hop on every click; link to https): ${[...httpLinks.keys()].slice(0, 4).join(', ')}.`, [...httpLinks.values()][0])
+  for (const u of [...inSitemap].map((x) => norm(x))) seenUrls.add(u)
+  const hygiene = { upper: [], underscore: [], params: [], long: [], doubleSlash: [] }
+  for (const u of seenUrls) {
+    const x = new URL(u)
+    if (/[A-Z]/.test(x.pathname)) hygiene.upper.push(u)
+    if (/_/.test(x.pathname)) hygiene.underscore.push(u)
+    if (x.search && !/^\?(page|p)=\d+$/.test(x.search)) hygiene.params.push(u)
+    if (u.length > 115) hygiene.long.push(u)
+    if (/\/\//.test(x.pathname)) hygiene.doubleSlash.push(u)
+  }
+  const list = (a) => `${a.slice(0, 4).join(', ')}${a.length > 4 ? ` … (${a.length})` : ''}`
+  if (hygiene.upper.length) add('P3', 'url.uppercase', `URLs with capital letters (paths are case-sensitive, so /About and /about become two pages): ${list(hygiene.upper)}.`)
+  if (hygiene.underscore.length) add('P3', 'url.underscore', `URLs with underscores; Google treats hyphens as word separators, not underscores: ${list(hygiene.underscore)}.`)
+  if (hygiene.params.length) add('P3', 'url.params', `Internal links or sitemap URLs with query parameters (each variant can be crawled as its own page; canonicalise or drop them): ${list(hygiene.params)}.`)
+  if (hygiene.long.length) add('P3', 'url.long', `Very long URLs (over 115 characters): ${list(hygiene.long)}.`)
+  if (hygiene.doubleSlash.length) add('P3', 'url.double-slash', `URLs with // in the path: ${list(hygiene.doubleSlash)}.`)
+  const paths = [...seenUrls].map((u) => new URL(u).pathname).filter((p) => p !== '/' && !/\.[a-z0-9]+$/i.test(p))
+  const withSlash = paths.filter((p) => p.endsWith('/')).length
+  if (withSlash && withSlash < paths.length) add('P3', 'url.trailing-slash', `Trailing slashes are mixed (${withSlash} of ${paths.length} paths end in /). Pick one style and redirect the other, or each page has two URLs.`)
+
   // internal link status
   const linkTargets = new Map()
   for (const p of results) for (const l of [...(p.raw?.links || []), ...(p.rendered?.links || [])]) {
@@ -684,6 +723,7 @@ async function main() {
     })),
     linksChecked: checkedLinks,
     linksUnreachable: unreachable,
+    crawl: graph,
     findings,
   }
 
@@ -692,6 +732,41 @@ async function main() {
   if (opt('md')) writeFileSync(String(opt('md')), md)
   console.log(md)
   process.exit(counts.P1 ? 1 : 0)
+}
+
+// Breadth-first walk over raw-HTML <a href> links, as a crawler that doesn't run
+// JavaScript would. Click depth is the shortest path from the home page.
+async function crawlGraph(home, inSitemap) {
+  const depth = new Map([[norm(home.finalUrl), 0]])
+  const queue = [norm(home.finalUrl)]
+  let pages = 0
+  while (queue.length && pages < CRAWL) {
+    const u = queue.shift()
+    const r = await get(u)
+    pages++
+    if (r.status !== 200 || !/html/i.test(r.headers['content-type'] || '')) continue
+    const d = depth.get(u)
+    for (const l of extract(r.body, r.finalUrl).links) {
+      if (!l.abs || !sameSite(l.abs) || /nofollow/i.test(l.rel)) continue
+      const n = norm(l.abs)
+      if (depth.has(n) || /\.(png|jpe?g|gif|webp|avif|svg|pdf|zip|ico|xml|txt|json|css|js)$/i.test(new URL(n).pathname)) continue
+      depth.set(n, d + 1)
+      queue.push(n)
+    }
+  }
+  const capped = queue.length > 0
+  const deep = [...depth].filter(([, d]) => d > 3).map(([u, d]) => `${u} (${d})`)
+  const orphans = [...inSitemap].filter((u) => !depth.has(norm(u)))
+  const url = home.finalUrl
+  if (pages <= 1 && depth.size <= 1) add('P2', 'crawl.no-links', 'The home page has no internal <a href> links in its served HTML, so crawlers that don\'t run JavaScript can\'t reach any other page from it.', url)
+  else {
+    if (deep.length) add('P3', 'crawl.deep', `${deep.length} page(s) are more than 3 clicks from the home page: ${deep.slice(0, 4).join(', ')}${deep.length > 4 ? ' …' : ''}. Link them from a hub or the home page.`, url)
+    if (orphans.length) {
+      if (capped) add('P3', 'crawl.not-reached', `${orphans.length} sitemap URL(s) weren't reached within ${CRAWL} pages (raise --crawl to tell orphans from deep pages): ${orphans.slice(0, 4).join(', ')}${orphans.length > 4 ? ' …' : ''}.`, url)
+      else add('P2', 'crawl.orphan', `${orphans.length} sitemap URL(s) aren't linked from any page reachable from the home page (orphans): ${orphans.slice(0, 4).join(', ')}${orphans.length > 4 ? ' …' : ''}. Link each from a related page.`, url)
+    }
+  }
+  return { pages, limit: CRAWL, capped, maxDepth: Math.max(...depth.values()), orphans, deep: deep.length }
 }
 
 async function checkIcons(home, robots) {
@@ -764,6 +839,7 @@ function report(r) {
   L.push('## Findings', '')
   if (!r.findings.length) L.push('None.')
   for (const f of r.findings) L.push(`- **${f.sev}** \`${f.id}\` ${f.msg}${f.url ? ` (${f.url})` : ''}`)
+  if (r.crawl) L.push('', `Link graph: ${r.crawl.pages} pages reached from the home page${r.crawl.capped ? ` (stopped at --crawl ${r.crawl.limit})` : ''}, deepest ${r.crawl.maxDepth} clicks, ${r.crawl.orphans.length} sitemap URL(s) not linked from any reached page.`)
   if (r.linksUnreachable.length) L.push('', `Not graded: ${r.linksUnreachable.length} internal link(s) could not be fetched from here (network, not necessarily broken): ${r.linksUnreachable.slice(0, 5).join(', ')}${r.linksUnreachable.length > 5 ? ' …' : ''}.`)
   L.push('', '## Crawler access to /', '', '| Crawler | Kind | Allowed | Rule |', '| --- | --- | --- | --- |')
   for (const c of r.crawlers) L.push(`| ${c.agent} | ${c.kind} | ${c.allowed ? 'yes' : '**no**'} | ${c.rule || '(no matching rule)'} |`)

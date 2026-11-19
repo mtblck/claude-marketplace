@@ -10,6 +10,7 @@ the place in the code that causes it.
 | `/seo:page <url \| route> [query]` | One page against the query it should win and the pages that rank for it: intent, title and description options, content gaps, internal links. |
 | `/seo:schema [url \| route] [type]` | Find, validate and write schema.org JSON-LD the way the stack does head content. |
 | `/seo:social [url ...]` | Social cards and link previews: OG and Twitter tags on every page, the share image fetched and measured, and a picture of how the link unfurls on Slack, Facebook, X, LinkedIn and iMessage. |
+| `/seo:keywords [url \| topic] [competitors]` | Keyword research without paid tools: queries from the site, search results, People Also Ask, forums and Search Console data, one primary query per page, cannibalisation and gaps, `keywords.md` and a CSV. |
 | `/seo:ai-search [url]` | AI crawler access, pages that work without JavaScript, quotable content, entity clarity, llms.txt, each call labelled documented or judgement. |
 
 Claude also picks them up from their descriptions ("why isn't this page indexed?").
@@ -22,6 +23,7 @@ dependencies; renders pages with Playwright when it's installed.
 ```
 node plugins/seo/scripts/seo-check.mjs --url https://example.com --max 30 --md seo.md --json seo.json
 node plugins/seo/scripts/seo-check.mjs --url http://localhost:4173   # a local build
+node plugins/seo/scripts/seo-check.mjs --url https://example.com --crawl 300   # also walk links: depth, orphans, URL hygiene
 ```
 
 It reads robots.txt (RFC 9309 matching, with an access table for search engines,
