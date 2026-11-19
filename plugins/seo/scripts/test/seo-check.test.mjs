@@ -44,7 +44,7 @@ ${['/', '/about', '/dup-a', '/dup-b', '/secret', '/old', '/fr', '/en'].map((p) =
 </urlset>`],
     '/': [200, 'text/html', page({ title: 'Home of the fixture site', desc: 'A fixture site used to test the seo-check script end to end.', canonical: `${o}/`, extraHead: '<link rel="icon" href="/icon.png"><link rel="manifest" href="/site.webmanifest"><script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Fixture"}</script>' })],
     '/site.webmanifest': [200, 'application/manifest+json', JSON.stringify({ name: 'Fixture', icons: [{ src: '/icon.png', sizes: '192x192' }] })],
-    '/about': [200, 'text/html', page({ title: 'About the fixture', desc: null, canonical: `${o}/about`, h1: null, lang: null, og: '<meta property="og:image" content="/small.png">', body: '<img src="/a.png"><h1>One</h1><h1>Two</h1><h4>Skip</h4>' })],
+    '/about': [200, 'text/html', page({ title: 'About the fixture', desc: null, canonical: `${o}/about`, h1: null, lang: null, og: '<meta property="og:image" content="/small.png">', body: '<img src="/a.png"><h1>One</h1><h1>Two</h1><h4>Skip</h4><a href="/Old_Page?ref=nav">old</a>' })],
     '/dup-a': [200, 'text/html', page({ title: 'Same title for two pages', desc: 'Shared description for both duplicate pages in this fixture.', canonical: `${o}/dup-a`, og: `<meta property="og:title" content="t"><meta property="og:image" content="${o}/card.svg">`, extraHead: '<script type="application/ld+json">{ broken </script>' })],
     '/dup-b': [200, 'text/html', page({ title: 'Same title for two pages', desc: 'Shared description for both duplicate pages in this fixture.', canonical: `${o}/missing` })],
     '/secret': [200, 'text/html', page({ title: 'Secret page here', desc: 'This page should not be indexed but sits in the sitemap anyway.', canonical: `${o}/secret`, extraHead: '<meta name="robots" content="noindex">' })],
@@ -80,7 +80,7 @@ test('reports the planted problems', async () => {
   await new Promise((r) => real.listen(port, '127.0.0.1', r))
   const out = join(mkdtempSync(join(tmpdir(), 'seo-check-')), 'r.json')
   const code = await new Promise((resolve) =>
-    execFile('node', [SCRIPT, '--url', `http://localhost:${port}/`, '--render', 'off', '--delay', '0', '--json', out], (err) => resolve(err ? err.code : 0)),
+    execFile('node', [SCRIPT, '--url', `http://localhost:${port}/`, '--render', 'off', '--delay', '0', '--crawl', '50', '--json', out], (err) => resolve(err ? err.code : 0)),
   )
   real.close()
   const r = JSON.parse(readFileSync(out, 'utf8'))
@@ -89,10 +89,13 @@ test('reports the planted problems', async () => {
   for (const id of [
     'robots.blocks-ai-search', 'sitemap.lastmod-uniform', 'soft-404', 'description.missing', 'html.lang', 'h1.multiple',
     'headings.skip', 'img.alt', 'img.dimensions', 'jsonld.invalid', 'title.duplicate', 'description.duplicate',
+    'crawl.orphan', 'url.uppercase', 'url.underscore', 'url.params',
     'canonical.bad-target', 'social.image-relative', 'social.image-small', 'social.image-svg', 'social.image-broken',
     'icons.favicon-small', 'icons.apple-touch', 'icons.manifest-icons', 'icons.theme-color',
     'social.og-title', 'social.og-description', 'social.twitter-card', 'page.noindex-in-sitemap', 'sitemap.redirect', 'hreflang.code', 'hreflang.return', 'links.broken',
   ]) assert.ok(ids.has(id), `expected ${id}; got ${[...ids].join(', ')}`)
+  assert.ok(r.crawl.orphans.some((u) => u.endsWith('/secret')), 'secret is an orphan')
+  assert.equal(r.crawl.capped, false)
   const home = r.pages.find((p) => p.url.endsWith(`${port}/`))
   assert.equal(home.social.imageSize, '1200×630')
   assert.ok(!r.findings.some((f) => f.url === home.url && /^social\.image-(broken|small|svg|relative|type|heavy|ratio)/.test(f.id)), 'home og:image is fine')

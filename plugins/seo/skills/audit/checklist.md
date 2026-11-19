@@ -31,7 +31,11 @@ a line in the report.
   timestamp on every URL teaches Google to ignore it. `<priority>` and
   `<changefreq>` are ignored by Google.
 - **Every `public-index` route** is in the sitemap and linked from at least one
-  other page (no orphans). Every sitemap URL maps to a real route.
+  other page (no orphans), and no more than three clicks from the home page
+  (`--crawl` measures both). Every sitemap URL maps to a real route.
+- **URLs** are lowercase, hyphenated, short and readable, without session or
+  tracking parameters, with one trailing-slash style, and internal links use
+  https.
 - **Parameters and facets** (filters, sorts, tracking params) don't create
   crawlable duplicate URLs, or they canonicalise to the clean URL.
 
@@ -103,7 +107,10 @@ Judgement, so say it's judgement and give the reason.
 - **Freshness** where it matters: outdated facts, dead projects presented as live,
   copyright years and "latest" claims.
 - **Cannibalisation:** two pages competing for the same query; merge or
-  differentiate them.
+  differentiate them. The `keywords` skill maps one query per page and finds
+  these, and the gaps no page answers.
+- **Refresh:** pages with no real change in 12 months (sitemap `lastmod`, visible
+  dates, git history) get reviewed: update, merge or retire with a redirect.
 
 ## 6. Performance and mobile
 
@@ -160,6 +167,12 @@ report's "What wasn't checked" with the link to do each.
   submitted, no manual actions or security issues, Page indexing report reviewed
   for "Crawled - currently not indexed" and "Duplicate, Google chose different
   canonical". search.google.com/search-console
+- **Links report** (Search Console → Links): who links to the site and to which
+  pages. Search the brand and product names for unlinked mentions and ask for
+  the link. No backlink database is used or claimed.
+- **Google Business Profile:** only for a business with a physical location or
+  service area; same name, address and phone as the site. Skip for online-only
+  products and portfolios.
 - **Bing Webmaster Tools:** site added (it can import from Search Console),
   sitemap submitted. Bing's index feeds DuckDuckGo, Yahoo, Copilot and several AI
   search products. bing.com/webmasters
