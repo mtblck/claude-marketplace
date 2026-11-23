@@ -20,6 +20,7 @@ Each vendored plugin's README lists what was changed from upstream.
 | `ui-ux-pro-max` | nextlevelbuilder/ui-ux-pro-max-skill | `04cfb449bd8494811ad63e94172a308fa25a551a` | MIT, © 2024 Next Level Builder |
 | `interface-design` | Dammyjay93/interface-design | `2f9be3206855bcb2d1d0af262c8bae25cba6658d` | MIT, © 2026 Damola Akinleye |
 | `superpowers` | obra/superpowers | `2ce8aa15d05bd57213e6f746f953aafb7ded7a8b` | MIT, © 2025 Jesse Vincent |
+| `superbrag` | aakashmehra/superbrag `skills/superbrag` (no plugin.json upstream, so the entry is `strict: false` with `skills`) | `802439f663ba81c0fdf2ee7f05b48ef14ad98e4b` | None stated: README says "free to use" and "© 2026 Aakash Mehra". Referenced only, never copied. Bundled music is CC BY 4.0 (credit "Music: Sascha Ende, ende.app (CC BY 4.0)" when posting a video), SFX CC0. Remotion is free for individuals and companies of up to 3 people |
 
 Not included on purpose: `anthropics/claude-code`'s `plugins/` (all rights
 reserved; the Apache-2.0 copies in claude-plugins-official are used instead) and

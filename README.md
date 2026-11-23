@@ -25,6 +25,7 @@ plugins are installed as `<plugin>@mtblck`.
 | `ui-ux-pro-max` | searchable styles, palettes, fonts, UX rules per stack | upstream [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill), MIT |
 | `interface-design` | design engineering and design review, decisions kept across sessions | upstream [Dammyjay93/interface-design](https://github.com/Dammyjay93/interface-design), MIT |
 | `superpowers` | brainstorm, plan, execute; TDD, systematic debugging, verification before completion, code review, worktrees | upstream [obra/superpowers](https://github.com/obra/superpowers), MIT |
+| `superbrag` | website URL → ~30s promo video with voiceover (Playwright, Remotion, Kokoro, faster-whisper, FFmpeg). Needs a one-time setup of about 6 GB and open network access, so it is off by default; see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) | upstream [aakashmehra/superbrag](https://github.com/aakashmehra/superbrag), **no licence file** |
 
 **Vendored** plugins are copied into `plugins/` with their license and a README
 saying what changed. **Upstream** plugins are only an entry in
