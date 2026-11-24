@@ -133,25 +133,6 @@
       },
       "description": "obra/superpowers: brainstorming, writing and executing plans, TDD, systematic debugging, verification before completion, code review, subagent-driven development and worktrees (MIT, upstream).",
       "category": "development"
-    },
-    {
-      "name": "superbrag",
-      "source": {
-        "source": "github",
-        "repo": "aakashmehra/superbrag",
-        "sha": "802439f663ba81c0fdf2ee7f05b48ef14ad98e4b"
-      },
-      "description": "Aakash Mehra's skill that turns a business website URL into a ~30s 1080p promo video in the site's own design, with voiceover, word-synced animation, music and SFX (Playwright, Remotion, Kokoro, faster-whisper, FFmpeg). Needs a one-time ~1 GB setup and open network access; upstream has no licence file, so it is referenced, not copied.",
-      "category": "design",
-      "author": {
-        "name": "Aakash Mehra",
-        "url": "https://github.com/aakashmehra"
-      },
-      "homepage": "https://github.com/aakashmehra/superbrag",
-      "strict": false,
-      "skills": [
-        "./skills/superbrag"
-      ]
     }
   ]
 }
