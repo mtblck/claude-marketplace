@@ -59,3 +59,8 @@ open source).
 
 - `cover-art` now lives in its own repo, mtblck/cover-art (MIT, Matt's own),
   pinned by sha.
+
+- `reelwright` lives in its own repo, mtblck/reelwright (code MIT, Matt's own;
+  the Reelwright name, logos and `brand/` are not licensed), pinned by sha. It
+  uses Remotion (free for individuals and companies of up to 3 people) and the
+  Kokoro voice (Apache-2.0), both downloaded at first run, not redistributed.
