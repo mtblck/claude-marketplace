@@ -59,3 +59,8 @@ open source).
 
 - `cover-art` now lives in its own repo, mtblck/cover-art (MIT, Matt's own),
   pinned by sha.
+
+- `reelwright` lives in its own repo, mtblck/reelwright (MIT code, Matt's own;
+  its brand files are not MIT), pinned by sha; its THIRD_PARTY_NOTICES.md lists
+  what it downloads at setup. It replaces aakashmehra/superbrag, which was
+  reviewed and not added (no licence); only ideas were taken from it.

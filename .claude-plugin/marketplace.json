@@ -71,6 +71,16 @@
       "category": "design"
     },
     {
+      "name": "reelwright",
+      "source": {
+        "source": "github",
+        "repo": "mtblck/reelwright",
+        "sha": "5bfc62c9eeaabd628aab92f4f8c6b2b79f6b2d08"
+      },
+      "description": "Matt's promo video plugin, from its own repo: 20 to 40 second square, vertical and landscape videos of a project, from its repo and brand.json, with a Kokoro voiceover timed to the on-screen reveals, a generated music bed and sound effects, a GIF and a poster. Works in cloud sessions with about 700 MB of cached downloads (MIT, mtblck/reelwright).",
+      "category": "design"
+    },
+    {
       "name": "web-design-guidelines",
       "source": "./plugins/web-design-guidelines",
       "description": "UI and accessibility review against Vercel's Web Interface Guidelines. Vendored (MIT).",
