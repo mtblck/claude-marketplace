@@ -39,9 +39,13 @@
       "category": "productivity"
     },
     {
-      "name": "seo",
-      "source": "./plugins/seo",
-      "description": "SEO audits: full site audit (crawl and index, metadata, canonicals, sitemaps, rendering, structured data, Core Web Vitals, content, AI search) with a bundled zero-dependency checker run against the live site or a local build, plus one-page review, structured data, social cards and link previews, AI search readiness and keyword research skills.",
+      "name": "crawlspace",
+      "source": {
+        "source": "github",
+        "repo": "mtblck/crawlspace",
+        "sha": "1b97a3bd482528045a5f4563919bd2c24d04f63c"
+      },
+      "description": "Crawlspace (formerly seo): SEO audits, with a full site audit (crawl and index, metadata, canonicals, sitemaps, rendering, structured data, Core Web Vitals, content, AI search) measured by a bundled zero-dependency checker against the live site or a local build, plus one-page review, structured data, social cards and link previews, AI search readiness and keyword research skills, from its own repo (MIT, mtblck/crawlspace).",
       "category": "development"
     },
     {
