@@ -75,7 +75,7 @@
       "source": {
         "source": "github",
         "repo": "mtblck/reelwright",
-        "sha": "5bfc62c9eeaabd628aab92f4f8c6b2b79f6b2d08"
+        "sha": "ff72fe01967412783b542eaef989f547424c24b3"
       },
       "description": "Short promo and launch videos for a project, made from its repo and brand: square, vertical and landscape cuts with a Kokoro voiceover timed to the on-screen reveals, a music bed written to length, sound effects, a GIF and a poster, from its own repo (MIT code; the Reelwright name and logos are not; mtblck/reelwright).",
       "category": "design"
