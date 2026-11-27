@@ -43,9 +43,9 @@
       "source": {
         "source": "github",
         "repo": "mtblck/crawlspace",
-        "sha": "b0b7523abbd75b4a4beeeed3146f1dd7b0a9a643"
+        "sha": "92dbbb65e2c004cc8e6e04e5b65c5a56e0ede998"
       },
-      "description": "Crawlspace (formerly seo): SEO audits, with a full site audit (crawl and index, metadata, canonicals, sitemaps, rendering, structured data, Core Web Vitals, content, AI search) measured by a bundled zero-dependency checker against the live site or a local build, plus one-page review, structured data, social cards and link previews, AI search readiness and keyword research skills, from its own repo (MIT, mtblck/crawlspace).",
+      "description": "Crawlspace (formerly seo): SEO audits, with a full site audit (crawl and index, metadata, canonicals, sitemaps, rendering, structured data, Core Web Vitals, content, AI search) measured by a bundled zero-dependency checker against the live site or a local build, plus one-page review and content briefs, structured data, social cards and link previews, AI search and agent readiness, keyword research, Search Console analysis and internal linking skills, from its own repo (MIT, mtblck/crawlspace).",
       "category": "development"
     },
     {
