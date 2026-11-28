@@ -69,7 +69,7 @@
       "source": {
         "source": "github",
         "repo": "mtblck/brand-kit",
-        "sha": "ef6e2e5758c617343156d16927bebbefde6750a2"
+        "sha": "06fd08fb36d1174e5f7fa3ab9bf40abd45920c80"
       },
       "description": "Matt's logo and brand kit plugin, from its own repo: SVG logos with typefaces from real Google Fonts, icons, brand guidelines PDF, email signature, business card, slides, social templates and portfolio covers (MIT, mtblck/brand-kit).",
       "category": "design"
