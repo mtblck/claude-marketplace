@@ -40,8 +40,8 @@ open source).
   obra/superpowers `skills/requesting-code-review/code-reviewer.md` (MIT,
   © 2025 Jesse Vincent).
 
-- `brand-kit` now lives in its own repo, mtblck/brand-kit (MIT, Matt's own),
-  pinned by sha; its THIRD_PARTY_NOTICES.md lists the ideas it draws on.
+- `logowright` (formerly `brand-kit`) lives in its own repo, mtblck/logowright
+  (MIT code; its name and logo are not), pinned by sha; its THIRD_PARTY_NOTICES.md lists the ideas it draws on.
 
 - `crawlspace` (formerly `seo`) now lives in its own repo, mtblck/crawlspace
   (MIT, Matt's own), pinned by sha; its THIRD_PARTY_NOTICES.md lists the ideas

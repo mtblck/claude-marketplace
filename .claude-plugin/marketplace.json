@@ -65,13 +65,13 @@
       "category": "design"
     },
     {
-      "name": "brand-kit",
+      "name": "logowright",
       "source": {
         "source": "github",
-        "repo": "mtblck/brand-kit",
-        "sha": "5880bab05d4538ea61b49cb34f5e2cb0eb6ed75d"
+        "repo": "mtblck/logowright",
+        "sha": "8bfe5805fc814515f7802f4d05cdc3858a9c40ad"
       },
-      "description": "Matt's logo and brand kit plugin, from its own repo: SVG logos with typefaces from real Google Fonts, icons, brand guidelines PDF, email signature, business card, slides, social templates and portfolio covers (MIT, mtblck/brand-kit).",
+      "description": "Logowright (formerly brand-kit), Matt's logo and brand kit plugin, from its own repo: SVG logos with typefaces from real Google Fonts, icons, brand guidelines PDF, email signature, business card, slides, social templates and portfolio covers (MIT, mtblck/logowright).",
       "category": "design"
     },
     {
